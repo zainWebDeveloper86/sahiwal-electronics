@@ -1,0 +1,70 @@
+# =============================================
+# 🔒 ENVIRONMENT VARIABLES (SENSITIVE)
+# =============================================
+.env
+.env.local
+.env.production
+.env.test
+
+# =============================================
+# 🔑 SECRETS & SENSITIVE DATA
+# =============================================
+/secrets/
+*.json
+!package.json
+!package-lock.json
+
+# =============================================
+# 📁 ARCHIVED FILES (Old code, not needed in repo)
+# =============================================
+/archived/
+
+# =============================================
+# 📦 DEPENDENCIES
+# =============================================
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# =============================================
+# 🗄️ DATABASE & UPLOADS
+# =============================================
+*.db
+*.sqlite
+uploads/
+temp/
+*.tmp
+
+# =============================================
+# 📝 LOGS & OS FILES
+# =============================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+Thumbs.db
+
+# =============================================
+# 🛠️ IDE / EDITOR FILES
+# =============================================
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swo
+
+# =============================================
+# 🔄 MISC (Temporary, Build, Coverage)
+# =============================================
+*.tmp
+dist/
+build/
+coverage/
+.nyc_output/

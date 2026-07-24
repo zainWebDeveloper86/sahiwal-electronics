@@ -1,0 +1,187 @@
+import express from "express";
+import Shop from "../model/shop.model.js";
+import Order from "../model/order.model.js";
+import Product from "../model/product.model.js";
+import ErrorHandler from "../utils/ErrorHandler.js";
+import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
+import fs from "fs";
+
+// create product
+export const createProduct = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const shopId = req.body.shopId;
+    const shop = await Shop.findById(shopId);
+    if (!shop) {
+      return next(new ErrorHandler("Shop Id is invalid!", 400));
+    } else {
+      const files = req.files;
+      const imageUrls = files.map((file) => ({
+        public_id: file.filename,
+        url: `uploads/${file.filename}`,
+      }));
+
+      const productData = req.body;
+      productData.images = imageUrls;
+      productData.shop = shop;
+
+      const product = await Product.create(productData);
+
+      res.status(201).json({
+        success: true,
+        product,
+      });
+    }
+  } catch (error) {
+    // console.log("productShop error:", error.message);
+    return next(new ErrorHandler(error.message, 500));
+  }
+});
+
+// get all products of a shop
+export const getAllShopProducts = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const products = await Product.find({ shopId: req.params.id });
+
+    res.status(201).json({
+      success: true,
+      products,
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 400));
+  }
+});
+
+// delete product of a shop
+export const deleteProduct = catchAsyncErrors(async (req, res, next) => {
+  try {
+    // const product = await Product.findById(req.params.id);
+    const productData = await Product.findByIdAndDelete(req.params.id);
+
+    if (!productData) {
+      return next(new ErrorHandler("Product is not found with this id", 404));
+    }
+    // console.log("productData: ", productData)
+
+    productData.images.forEach((image) => {
+      // console.log(image);
+      const filePath = `uploads/${image.public_id}`;
+
+      fs.unlink(filePath, (err) => {
+        if (err) console.log(err);
+      });
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Product Deleted successfully!",
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 400));
+  }
+});
+
+// get all products
+export const getAllProducts = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const products = await Product.find().sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      products,
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 400));
+  }
+});
+
+// review for a product
+export const productReview = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const { rating, comment, productId, orderId } = req.body;
+    const userId = req.user._id; // Middleware se aaya hua user
+
+    // 1. Fetch product & order
+    const [product, order] = await Promise.all([
+      Product.findById(productId),
+      Order.findById(orderId),
+    ]);
+
+    if (!product) return next(new ErrorHandler("Product not found!", 404));
+    if (!order) return next(new ErrorHandler("Order not found!", 404));
+
+    // 2. ✅ Authorization check — convert to string for safe comparison
+    if (!order.user?._id || order.user._id.toString() !== userId.toString()) {
+      return next(new ErrorHandler("Unauthorized!", 403));
+    }
+
+    const cartItem = order.cart.find(
+      (item) => item._id.toString() === productId.toString(),
+    );
+    if (!cartItem) return next(new ErrorHandler("Product not in order!", 404));
+    if (cartItem.isReviewed) {
+      return next(new ErrorHandler("Already reviewed!", 400));
+    }
+
+    // 3. User object for review
+    const reviewObj = {
+      _id: userId,
+      name: req.user.name,
+      email: req.user.email,
+      avatar: req.user.avatar,
+    };
+
+    // 4. Add/Update review
+    const existingReview = product.reviews.find(
+      (rev) => rev.user._id.toString() === userId.toString(),
+    );
+
+    if (existingReview) {
+      existingReview.rating = Number(rating);
+      existingReview.comment = comment;
+      existingReview.user = reviewObj;
+    } else {
+      product.reviews.push({
+        user: reviewObj,
+        rating: Number(rating),
+        comment,
+        productId,
+      });
+    }
+
+    // 5. Recalculate average rating
+    product.ratings =
+      product.reviews.reduce((sum, rev) => sum + rev.rating, 0) /
+      product.reviews.length;
+
+    await product.save({ validateBeforeSave: false });
+
+    // 6. Mark as reviewed in order
+    await Order.findOneAndUpdate(
+      { _id: orderId, "cart._id": productId },
+      { $set: { "cart.$.isReviewed": true } },
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Review submitted successfully!",
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 400));
+  }
+});
+
+// =============================================
+// GET ALL PRODUCTS (ADMIN ONLY)
+// =============================================
+export const getAllAdminProducts = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const products = await Product.find().sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      products,
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+});
