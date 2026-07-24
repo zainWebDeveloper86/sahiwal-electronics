@@ -1,4 +1,6 @@
 import express from "express";
+import crypto from "crypto";
+import { OAuth2Client } from "google-auth-library";
 import User from "../model/user.model.js";
 import upload from "../multer.js";
 import ErrorHandler from "../utils/ErrorHandler.js";
@@ -410,11 +412,9 @@ export const forgotPassword = catchAsyncErrors(async (req, res, next) => {
     }
 
     // Short-lived JWT token — expires in 5 minutes
-    const resetToken = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET_KEY,
-      { expiresIn: "5m" }
-    );
+    const resetToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, {
+      expiresIn: "5m",
+    });
 
     // Store hashed token in DB (for single-use verification)
     user.resetPasswordToken = resetToken;
@@ -455,7 +455,9 @@ export const resetPassword = catchAsyncErrors(async (req, res, next) => {
     }
 
     if (password.length < 6) {
-      return next(new ErrorHandler("Password must be at least 6 characters", 400));
+      return next(
+        new ErrorHandler("Password must be at least 6 characters", 400),
+      );
     }
 
     // Find user with this token and check expiry
@@ -465,7 +467,9 @@ export const resetPassword = catchAsyncErrors(async (req, res, next) => {
     });
 
     if (!user) {
-      return next(new ErrorHandler("Reset link is invalid or has expired", 400));
+      return next(
+        new ErrorHandler("Reset link is invalid or has expired", 400),
+      );
     }
 
     // Verify JWT token
@@ -477,7 +481,9 @@ export const resetPassword = catchAsyncErrors(async (req, res, next) => {
       user.resetPasswordToken = null;
       user.resetPasswordTime = null;
       await user.save();
-      return next(new ErrorHandler("Reset link is invalid or has expired", 400));
+      return next(
+        new ErrorHandler("Reset link is invalid or has expired", 400),
+      );
     }
 
     // Ensure token belongs to this user
@@ -496,6 +502,57 @@ export const resetPassword = catchAsyncErrors(async (req, res, next) => {
       success: true,
       message: "Password reset successful! You can now log in.",
     });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+});
+
+// =============================================
+// GOOGLE LOGIN — verify Google ID token, login or create user
+// =============================================
+
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+export const googleLogin = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const { credential } = req.body; // ID token sent from frontend
+
+    if (!credential) {
+      return next(new ErrorHandler("Google credential is missing", 400));
+    }
+
+    /*Verify the token directly with Google's servers —
+    this confirms it's genuine and wasn't tampered with*/
+    const ticket = await googleClient.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const { email, name, picture } = payload;
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      /*First-time Google login — create a new account.
+      Password is required by the schema, so we generate a random one
+      (the user will never need to type it, since they'll always log in via Google).*/
+      const randomPassword = crypto.randomBytes(20).toString("hex");
+
+      user = await User.create({
+        name,
+        email,
+        password: randomPassword,
+        avatar: {
+          public_id: "google-oauth-avatar", // no local file, so a placeholder id
+          url: picture,
+        },
+      });
+    }
+
+    /* Reuse the exact same token-issuing + cookie logic as normal login,
+    instead of duplicating cookie options here. Google only verifies
+    identity — everything after this point follows the app's usual auth flow.*/
+    sendToken(user, 200, res, { rememberMe: true });
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
   }

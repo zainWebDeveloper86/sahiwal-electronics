@@ -16,6 +16,7 @@ import {
   deleteUser,
   forgotPassword,
   resetPassword,
+  googleLogin,
 } from "../controller/user.controller.js";
 import { isAuthenticated, isAdmin } from "../middleware/auth.js";
 
@@ -27,6 +28,9 @@ router.post("/activation", userActivation);
 router.post("/login-user", loginUser);
 router.post("/forgot-password", forgotPassword);
 router.put("/reset-password/:token", resetPassword);
+
+// public routes - google verify
+router.post("/google-login", googleLogin);
 
 // Protected routes (User only)
 router.get("/getuser", isAuthenticated, loadUser);

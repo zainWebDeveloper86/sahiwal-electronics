@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import { GoogleLogin } from "@react-oauth/google";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import styles from "../../styles/styles.js";
 import { Link, useNavigate } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
 import { axiosServerInstance } from "../../server.js";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { loadUser } from "../../redux/actions/user.js";
 
 const Singup = () => {
   const [email, setEmail] = useState("");
@@ -13,6 +16,24 @@ const Singup = () => {
   const [visible, setVisible] = useState(false);
   const [avatar, setAvatar] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLoginWithGoogle = async (credentialResponse) => {
+    try {
+      const { data } = await axiosServerInstance.post("/user/google-login", {
+        credential: credentialResponse.credential,
+      });
+      toast.success("Welcome!");
+      dispatch(loadUser());
+      if (data.user?.role === "admin") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/");
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Google sign-up failed");
+    }
+  };
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
@@ -182,6 +203,19 @@ const Singup = () => {
               </Link>
             </div>
           </form>
+          <div className="mt-4">
+            <div className="flex items-center my-4">
+              <div className="flex-1 border-t border-gray-300"></div>
+              <span className="px-3 text-gray-400 text-sm">OR</span>
+              <div className="flex-1 border-t border-gray-300"></div>
+            </div>
+            <div className="flex justify-center">
+              <GoogleLogin
+                onSuccess={handleLoginWithGoogle}
+                onError={() => toast.error("Google sign-up failed")}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

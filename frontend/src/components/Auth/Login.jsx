@@ -1,4 +1,5 @@
 import { React, useState } from "react";
+import { GoogleLogin } from "@react-oauth/google";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import styles from "../../styles/styles.js";
 import { Link, useNavigate } from "react-router-dom";
@@ -15,6 +16,19 @@ const Login = () => {
   const [visible, setVisible] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleLoginWithGoogle = async (credentialResponse) => {
+    try {
+      await axiosServerInstance.post("/user/google-login", {
+        credential: credentialResponse.credential,
+      });
+      toast.success("Logged in with Google!");
+      dispatch(loadUser());
+      navigate("/");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Google login failed");
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -153,6 +167,12 @@ const Login = () => {
               </Link>
             </div>
           </form>
+          <div className="mt-4 flex justify-center">
+            <GoogleLogin
+              onSuccess={handleLoginWithGoogle}
+              onError={() => toast.error("Google login failed")}
+            />
+          </div>
         </div>
       </div>
     </div>

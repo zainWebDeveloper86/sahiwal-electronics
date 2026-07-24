@@ -131,7 +131,8 @@ import {
   updatePaymentMethods,
   deleteWithdrawMethod,
   forgotShopPassword,
-  resetShopPassword
+  resetShopPassword,
+  googleShopLogin,
 } from "../controller/shop.controller.js";
 import {
   isSellerAuthenticated,
@@ -148,6 +149,9 @@ router.post("/login-shop", loginShop);
 router.get("/get-shop-info/:id", getShopInfo);
 router.post("/forgot-password", forgotShopPassword);
 router.put("/reset-password/:token", resetShopPassword);
+
+// public routes - google verify
+router.post("/google-login", googleShopLogin);
 
 // Admin Routes
 router.get("/admin-all-sellers", isAuthenticated, isAdmin, getAllSellers);

@@ -1,11 +1,12 @@
 import { React, useEffect, useState } from "react";
+import { GoogleLogin } from "@react-oauth/google";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import styles from "../../styles/styles.js";
 import { Link, useNavigate } from "react-router-dom";
 import { axiosServerInstance } from "../../server.js";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux"; 
-import { loadSeller } from "../../redux/actions/seller.js"; 
+import { useDispatch } from "react-redux";
+import { loadSeller } from "../../redux/actions/seller.js";
 import { useSelector } from "react-redux";
 
 const ShopLogin = () => {
@@ -16,19 +17,28 @@ const ShopLogin = () => {
   const dispatch = useDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const handleLoginWithGoogle = async (credentialResponse) => {
+    try {
+      const { data } = await axiosServerInstance.post("/shop/google-login", {
+        credential: credentialResponse.credential,
+      });
+      toast.success("Logged in with Google!");
+      dispatch(loadSeller());
+      navigate("/dashboard");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Google login failed");
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSubmitting) return;
     setIsSubmitting(true);
 
     await axiosServerInstance
-      .post(
-        "/shop/login-shop",
-        {
-          email,
-          password,
-        },
-      )
+      .post("/shop/login-shop", {
+        email,
+        password,
+      })
       .then((res) => {
         toast.success("Login Success!");
         dispatch(loadSeller());
@@ -143,6 +153,12 @@ const ShopLogin = () => {
               </Link>
             </div>
           </form>
+          <div className="mt-4 flex justify-center">
+            <GoogleLogin
+              onSuccess={handleLoginWithGoogle}
+              onError={() => toast.error("Google login failed")}
+            />
+          </div>
         </div>
       </div>
     </div>

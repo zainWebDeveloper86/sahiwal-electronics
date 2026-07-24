@@ -1,4 +1,6 @@
 import express from "express";
+import crypto from "crypto";
+import { OAuth2Client } from "google-auth-library";
 import Shop from "../model/shop.model.js";
 import Product from "../model/product.model.js";
 import upload from "../multer.js";
@@ -498,6 +500,48 @@ export const resetShopPassword = catchAsyncErrors(async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: "Password reset successful! You can now log in.",
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+});
+
+// =============================================
+// GOOGLE LOGIN — Shop Seller (Only Existing)
+// =============================================
+
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+export const googleShopLogin = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const { credential } = req.body;
+
+    if (!credential) {
+      return next(new ErrorHandler("Google credential is missing", 400));
+    }
+
+    const ticket = await googleClient.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const { email } = payload;
+
+    const seller = await Shop.findOne({ email });
+
+    if (!seller) {
+      return next(
+        new ErrorHandler(
+          "No shop found with this email. Please sign up first.",
+          404,
+        ),
+      );
+    }
+
+    sendToken(seller, 200, res, {
+      cookieName: "seller_token",
+      rememberMe: true,
     });
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));

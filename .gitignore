@@ -10,6 +10,7 @@
 # 🔑 SECRETS & SENSITIVE DATA
 # =============================================
 /secrets/
+/project-readme.md
 *.json
 !package.json
 !package-lock.json
