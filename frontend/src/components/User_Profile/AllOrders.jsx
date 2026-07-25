@@ -20,7 +20,7 @@ const AllOrders = () => {
 
   if (loading) {
     return (
-      <div className="pl-8 pt-1 flex justify-center items-center h-[50vh]">
+      <div className="flex justify-center items-center h-[50vh]">
         <Loader />
       </div>
     );
@@ -28,7 +28,7 @@ const AllOrders = () => {
 
   if (error) {
     return (
-      <div className="pl-8 pt-1 text-center text-red-500">
+      <div className="text-center text-copper font-body">
         <p>Failed to load orders: {error}</p>
       </div>
     );
@@ -69,7 +69,7 @@ const AllOrders = () => {
         return (
           <Link to={`/user/order/${params.row.id}`}>
             <Button>
-              <AiOutlineArrowRight size={20} />
+              <AiOutlineArrowRight size={20} className="text-voltage" />
             </Button>
           </Link>
         );
@@ -77,7 +77,6 @@ const AllOrders = () => {
     },
   ];
 
-  // Total quantity = sum of all qty fields
   const rows =
     orders?.map((item) => ({
       id: item._id,
@@ -88,7 +87,7 @@ const AllOrders = () => {
     })) || [];
 
   return (
-    <div className="pl-8 pt-1">
+    <div className="w-full">
       <DataGrid
         rows={rows}
         columns={columns}
@@ -99,8 +98,11 @@ const AllOrders = () => {
         disableRowSelectionOnClick
         autoHeight
         sx={{
-          "& .greenColor": { color: "#22c55e", fontWeight: "bold" },
-          "& .redColor": { color: "#ef4444", fontWeight: "bold" },
+          "& .MuiDataGrid-cell": {
+            fontFamily: "Inter, sans-serif",
+          },
+          "& .greenColor": { color: "#1FAA59", fontWeight: "bold" },
+          "& .redColor": { color: "#131A2B", fontWeight: "bold" },
         }}
       />
     </div>

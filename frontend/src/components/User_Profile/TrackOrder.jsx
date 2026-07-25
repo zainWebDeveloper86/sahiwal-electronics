@@ -12,26 +12,23 @@ const TrackOrder = () => {
   const { user } = useSelector((state) => state.user);
   const { orders, loading, error } = useSelector((state) => state.orders);
 
-  // Fetch orders only if user exists
   useEffect(() => {
     if (user?._id) {
       dispatch(getAllOrdersOfUser(user._id));
     }
   }, [dispatch, user?._id]);
 
-  // Handle loading state
   if (loading) {
     return (
-      <div className="pl-8 pt-1 flex justify-center items-center h-[50vh]">
+      <div className="flex justify-center items-center h-[50vh]">
         <Loader />
       </div>
     );
   }
 
-  // Handle error state
   if (error) {
     return (
-      <div className="pl-8 pt-1 text-center text-red-500">
+      <div className="text-center text-copper font-body">
         <p>Failed to load orders: {error}</p>
       </div>
     );
@@ -76,7 +73,7 @@ const TrackOrder = () => {
         return (
           <Link to={`/user/track/order/${params.row.id}`}>
             <Button>
-              <MdOutlineTrackChanges size={20} />
+              <MdOutlineTrackChanges size={22} className="text-voltage" />
             </Button>
           </Link>
         );
@@ -84,7 +81,6 @@ const TrackOrder = () => {
     },
   ];
 
-  // Map orders to rows with total quantity (sum of qty)
   const rows =
     orders?.map((item) => ({
       id: item._id,
@@ -95,7 +91,7 @@ const TrackOrder = () => {
     })) || [];
 
   return (
-    <div className="pl-8 pt-1">
+    <div className="w-full">
       <DataGrid
         rows={rows}
         columns={columns}
@@ -106,9 +102,12 @@ const TrackOrder = () => {
         disableRowSelectionOnClick
         autoHeight
         sx={{
-          "& .greenColor": { color: "#22c55e", fontWeight: "bold" },
-          "& .orangeColor": { color: "#f59e0b", fontWeight: "bold" },
-          "& .redColor": { color: "#ef4444", fontWeight: "bold" },
+          "& .MuiDataGrid-cell": {
+            fontFamily: "Inter, sans-serif",
+          },
+          "& .greenColor": { color: "#1FAA59", fontWeight: "bold" },
+          "& .orangeColor": { color: "#F5A623", fontWeight: "bold" },
+          "& .redColor": { color: "#131A2B", fontWeight: "bold" },
         }}
       />
     </div>

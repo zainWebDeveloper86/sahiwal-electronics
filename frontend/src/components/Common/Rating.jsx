@@ -8,34 +8,19 @@ const Ratings = ({ rating }) => {
   for (let i = 1; i <= 5; i++) {
     if (i <= rating) {
       stars.push(
-        <AiFillStar
-          key={i}
-          size={20}
-          color="#f6b100"
-          className="mr-2 cursor-pointer"
-        />
+        <AiFillStar key={i} size={18} color="#F5A623" className="mr-1" />,
       );
     } else if (i === Math.ceil(rating) && !Number.isInteger(rating)) {
       stars.push(
-        <BsStarHalf
-          key={i}
-          size={17}
-          color="#f6ba00"
-          className="mr-2 cursor-pointer"
-        />
+        <BsStarHalf key={i} size={16} color="#F5A623" className="mr-1" />,
       );
     } else {
       stars.push(
-        <AiOutlineStar
-          key={i}
-          size={20}
-          color="#f6ba00"
-          className="mr-2 cursor-pointer"
-        />
+        <AiOutlineStar key={i} size={18} color="#F5A623" className="mr-1" />,
       );
     }
   }
-  return <div className="flex"> {stars}</div>;
+  return <div className="flex">{stars}</div>;
 };
 
 export default Ratings;

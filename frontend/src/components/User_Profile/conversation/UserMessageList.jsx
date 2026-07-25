@@ -11,7 +11,6 @@ const UserMessageList = ({
 }) => {
   const [shopInfo, setShopInfo] = useState(null);
 
-  // 🏪 Fetch shop details
   useEffect(() => {
     const shopId = conversation.members?.find((member) => member !== userId);
     if (!shopId) return;
@@ -37,36 +36,34 @@ const UserMessageList = ({
 
   return (
     <div
-      className={`w-full flex p-3 px-4 items-center cursor-pointer transition-colors hover:bg-gray-50 ${
-        isSelected ? "bg-[#00000008]" : "bg-transparent"
+      className={`w-full flex p-3 px-4 items-center cursor-pointer transition-colors ${
+        isSelected ? "bg-surface" : "hover:bg-surface"
       }`}
       onClick={handleClick}
     >
-      {/* Avatar with Online Status Dot */}
       <div className="relative flex-shrink-0">
         <img
           src={
             shopInfo?.avatar?.url
               ? `${backend_url}${shopInfo.avatar.url}`
-              : `https://ui-avatars.com/api/?name=${shopInfo?.name || "S"}&background=random`
+              : `https://ui-avatars.com/api/?name=${shopInfo?.name || "S"}&background=2F5FF6&color=fff`
           }
           alt={shopInfo?.name || "Shop"}
-          className="w-[50px] h-[50px] rounded-full object-cover border-2 border-gray-200"
+          className="w-[50px] h-[50px] rounded-full object-cover border-2 border-divider"
           onError={(e) => {
-            e.target.src = `https://ui-avatars.com/api/?name=${shopInfo?.name || "S"}&background=random`;
+            e.target.src = `https://ui-avatars.com/api/?name=${shopInfo?.name || "S"}&background=2F5FF6&color=fff`;
           }}
         />
         {isOnline && (
-          <div className="w-[12px] h-[12px] bg-green-500 rounded-full absolute bottom-0 right-0 border-2 border-white" />
+          <div className="w-[12px] h-[12px] bg-stock rounded-full absolute bottom-0 right-0 border-2 border-white" />
         )}
       </div>
 
-      {/* Shop Info */}
       <div className="pl-3 flex-1 min-w-0">
-        <h1 className="text-[16px] font-semibold text-gray-800 truncate">
+        <h1 className="text-[16px] font-body font-semibold text-ink truncate">
           {shopInfo?.name || "Unknown Shop"}
         </h1>
-        <p className="text-[14px] text-gray-500 truncate">
+        <p className="text-[14px] font-body text-ink/50 truncate">
           {!isLoading &&
           conversation?.lastMessageId !== shopInfo?._id &&
           conversation?.lastMessage

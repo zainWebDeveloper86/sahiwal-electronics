@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import Loader from "../../components/Common/Loader.jsx";
 import ProductCard from "../../components/Products/ProductCard.jsx";
 import styles from "../../styles/styles.js";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,24 +15,27 @@ const BestSellingPage = () => {
 
   useEffect(() => {
     if (allProducts) {
-      const sortedData = [...allProducts].sort((a, b) => b.sold_out - a.sold_out);   // 👈 sold_out, total_sell nahi
-      setData(sortedData);
+      setData([...allProducts].sort((a, b) => b.sold_out - a.sold_out));
     }
   }, [allProducts]);
 
   return (
-    <>
-      <div>
-        <br />
-        <br />
-        <div className={`${styles.section}`}>
+    <div>
+      <div className={`${styles.section} pt-8`}>
+        <h1 className={`${styles.heading}`}>Best Selling</h1>
+        {data.length > 0 ? (
           <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-5 xl:gap-[30px] mb-12">
-            {data &&
-              data.map((i, index) => <ProductCard data={i} key={index} />)}
+            {data.map((i) => (
+              <ProductCard data={i} key={i._id} />
+            ))}
           </div>
-        </div>
+        ) : (
+          <p className="text-center w-full pb-[100px] text-[18px] font-body text-ink/50">
+            No products found!
+          </p>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 

@@ -19,7 +19,6 @@ const CreateCouponModal = ({ open, onClose, onSubmit }) => {
       maxAmount,
       selectedProducts,
     });
-    // Reset form after submit
     setName("");
     setValue("");
     setMinAmount("");
@@ -29,75 +28,79 @@ const CreateCouponModal = ({ open, onClose, onSubmit }) => {
 
   if (!open) return null;
 
+  const inputClass =
+    "mt-2 appearance-none block w-full px-3 h-[38px] border border-divider rounded-md placeholder-ink/30 focus:outline-none focus:border-voltage font-body sm:text-sm";
+  const labelClass = "pb-1 font-body font-medium text-ink";
+
   return (
-    <div className="fixed top-0 left-0 w-full h-screen bg-[#00000062] z-[20000] flex items-center justify-center">
-      <div className="w-[90%] 800px:w-[40%] h-[80vh] bg-white rounded-md shadow p-4 overflow-y-auto">
+    <div className="fixed top-0 left-0 w-full h-screen bg-ink/40 z-[20000] flex items-center justify-center">
+      <div className="w-[90%] 800px:w-[40%] h-[80vh] bg-white border border-divider rounded-lg p-6 overflow-y-auto">
         <div className="w-full flex justify-end">
           <RxCross1
-            size={30}
-            className="cursor-pointer"
+            size={25}
+            className="cursor-pointer text-ink/50 hover:text-ink transition-colors"
             onClick={onClose}
           />
         </div>
-        <h5 className="text-[30px] font-Poppins text-center">
-          Create Coupon code
+        <h5 className="text-[26px] font-display font-[600] text-ink text-center">
+          Create Coupon Code
         </h5>
         <form onSubmit={handleSubmit}>
           <br />
           <div>
-            <label className="pb-2">
-              Name <span className="text-red-500">*</span>
+            <label className={labelClass}>
+              Name <span className="text-copper">*</span>
             </label>
             <input
               type="text"
               required
               value={name}
-              className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className={inputClass}
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter your coupon code name..."
             />
           </div>
           <br />
           <div>
-            <label className="pb-2">
-              Discount Percentage <span className="text-red-500">*</span>
+            <label className={labelClass}>
+              Discount Percentage <span className="text-copper">*</span>
             </label>
             <input
               type="text"
               required
               value={value}
-              className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className={inputClass}
               onChange={(e) => setValue(e.target.value)}
               placeholder="Enter your coupon code value..."
             />
           </div>
           <br />
           <div>
-            <label className="pb-2">Min Amount</label>
+            <label className={labelClass}>Min Amount</label>
             <input
               type="number"
               value={minAmount}
-              className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className={inputClass}
               onChange={(e) => setMinAmount(e.target.value)}
               placeholder="Enter your coupon code min amount..."
             />
           </div>
           <br />
           <div>
-            <label className="pb-2">Max Amount</label>
+            <label className={labelClass}>Max Amount</label>
             <input
               type="number"
               value={maxAmount}
-              className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className={inputClass}
               onChange={(e) => setMaxAmount(e.target.value)}
               placeholder="Enter your coupon code max amount..."
             />
           </div>
           <br />
           <div>
-            <label className="pb-2">Selected Product</label>
+            <label className={labelClass}>Selected Product</label>
             <select
-              className="w-full mt-2 border h-[35px] rounded-[5px]"
+              className="w-full mt-2 border border-divider h-[38px] rounded-md font-body focus:outline-none focus:border-voltage text-ink"
               value={selectedProducts}
               onChange={(e) => setSelectedProducts(e.target.value)}
             >
@@ -115,7 +118,7 @@ const CreateCouponModal = ({ open, onClose, onSubmit }) => {
             <input
               type="submit"
               value="Create"
-              className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] cursor-pointer bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+              className="mt-2 cursor-pointer appearance-none text-center block w-full px-3 h-[40px] rounded-md bg-voltage text-white font-body font-[600] hover:opacity-90 transition-opacity sm:text-sm"
             />
           </div>
         </form>

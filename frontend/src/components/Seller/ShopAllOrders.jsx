@@ -12,14 +12,12 @@ const ShopAllOrders = () => {
   const { seller } = useSelector((state) => state.seller);
   const { orders, loading, error } = useSelector((state) => state.orders);
 
-  // ✅ Fetch orders only if seller exists
   useEffect(() => {
     if (seller?._id) {
       dispatch(getAllOrdersOfShop(seller._id));
     }
   }, [dispatch, seller?._id]);
 
-  // ✅ Handle loading state
   if (loading) {
     return (
       <div className="w-full mx-8 pt-1 mt-10 flex justify-center items-center h-[50vh]">
@@ -28,10 +26,9 @@ const ShopAllOrders = () => {
     );
   }
 
-  // ✅ Handle error state
   if (error) {
     return (
-      <div className="w-full mx-8 pt-1 mt-10 text-center text-red-500">
+      <div className="w-full mx-8 pt-1 mt-10 text-center text-copper font-body">
         <p>Failed to load orders: {error}</p>
       </div>
     );
@@ -44,43 +41,26 @@ const ShopAllOrders = () => {
       headerName: "Status",
       minWidth: 130,
       flex: 0.7,
-      cellClassName: (params) => {
-        return params.row.status === "Delivered" ? "greenColor" : "redColor";
-      },
+      cellClassName: (params) => (params.row.status === "Delivered" ? "greenColor" : "redColor"),
     },
-    {
-      field: "itemsQty",
-      headerName: "Total Items",
-      type: "number",
-      minWidth: 130,
-      flex: 0.7,
-    },
-    {
-      field: "total",
-      headerName: "Total",
-      type: "number",
-      minWidth: 130,
-      flex: 0.8,
-    },
+    { field: "itemsQty", headerName: "Total Items", type: "number", minWidth: 130, flex: 0.7 },
+    { field: "total", headerName: "Total", type: "number", minWidth: 130, flex: 0.8 },
     {
       field: "action",
       flex: 1,
       minWidth: 150,
       headerName: "",
       sortable: false,
-      renderCell: (params) => {
-        return (
-          <Link to={`/shop/order/${params.row.id}`}>
-            <Button>
-              <AiOutlineArrowRight size={20} />
-            </Button>
-          </Link>
-        );
-      },
+      renderCell: (params) => (
+        <Link to={`/shop/order/${params.row.id}`}>
+          <Button>
+            <AiOutlineArrowRight size={20} className="text-voltage" />
+          </Button>
+        </Link>
+      ),
     },
   ];
 
-  // ✅ Map orders to rows with total quantity (sum of qty)
   const rows =
     orders?.map((item) => ({
       id: item._id,
@@ -90,19 +70,17 @@ const ShopAllOrders = () => {
     })) || [];
 
   return (
-    <div className="w-full mx-8 pt-1 mt-10 bg-white">
+    <div className="w-full mx-8 pt-1 mt-10 bg-white border border-divider rounded-lg">
       <DataGrid
         rows={rows}
         columns={columns}
-        initialState={{
-          pagination: { paginationModel: { pageSize: 10 } },
-        }}
+        initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
         pageSizeOptions={[5, 10, 25]}
         disableRowSelectionOnClick
         autoHeight
         sx={{
-          "& .greenColor": { color: "#22c55e", fontWeight: "bold" },
-          "& .redColor": { color: "#ef4444", fontWeight: "bold" },
+          "& .greenColor": { color: "#1FAA59", fontWeight: "bold" },
+          "& .redColor": { color: "#131A2B", fontWeight: "bold" },
         }}
       />
     </div>

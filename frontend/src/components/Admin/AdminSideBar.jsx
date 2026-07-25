@@ -30,148 +30,46 @@ const AdminSideBar = ({ active }) => {
     }
   };
 
+  const menuItems = [
+    { id: 1, icon: RxDashboard, label: "Dashboard", path: "/admin/dashboard" },
+    { id: 2, icon: FiShoppingBag, label: "All Orders", path: "/admin/orders" },
+    { id: 3, icon: GrWorkshop, label: "All Sellers", path: "/admin/sellers" },
+    { id: 4, icon: HiOutlineUserGroup, label: "All Users", path: "/admin/users" },
+    { id: 5, icon: BsHandbag, label: "All Products", path: "/admin/products" },
+    { id: 6, icon: MdOutlineLocalOffer, label: "All Events", path: "/admin/events" },
+    { id: 7, icon: CiMoneyBill, label: "Withdraw Request", path: "/admin/withdraw-request" },
+    { id: 8, icon: CiSettings, label: "Settings", path: "/admin/settings" },
+  ];
+
   return (
-    <div className="w-full h-[90vh] bg-white shadow-sm overflow-y-scroll sticky top-0 left-0 z-10">
-      {/* Dashboard */}
-      <div className="w-full flex items-center p-4">
-        <Link to="/admin/dashboard" className="w-full flex items-center">
-          <RxDashboard
-            size={30}
-            color={`${active === 1 ? "crimson" : "#555"}`}
-          />
-          <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 1 ? "text-[crimson]" : "text-[#555]"
-            }`}
-          >
-            Dashboard
-          </h5>
-        </Link>
-      </div>
+    <div className="w-full h-[90vh] bg-white border-r border-divider overflow-y-scroll sticky top-0 left-0 z-10">
+      {menuItems.map((item) => (
+        <div
+          key={item.id}
+          className="w-full flex items-center p-4 hover:bg-surface transition-colors"
+        >
+          <Link to={item.path} className="w-full flex items-center">
+            <item.icon
+              size={26}
+              className={active === item.id ? "text-voltage" : "text-ink/50"}
+            />
+            <h5
+              className={`hidden 800px:block pl-3 text-[15px] font-body font-medium ${
+                active === item.id ? "text-voltage" : "text-ink/60"
+              } transition-colors`}
+            >
+              {item.label}
+            </h5>
+          </Link>
+        </div>
+      ))}
 
-      {/* All Orders */}
-      <div className="w-full flex items-center p-4">
-        <Link to="/admin/orders" className="w-full flex items-center">
-          <FiShoppingBag
-            size={30}
-            color={`${active === 2 ? "crimson" : "#555"}`}
-          />
-          <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 2 ? "text-[crimson]" : "text-[#555]"
-            }`}
-          >
-            All Orders
-          </h5>
-        </Link>
-      </div>
-
-      {/* All Sellers */}
-      <div className="w-full flex items-center p-4">
-        <Link to="/admin/sellers" className="w-full flex items-center">
-          <GrWorkshop
-            size={30}
-            color={`${active === 3 ? "crimson" : "#555"}`}
-          />
-          <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 3 ? "text-[crimson]" : "text-[#555]"
-            }`}
-          >
-            All Sellers
-          </h5>
-        </Link>
-      </div>
-
-      {/* All Users */}
-      <div className="w-full flex items-center p-4">
-        <Link to="/admin/users" className="w-full flex items-center">
-          <HiOutlineUserGroup
-            size={30}
-            color={`${active === 4 ? "crimson" : "#555"}`}
-          />
-          <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 4 ? "text-[crimson]" : "text-[#555]"
-            }`}
-          >
-            All Users
-          </h5>
-        </Link>
-      </div>
-
-      {/* All Products */}
-      <div className="w-full flex items-center p-4">
-        <Link to="/admin/products" className="w-full flex items-center">
-          <BsHandbag size={30} color={`${active === 5 ? "crimson" : "#555"}`} />
-          <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 5 ? "text-[crimson]" : "text-[#555]"
-            }`}
-          >
-            All Products
-          </h5>
-        </Link>
-      </div>
-
-      {/* All Events */}
-      <div className="w-full flex items-center p-4">
-        <Link to="/admin/events" className="w-full flex items-center">
-          <MdOutlineLocalOffer
-            size={30}
-            color={`${active === 6 ? "crimson" : "#555"}`}
-          />
-          <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 6 ? "text-[crimson]" : "text-[#555]"
-            }`}
-          >
-            All Events
-          </h5>
-        </Link>
-      </div>
-
-      {/* Withdraw Request */}
-      <div className="w-full flex items-center p-4">
-        <Link to="/admin/withdraw-request" className="w-full flex items-center">
-          <CiMoneyBill
-            size={30}
-            color={`${active === 7 ? "crimson" : "#555"}`}
-          />
-          <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 7 ? "text-[crimson]" : "text-[#555]"
-            }`}
-          >
-            Withdraw Request
-          </h5>
-        </Link>
-      </div>
-
-      {/* Settings */}
-      <div className="w-full flex items-center p-4">
-        <Link to="/admin/settings" className="w-full flex items-center">
-          <CiSettings
-            size={30}
-            color={`${active === 8 ? "crimson" : "#555"}`}
-          />
-          <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 8 ? "text-[crimson]" : "text-[#555]"
-            }`}
-          >
-            Settings
-          </h5>
-        </Link>
-      </div>
-
-      {/* Logout Button */}
       <div
-        className="w-full flex items-center p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+        className="w-full flex items-center p-4 hover:bg-surface transition-colors cursor-pointer border-t border-divider mt-2 pt-3"
         onClick={logoutHandler}
       >
-        <AiOutlineLogin size={30} color="#e94560" />
-        <h5 className="hidden 800px:block pl-2 text-[18px] font-[400] text-[#e94560] hover:text-[#c0392b]">
+        <AiOutlineLogin size={26} className="text-copper" />
+        <h5 className="hidden 800px:block pl-3 text-[15px] font-body font-medium text-copper">
           Logout
         </h5>
       </div>

@@ -8,8 +8,8 @@ import { wishlistReducer } from "./reducers/wishlist.js";
 import { orderReducer } from "./reducers/order.js";
 const store = configureStore({
   reducer: {
-    user: userReducer, // User authentication
-    seller: sellerReducer, // Seller authentication
+    user: userReducer,
+    seller: sellerReducer,
     products: productReducer,
     events: eventReducer,
     cart: cartReducer,

@@ -7,7 +7,6 @@ export const loadUser = () => async (dispatch) => {
       type: "LoadUserRequest",
     });
     const { data } = await axiosServerInstance.get("/user/getuser");
-    // console.log(data , data.user)
     dispatch({
       type: "LoadUserSuccess",
       payload: data.user,
@@ -36,11 +35,6 @@ export const updateUserInformation =
           phoneNumber,
           name,
         },
-        // {
-        //   headers: {
-        //     "Access-Control-Allow-Credentials": true,
-        //   },
-        // },
       );
 
       dispatch({

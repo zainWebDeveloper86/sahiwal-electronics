@@ -47,7 +47,6 @@ export const createUser = catchAsyncErrors(async (req, res, next) => {
     };
 
     const activationToken = createActivationToken(user);
-    // user.js controller mein (agar already nahi hai to add karo)
     const activationUrl = `http://localhost:5173/activation/${activationToken}?type=user`;
 
     await sendMail({
@@ -152,11 +151,6 @@ export const logoutUser = catchAsyncErrors(async (req, res, next) => {
     res.cookie("token", null, {
       expires: new Date(Date.now()),
       httpOnly: true,
-      // while at production
-      // sameSite: "none",
-      // secure: true,
-
-      // while at development
       sameSite: "lax",
       secure: process.env.NODE_ENV === "PRODUCTION",
     });
@@ -211,18 +205,13 @@ export const updateUserAvator = catchAsyncErrors(async (req, res, next) => {
     if (!user) {
       return next(new ErrorHandler("User not found", 400));
     }
-
-    // console.log(`cwd: ${process.cwd()}`);
-    // delete old image, if exists
     if (user.avatar && user.avatar.url) {
       const oldPath = path.join(process.cwd(), user.avatar.url);
-      // console.log(`oldPath: ${oldPath}`);
       if (fs.existsSync(oldPath)) {
         fs.unlinkSync(oldPath);
       }
     }
 
-    // set new avatar that matches with schema
     const filename = req.file.filename;
     const filePath = `uploads/${filename}`;
 

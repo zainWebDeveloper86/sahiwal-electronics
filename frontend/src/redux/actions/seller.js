@@ -7,7 +7,6 @@ export const loadSeller = () => async (dispatch) => {
       type: "LoadSellerRequest",
     });
     const { data } = await axiosServerInstance.get("/shop/getSeller");
-    // console.log(data , data.seller)
     dispatch({
       type: "LoadSellerSuccess",
       payload: data.seller,

@@ -17,8 +17,7 @@ const Address = () => {
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
 
-  // Separate states for Country, State, and City
-  const [selectedCountry, setSelectedCountry] = useState("PK"); // Default Pakistan
+  const [selectedCountry, setSelectedCountry] = useState("PK");
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
 
@@ -70,7 +69,6 @@ const Address = () => {
   const handleAddressSubmit = (e) => {
     e.preventDefault();
 
-    // Validation: Ensure all fields are filled
     if (
       !selectedCountry ||
       !selectedState ||
@@ -95,15 +93,6 @@ const Address = () => {
         editingId,
       ),
     );
-
-    // setOpen(false);
-    // // Reset form
-    // setSelectedState("");
-    // setSelectedCity("");
-    // setZipCode("");
-    // setAddress1("");
-    // setAddress2("");
-    // setAddressType("");
     handleClose();
   };
 
@@ -113,56 +102,57 @@ const Address = () => {
     }
   };
 
+  const labelClass = "block pb-1 font-body font-medium text-ink";
+
   return (
-    <div className="w-full px-5">
-      {/* Header */}
-      <div className="flex w-full items-center justify-between">
-        <h1 className="text-[25px] font-[600] text-[#000000ba] pb-2">
+    <div className="w-full px-2">
+      <div className="flex w-full items-center justify-between border-b border-divider pb-3">
+        <h1 className="text-[25px] font-display font-semibold text-ink">
           My Addresses
         </h1>
         <div
-          className={`${styles.button} !rounded-md cursor-pointer`}
+          className={`${styles.button} !rounded-md cursor-pointer !w-max px-5 !h-[42px]`}
           onClick={() => {
             setEditingId(null);
             setOpen(true);
           }}
         >
-          <span className="text-[#fff]">Add New</span>
+          <span className="text-white font-body font-[500]">Add New</span>
         </div>
       </div>
       <br />
 
-      {/* Address List */}
       {user?.addresses?.length > 0 ? (
         user?.addresses?.map((item, index) => (
           <div
-            className="w-full bg-white h-min 800px:h-[70px] rounded-[4px] flex items-center px-4 shadow justify-between mb-5"
+            className="w-full bg-white border border-divider rounded-lg flex flex-wrap 800px:flex-nowrap items-center px-4 py-3 justify-between mb-3 hover:border-voltage/30 transition-colors"
             key={index}
           >
-            <div className="flex items-center">
-              <h5 className="font-[600]">{item.addressType}</h5>
+            <div className="flex items-center min-w-[80px]">
+              <h5 className="font-body font-semibold text-ink">
+                {item.addressType}
+              </h5>
             </div>
-            <div className="flex items-center">
-              <h6 className="text-[12px] 800px:text-[unset]">
+            <div className="flex items-center flex-1 min-w-0">
+              <h6 className="text-[14px] font-body text-ink/70 truncate">
                 {item.address1} {item.address2}
               </h6>
             </div>
-            <div className="flex items-center">
-              <h6 className="text-[12px] 800px:text-[unset]">
+            <div className="flex items-center min-w-[100px] 800px:min-w-[140px]">
+              <h6 className="text-[14px] font-body text-ink/50">
                 {user?.phoneNumber}
               </h6>
             </div>
-            <div className="min-w-[8%] flex items-center justify-between">
+            <div className="flex items-center gap-3 min-w-[70px]">
               <AiOutlineEdit
-                size={22}
-                className="cursor-pointer text-blue-500 hover:text-blue-700 transition-colors"
+                size={20}
+                className="cursor-pointer text-voltage hover:text-voltage/70 transition-colors"
                 onClick={() => handleEdit(item)}
                 title="Edit address"
               />
-              {/* Delete Button */}
               <AiOutlineDelete
-                size={22}
-                className="cursor-pointer text-red-500 hover:text-red-700 transition-colors"
+                size={20}
+                className="cursor-pointer text-copper hover:text-copper/70 transition-colors"
                 onClick={() => handleDelete(item)}
                 title="Delete address"
               />
@@ -170,42 +160,40 @@ const Address = () => {
           </div>
         ))
       ) : (
-        <h5 className="text-center pt-8 text-[18px] text-gray-500">
+        <h5 className="text-center pt-8 text-[18px] font-body text-ink/50">
           You have no saved addresses!
         </h5>
       )}
 
-      {/* Modal */}
       {open && (
-        <div className="fixed w-full h-screen bg-[#0000004b] top-0 left-0 flex items-center justify-center z-50">
-          <div className="w-[35%] h-[80vh] bg-white rounded shadow relative overflow-y-scroll">
-            <div className="w-full flex justify-end p-3">
+        <div className="fixed w-full h-screen bg-ink/40 top-0 left-0 flex items-center justify-center z-50">
+          <div className="w-[90%] 800px:w-[40%] h-[85vh] bg-white border border-divider rounded-lg shadow-sm relative overflow-y-scroll p-4">
+            <div className="w-full flex justify-end">
               <RxCross1
-                size={30}
-                className="cursor-pointer"
-                onClick={() => setOpen(false)}
+                size={25}
+                className="cursor-pointer text-ink/50 hover:text-ink transition-colors"
+                onClick={handleClose}
               />
             </div>
-            <h1 className="text-center text-[25px] font-Poppins">
+            <h1 className="text-center text-[24px] font-display font-semibold text-ink">
               {editingId ? "Edit Address" : "Add New Address"}
             </h1>
-            <div className="w-full">
+            <div className="w-full mt-2">
               <form onSubmit={handleAddressSubmit} className="w-full">
-                <div className="w-full block p-4">
-                  {/* Country Dropdown */}
-                  <div className="w-full pb-2">
-                    <label className="block pb-2">
-                      Country <span className="text-red-500">*</span>
+                <div className="w-full block space-y-3">
+                  <div className="w-full">
+                    <label className={labelClass}>
+                      Country <span className="text-copper">*</span>
                     </label>
                     <select
                       value={selectedCountry}
                       required
                       onChange={(e) => {
                         setSelectedCountry(e.target.value);
-                        setSelectedState(""); // Reset state on country change
-                        setSelectedCity(""); // Reset city on country change
+                        setSelectedState("");
+                        setSelectedCity("");
                       }}
-                      className="w-[95%] border h-[40px] rounded-[5px] px-2"
+                      className="w-full border border-divider h-[40px] rounded-md px-2 font-body focus:outline-none focus:border-voltage text-ink"
                     >
                       {Country.getAllCountries().map((item) => (
                         <option key={item.isoCode} value={item.isoCode}>
@@ -215,20 +203,18 @@ const Address = () => {
                     </select>
                   </div>
 
-                  {/* Province/State Dropdown  */}
-                  <div className="w-full pb-2">
-                    <label className="block pb-2">
-                      Choose your Province / State{" "}
-                      <span className="text-red-500">*</span>
+                  <div className="w-full">
+                    <label className={labelClass}>
+                      Province / State <span className="text-copper">*</span>
                     </label>
                     <select
                       value={selectedState}
                       required
                       onChange={(e) => {
                         setSelectedState(e.target.value);
-                        setSelectedCity(""); // Reset city on state change
+                        setSelectedCity("");
                       }}
-                      className="w-[95%] border h-[40px] rounded-[5px] px-2"
+                      className="w-full border border-divider h-[40px] rounded-md px-2 font-body focus:outline-none focus:border-voltage text-ink"
                     >
                       <option value="">Select Province / State</option>
                       {State.getStatesOfCountry(selectedCountry).map((item) => (
@@ -239,17 +225,16 @@ const Address = () => {
                     </select>
                   </div>
 
-                  {/* City Dropdown (Proper mapping with State) */}
-                  <div className="w-full pb-2">
-                    <label className="block pb-2">
-                      Choose your City <span className="text-red-500">*</span>
+                  <div className="w-full">
+                    <label className={labelClass}>
+                      City <span className="text-copper">*</span>
                     </label>
                     <select
                       value={selectedCity}
                       onChange={(e) => setSelectedCity(e.target.value)}
                       required
-                      className="w-[95%] border h-[40px] rounded-[5px] px-2"
-                      disabled={!selectedState} // 🔒 City select only when province/state already select
+                      className="w-full border border-divider h-[40px] rounded-md px-2 font-body focus:outline-none focus:border-voltage text-ink disabled:opacity-50"
+                      disabled={!selectedState}
                     >
                       <option value="">Select City</option>
                       {selectedState &&
@@ -263,64 +248,59 @@ const Address = () => {
                         ))}
                     </select>
                     {!selectedState && (
-                      <p className="text-xs text-gray-400 mt-1">
-                        Please select a province/state first to enable cities.
+                      <p className="text-xs font-body text-ink/40 mt-1">
+                        Please select a province/state first.
                       </p>
                     )}
                   </div>
 
-                  {/* Address 1 */}
-                  <div className="w-full pb-2">
-                    <label htmlFor="address1" className="block pb-2">
-                      Address 1 <span className="text-red-500">*</span>
+                  <div className="w-full">
+                    <label className={labelClass}>
+                      Address 1 <span className="text-copper">*</span>
                     </label>
                     <input
                       type="text"
                       required
-                      id="address1"
-                      className={`${styles.input}`}
+                      className={`${styles.input} w-full`}
                       value={address1}
                       onChange={(e) => setAddress1(e.target.value)}
                     />
                   </div>
 
-                  {/* Address 2 */}
-                  <div className="w-full pb-2">
-                    <label className="block pb-2">Address 2 (Optional)</label>
+                  <div className="w-full">
+                    <label className={labelClass}>Address 2 (Optional)</label>
                     <input
                       type="text"
-                      className={`${styles.input}`}
+                      className={`${styles.input} w-full`}
                       value={address2}
                       onChange={(e) => setAddress2(e.target.value)}
                     />
                   </div>
 
-                  {/* Zip Code */}
-                  <div className="w-full pb-2">
-                    <label className="block pb-2">
-                      Zip Code <span className="text-red-500">*</span>
+                  <div className="w-full">
+                    <label className={labelClass}>
+                      Zip Code <span className="text-copper">*</span>
                     </label>
                     <input
                       type="number"
                       required
-                      className={`${styles.input}`}
+                      className={`${styles.input} w-full`}
                       value={zipCode}
                       onChange={(e) => setZipCode(e.target.value)}
                     />
                   </div>
 
-                  {/* Address Type */}
-                  <div className="w-full pb-2">
-                    <label className="block pb-2">
-                      Address Type <span className="text-red-500">*</span>
+                  <div className="w-full">
+                    <label className={labelClass}>
+                      Address Type <span className="text-copper">*</span>
                     </label>
                     <select
                       value={addressType}
                       required
                       onChange={(e) => setAddressType(e.target.value)}
-                      className="w-[95%] border h-[40px] rounded-[5px] px-2"
+                      className="w-full border border-divider h-[40px] rounded-md px-2 font-body focus:outline-none focus:border-voltage text-ink"
                     >
-                      <option value="">Choose your Address Type</option>
+                      <option value="">Choose Address Type</option>
                       {addressTypeData.map((item, index) => (
                         <option key={index} value={item.name}>
                           {item.name}
@@ -329,12 +309,13 @@ const Address = () => {
                     </select>
                   </div>
 
-                  <div className="w-full pb-2">
-                    <input
+                  <div className="w-full pt-2">
+                    <button
                       type="submit"
-                      className={`${styles.input} mt-5 cursor-pointer bg-blue-500 text-white hover:bg-blue-600 transition-colors`}
-                      value={editingId ? "Update Address" : "Save Address"}
-                    />
+                      className={`${styles.button} w-full !rounded-md`}
+                    >
+                      {editingId ? "Update Address" : "Save Address"}
+                    </button>
                   </div>
                 </div>
               </form>

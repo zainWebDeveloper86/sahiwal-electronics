@@ -18,14 +18,12 @@ const ShopAllRefundOrders = () => {
     }
   }, [dispatch, seller?._id]);
 
-  // Filter only refund-related orders
   const refundOrders =
     orders?.filter(
       (item) =>
         item.status === "Processing refund" || item.status === "Refund Success"
     ) || [];
 
-  // Handle loading state
   if (loading) {
     return (
       <div className="w-full mx-8 pt-1 mt-10 flex justify-center items-center h-[50vh]">
@@ -34,10 +32,9 @@ const ShopAllRefundOrders = () => {
     );
   }
 
-  // Handle error state
   if (error) {
     return (
-      <div className="w-full mx-8 pt-1 mt-10 text-center text-red-500">
+      <div className="w-full mx-8 pt-1 mt-10 text-center text-copper font-body">
         <p>Failed to load refund orders: {error}</p>
       </div>
     );
@@ -80,7 +77,7 @@ const ShopAllRefundOrders = () => {
         return (
           <Link to={`/shop/order/${params.row.id}`}>
             <Button>
-              <AiOutlineArrowRight size={20} />
+              <AiOutlineArrowRight size={20} className="text-voltage" />
             </Button>
           </Link>
         );
@@ -88,7 +85,6 @@ const ShopAllRefundOrders = () => {
     },
   ];
 
-  // Map rows with total quantity (sum of qty)
   const rows =
     refundOrders?.map((item) => ({
       id: item._id,
@@ -99,7 +95,7 @@ const ShopAllRefundOrders = () => {
     })) || [];
 
   return (
-    <div className="w-full mx-8 pt-1 mt-10 bg-white">
+    <div className="w-full mx-8 pt-1 mt-10 bg-white border border-divider rounded-lg">
       <DataGrid
         rows={rows}
         columns={columns}
@@ -110,9 +106,11 @@ const ShopAllRefundOrders = () => {
         disableRowSelectionOnClick
         autoHeight
         sx={{
-          "& .greenColor": { color: "#22c55e", fontWeight: "bold" },
-          "& .orangeColor": { color: "#f59e0b", fontWeight: "bold" },
-          "& .redColor": { color: "#ef4444", fontWeight: "bold" },
+          "& .MuiDataGrid-cell": {
+            fontFamily: "Inter, sans-serif",
+          },
+          "& .greenColor": { color: "#1FAA59", fontWeight: "bold" },
+          "& .orangeColor": { color: "#F5A623", fontWeight: "bold" },
         }}
       />
     </div>

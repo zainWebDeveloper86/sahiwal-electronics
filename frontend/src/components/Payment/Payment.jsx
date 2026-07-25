@@ -20,7 +20,6 @@ const Payment = () => {
     }
   }, []);
 
-  // Cash on Delivery
   const cashOnDeliveryHandler = async (e) => {
     e.preventDefault();
 
@@ -43,7 +42,6 @@ const Payment = () => {
     try {
       await axiosServerInstance.post(`/order/create-order`, order);
 
-      // Redux + localstorage(in clearCart) Cart clear
       dispatch(clearCart());
 
       localStorage.setItem("latestOrder", JSON.stringify([]));
@@ -56,7 +54,7 @@ const Payment = () => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center py-8">
+    <div className="w-full flex flex-col items-center py-8 bg-surface min-h-screen">
       <div className="w-[90%] 1000px:w-[70%] block 800px:flex gap-8">
         <div className="w-full 800px:w-[65%]">
           <PaymentInfo cashOnDeliveryHandler={cashOnDeliveryHandler} />

@@ -1,116 +1,51 @@
-// import React from 'react'
-// import styles from '../../styles/styles'
-
-// const CheckoutSteps = ({active}) => {
-//     console.log(active);
-//   return (
-//     <div className='w-full flex justify-center'>
-//         <div className="w-[90%] 800px:w-[50%] flex items-center flex-wrap">
-//                <div className={`${styles.noramlFlex}`}>
-//                 <div className={`${styles.cart_button}`}>
-//                        <span className={`${styles.cart_button_text}`}>1.Shipping</span>
-//                 </div>
-//                 <div className={`${
-//                     active > 1 ? "w-[30px] 800px:w-[70px] h-[4px] !bg-[#f63b60]"
-//                     : "w-[30px] 800px:w-[70px] h-[4px] !bg-[#FDE1E6]"
-//                 }`} />
-//                </div>
-
-//                <div className={`${styles.noramlFlex}`}>
-//                 <div className={`${active > 1 ? `${styles.cart_button}` : `${styles.cart_button} !bg-[#FDE1E6]`}`}>
-//                     <span className={`${active > 1 ? `${styles.cart_button_text}` : `${styles.cart_button_text} !text-[#f63b60]`}`}>
-//                         2.Payment
-//                     </span>
-//                 </div>
-//                </div>
-
-//                <div className={`${styles.noramlFlex}`}>
-//                <div className={`${
-//                     active > 3 ? "w-[30px] 800px:w-[70px] h-[4px] !bg-[#f63b60]"
-//                     : "w-[30px] 800px:w-[70px] h-[4px] !bg-[#FDE1E6]"
-//                 }`} />
-//                 <div className={`${active > 2 ? `${styles.cart_button}` : `${styles.cart_button} !bg-[#FDE1E6]`}`}>
-//                     <span className={`${active > 2 ? `${styles.cart_button_text}` : `${styles.cart_button_text} !text-[#f63b60]`}`}>
-//                         3.Success
-//                     </span>
-//                 </div>
-//                </div>
-//         </div>
-//     </div>
-//   )
-// }
-
-// export default CheckoutSteps
-
 import React from "react";
 import styles from "../../styles/styles.js";
 
 const CheckoutSteps = ({ active }) => {
+  const getStepClass = (step) => {
+    if (active >= step) {
+      return "bg-voltage text-white";
+    }
+    return "bg-surface text-ink/40";
+  };
+
+  const getConnectorClass = (step) => {
+    if (active >= step) {
+      return "bg-voltage";
+    }
+    return "bg-divider";
+  };
+
   return (
-    <div className="w-full flex justify-center">
+    <div className="w-full flex justify-center py-4">
       <div className="w-[90%] 800px:w-[50%] flex items-center justify-center">
-        
-        {/* Step 1: Shipping */}
-        <div className={`${styles.noramlFlex}`}>
-          <div className={`${styles.cart_button}`}>
-            <span className={`${styles.cart_button_text}`}>1.Shipping</span>
-          </div>
+        <div className="flex items-center">
           <div
-            className={`${
-              active > 1
-                ? "w-[30px] 800px:w-[70px] h-[4px] !bg-[#f63b60]"
-                : "w-[30px] 800px:w-[70px] h-[4px] !bg-[#FDE1E6]"
-            }`}
-          />
+            className={`w-10 h-10 rounded-full flex items-center justify-center font-body font-semibold text-sm transition-colors ${getStepClass(1)}`}
+          >
+            1
+          </div>
+          <span className="text-xs font-body text-ink/50 ml-1 800px:inline hidden">Shipping</span>
+          <div className={`w-[30px] 800px:w-[70px] h-[3px] transition-colors ${getConnectorClass(2)}`} />
         </div>
 
-        {/* Step 2: Payment */}
-        <div className={`${styles.noramlFlex}`}>
+        <div className="flex items-center">
           <div
-            className={`${
-              active > 1
-                ? `${styles.cart_button}`
-                : `${styles.cart_button} !bg-[#FDE1E6]`
-            }`}
+            className={`w-10 h-10 rounded-full flex items-center justify-center font-body font-semibold text-sm transition-colors ${getStepClass(2)}`}
           >
-            <span
-              className={`${
-                active > 1
-                  ? `${styles.cart_button_text}`
-                  : `${styles.cart_button_text} !text-[#f63b60]`
-              }`}
-            >
-              2.Payment
-            </span>
+            2
           </div>
+          <span className="text-xs font-body text-ink/50 ml-1 800px:inline hidden">Payment</span>
+          <div className={`w-[30px] 800px:w-[70px] h-[3px] transition-colors ${getConnectorClass(3)}`} />
         </div>
 
-        {/* Step 3: Success */}
-        <div className={`${styles.noramlFlex}`}>
+        <div className="flex items-center">
           <div
-            className={`${
-              active > 3
-                ? "w-[30px] 800px:w-[70px] h-[4px] !bg-[#f63b60]"
-                : "w-[30px] 800px:w-[70px] h-[4px] !bg-[#FDE1E6]"
-            }`}
-          />
-          <div
-            className={`${
-              active > 2
-                ? `${styles.cart_button}`
-                : `${styles.cart_button} !bg-[#FDE1E6]`
-            }`}
+            className={`w-10 h-10 rounded-full flex items-center justify-center font-body font-semibold text-sm transition-colors ${getStepClass(3)}`}
           >
-            <span
-              className={`${
-                active > 2
-                  ? `${styles.cart_button_text}`
-                  : `${styles.cart_button_text} !text-[#f63b60]`
-              }`}
-            >
-              3.Success
-            </span>
+            3
           </div>
+          <span className="text-xs font-body text-ink/50 ml-1 800px:inline hidden">Success</span>
         </div>
       </div>
     </div>

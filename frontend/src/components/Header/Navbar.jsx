@@ -11,8 +11,8 @@ const Navbar = () => {
             <NavLink
               to={item.url}
               className={({ isActive }) =>
-                `${isActive ? "text-[#17dd1f]" : "text-black 800px:text-white"} 
-               pb-7.5 800px:pb-0 font-medium px-6 cursor-pointer`
+                `${isActive ? "text-copper" : "text-ink 800px:text-white/85"}
+               pb-7.5 800px:pb-0 font-body font-medium px-6 cursor-pointer hover:text-copper transition-colors`
               }
             >
               {item.title}

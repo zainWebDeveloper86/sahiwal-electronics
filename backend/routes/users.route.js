@@ -47,7 +47,7 @@ router.delete("/delete-user-address/:id", isAuthenticated, deleteUserAddress);
 router.put("/update-user-password", isAuthenticated, updateUserPassword);
 router.get("/user-info/:id", getUserInfo);
 
-// 🔐 Admin Routes
+// Admin Routes
 router.get("/admin-all-users", isAuthenticated, isAdmin, getAllUsers);
 
 router.delete("/delete-user/:id", isAuthenticated, isAdmin, deleteUser);

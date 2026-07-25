@@ -1,30 +1,3 @@
-// import { useSelector } from "react-redux";
-// import { Navigate, Outlet } from "react-router-dom";
-// import Loader from "../components/Common/Loader.jsx";
-
-// const GuestRoute = () => {
-//   const { isAuthenticated } = useSelector((state) => state.user);
-//   const { isSellerAuthenticated } = useSelector(
-//     (state) => state.seller,
-//   );
-
-//   // if (userLoading || sellerLoading) {
-//   //   return <Loader />;
-//   // }
-
-//   if (isAuthenticated) {
-//     return <Navigate to="/" replace />;
-//   }
-
-//   if (isSellerAuthenticated) {
-//     return <Navigate to={"/dashboard"} replace />;
-//   }
-
-//   return <Outlet />;
-// };
-
-// export default GuestRoute;
-
 import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 import Loader from "../components/Common/Loader.jsx";

@@ -12,16 +12,13 @@ export const createOrder = catchAsyncErrors(async (req, res, next) => {
   try {
     const { cart, shippingAddress, totalPrice, paymentInfo } = req.body;
 
-    // console.log(`req.user: ${req.user}`);
     const secureUser = {
       _id: req.user._id,
       name: req.user.name,
       email: req.user.email,
       phoneNumber: req.user.phoneNumber || "",
-      // avatar: req.user.avatar, // if want to add
     };
 
-    // Cart empty toh nahi?
     if (!cart || cart.length === 0) {
       return next(new ErrorHandler("Cart is empty!", 400));
     }
@@ -44,7 +41,6 @@ export const createOrder = catchAsyncErrors(async (req, res, next) => {
     const orders = [];
 
     for (const [shopId, items] of shopItemsMap) {
-      // Is shop ke items ka apna subtotal
       const shopSubtotal = items.reduce(
         (acc, item) =>
           acc +

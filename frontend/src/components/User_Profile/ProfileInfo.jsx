@@ -27,13 +27,11 @@ const ProfileInfo = () => {
     }
   }, [error, successMessage, dispatch]);
 
-  // Update Info Handler
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(updateUserInformation(name, email, phoneNumber, password));
   };
 
-  // Avatar Upload Handler
   const handleImage = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -55,45 +53,53 @@ const ProfileInfo = () => {
     }
   };
 
+  const inputClass = `${styles.input} !w-[95%]`;
+  const labelClass = "block pb-2 font-body font-medium text-ink";
+
   return (
     <>
-      {/* Avatar Section */}
       <div className="flex justify-center w-full">
         <div className="relative">
           <img
-            src={`${backend_url}${user?.avatar?.url}`}
-            className="w-[150px] h-[150px] rounded-full object-cover border-[3px] border-[#3ad132]"
-            alt=""
+            src={
+              avatar
+                ? URL.createObjectURL(avatar)
+                : `${backend_url}${user?.avatar?.url}`
+            }
+            className="w-[150px] h-[150px] rounded-full object-cover border-4 border-stock"
+            alt="Profile"
+            onError={(e) => {
+              e.target.src = `https://ui-avatars.com/api/?name=${user?.name || "U"}&background=2F5FF6&color=fff&size=150`;
+            }}
           />
-          <div className="w-[30px] h-[30px] bg-[#E3E9EE] rounded-full flex items-center justify-center cursor-pointer absolute bottom-[5px] right-[5px]">
-            <input type="file" id="image" className="hidden" onChange={handleImage} />
+          <div className="w-[35px] h-[35px] bg-surface border border-divider rounded-full flex items-center justify-center cursor-pointer absolute bottom-[5px] right-[5px] hover:bg-divider transition-colors">
+            <input type="file" id="image" className="hidden" onChange={handleImage} accept=".jpg,.jpeg,.png" />
             <label htmlFor="image" className="cursor-pointer">
-              <AiOutlineCamera />
+              <AiOutlineCamera className="text-ink/60" size={18} />
             </label>
           </div>
         </div>
       </div>
       <br /><br />
 
-      {/* Update Form */}
-      <div className="w-full px-5">
+      <div className="w-full px-2">
         <form onSubmit={handleSubmit}>
           <div className="w-full 800px:flex block pb-3">
             <div className="w-[100%] 800px:w-[50%]">
-              <label className="block pb-2">Full Name</label>
+              <label className={labelClass}>Full Name</label>
               <input
                 type="text"
-                className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+                className={inputClass}
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div className="w-[100%] 800px:w-[50%]">
-              <label className="block pb-2">Email Address</label>
+              <label className={labelClass}>Email Address</label>
               <input
                 type="email"
-                className={`${styles.input} !w-[95%] mb-1 800px:mb-0`}
+                className={inputClass}
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -103,44 +109,46 @@ const ProfileInfo = () => {
 
           <div className="w-full 800px:flex block pb-3">
             <div className="w-[100%] 800px:w-[50%]">
-              <label className="block pb-2">Phone Number</label>
+              <label className={labelClass}>Phone Number</label>
               <input
                 type="number"
-                className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+                className={inputClass}
                 required
                 value={`${phoneNumber}`}
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
             <div className="w-[100%] 800px:w-[50%] relative">
-              <label className="block pb-2">Enter your password</label>
+              <label className={labelClass}>Enter your password</label>
               <input
                 type={visible ? "text" : "password"}
-                className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+                className={inputClass}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
               {visible ? (
                 <AiOutlineEye
-                  className="absolute right-8 top-9 cursor-pointer"
-                  size={25}
+                  className="absolute right-6 top-9 cursor-pointer text-ink/50 hover:text-ink transition-colors"
+                  size={22}
                   onClick={() => setVisible(false)}
                 />
               ) : (
                 <AiOutlineEyeInvisible
-                  className="absolute right-8 top-9 cursor-pointer"
-                  size={25}
+                  className="absolute right-6 top-9 cursor-pointer text-ink/50 hover:text-ink transition-colors"
+                  size={22}
                   onClick={() => setVisible(true)}
                 />
               )}
             </div>
           </div>
-          <input
-            className={`w-[250px] h-[40px] border border-[#3a24db] text-center text-[#3a24db] hover:bg-[#3a24db] hover:text-white rounded-[3px] mt-8 cursor-pointer transition-all`}
-            value="Update"
+
+          <button
             type="submit"
-          />
+            className={`${styles.button} !w-[180px] !h-[42px] !rounded-md mt-4`}
+          >
+            Update
+          </button>
         </form>
       </div>
     </>

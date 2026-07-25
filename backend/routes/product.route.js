@@ -1,33 +1,3 @@
-// import express from "express";
-// import upload from "../multer.js";
-// import {
-//   createProduct,
-//   getAllShopProducts,
-//   deleteProduct,
-//   getAllProducts,
-//   productReview,
-// } from "../controller/product.controller.js";
-// import { isSellerAuthenticated,isAuthenticated } from "../middleware/auth.js";
-
-// const router = express.Router();
-
-// router.post(
-//   "/create-product",
-//   isSellerAuthenticated,
-//   upload.array("images"),
-//   createProduct,
-// );
-// router.get(
-//   "/get-all-products-shop/:id",
-//   isSellerAuthenticated,
-//   getAllShopProducts,
-// );
-// router.delete("/delete-shop-product/:id", isSellerAuthenticated, deleteProduct);
-// router.get("/get-all-products", getAllProducts);
-// router.put("/create-new-review",isAuthenticated, productReview);
-
-// export default router;
-
 import express from "express";
 import upload from "../multer.js";
 import {
@@ -36,7 +6,7 @@ import {
   deleteProduct,
   getAllProducts,
   productReview,
-  getAllAdminProducts, // 👈 Naya import
+  getAllAdminProducts,
 } from "../controller/product.controller.js";
 import {
   isSellerAuthenticated,

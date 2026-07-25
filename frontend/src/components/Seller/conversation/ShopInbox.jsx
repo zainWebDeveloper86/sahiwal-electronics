@@ -7,12 +7,10 @@ import { axiosServerInstance } from "../../../server.js";
 import SellerMessageList from "./SellerMessageList.jsx";
 import SellerMessageInbox from "./SellerMessageInbox.jsx";
 
-// Socket connection
 const ENDPOINT = "http://localhost:8000";
 const socket = socketIO(ENDPOINT, { transports: ["websocket"] });
 
 const ShopInbox = () => {
-  // State Management
   const [conversations, setConversations] = useState([]);
   const [selectedConversationId, setSelectedConversationId] = useState(null);
   const [currentChat, setCurrentChat] = useState(null);
@@ -30,7 +28,6 @@ const ShopInbox = () => {
 
   const scrollRef = useRef(null);
 
-  //  Socket: Listen for incoming messages
   useEffect(() => {
     socket.on("getMessage", (data) => {
       setArrivalMessage({
@@ -57,7 +54,6 @@ const ShopInbox = () => {
     };
   }, [currentChat]);
 
-  //  Add arrival message to messages list
   useEffect(() => {
     if (
       arrivalMessage &&
@@ -67,7 +63,6 @@ const ShopInbox = () => {
     }
   }, [arrivalMessage, currentChat]);
 
-  //  Fetch all conversations for this seller
   useEffect(() => {
     const fetchConversations = async () => {
       if (!seller?._id) return;
@@ -86,7 +81,6 @@ const ShopInbox = () => {
     fetchConversations();
   }, [seller?._id]);
 
-  // Socket: Register seller as online
   useEffect(() => {
     if (seller?._id) {
       socket.emit("addUser", seller._id);
@@ -99,14 +93,12 @@ const ShopInbox = () => {
     };
   }, [seller?._id]);
 
-  //  Check if a user is online
   const isUserOnline = (chat) => {
     if (!chat?.members || !seller?._id) return false;
     const otherMember = chat.members.find((member) => member !== seller._id);
     return onlineUsers.some((user) => user.userId === otherMember);
   };
 
-  //  Fetch messages for selected chat
   useEffect(() => {
     const fetchMessages = async () => {
       if (!currentChat?._id) return;
@@ -122,7 +114,6 @@ const ShopInbox = () => {
     fetchMessages();
   }, [currentChat]);
 
-  //  Send message handler
   const sendMessageHandler = async (e) => {
     e.preventDefault();
     if (!newMessage.trim() && !images) return;
@@ -137,7 +128,6 @@ const ShopInbox = () => {
       (member) => member !== seller._id,
     );
 
-    // Emit to socket for real-time delivery
     socket.emit("sendMessage", {
       senderId: seller._id,
       receiverId,
@@ -164,7 +154,6 @@ const ShopInbox = () => {
 
       setMessages((prev) => [...prev, data.message]);
 
-      // Update last message in conversation
       await axiosServerInstance.put(
         `/conversation/update-last-message/${currentChat._id}`,
         {
@@ -190,7 +179,6 @@ const ShopInbox = () => {
     }
   };
 
-  //  Handle image upload
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -198,12 +186,10 @@ const ShopInbox = () => {
     }
   };
 
-  //  Auto-scroll to bottom on new messages
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  //  Handle chat selection from list
   const handleChatSelect = (chat, user) => {
     setSelectedConversationId(chat?._id);
     setCurrentChat(chat);
@@ -213,16 +199,15 @@ const ShopInbox = () => {
   };
 
   const isCurrentChatActive = currentChat ? isUserOnline(currentChat) : false;
-  // console.log("seler:" , seller?._id);
+
   return (
-    <div className="w-[90%] bg-white m-5 h-[85vh] overflow-y-scroll rounded shadow-lg">
+    <div className="w-[90%] bg-white border border-divider m-5 h-[85vh] overflow-y-scroll rounded-lg shadow-sm">
       {!openChatWindow ? (
-        //  Conversations List View
         <>
-          <h1 className="text-center text-[30px] py-3 font-Poppins font-semibold text-gray-700">
+          <h1 className="text-center text-[26px] py-4 font-display font-[600] text-ink border-b border-divider">
             All Messages
           </h1>
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-divider">
             {conversations && conversations.length > 0 ? (
               conversations.map((conversation, index) => (
                 <SellerMessageList
@@ -236,15 +221,14 @@ const ShopInbox = () => {
                 />
               ))
             ) : (
-              <div className="text-center py-10 text-gray-500">
-                <p className="text-lg">No conversations yet.</p>
-                <p className="text-sm">Start chatting with your customers!</p>
+              <div className="text-center py-12">
+                <p className="text-lg font-body text-ink/60">No conversations yet.</p>
+                <p className="text-sm font-body text-ink/40 mt-1">Start chatting with your customers!</p>
               </div>
             )}
           </div>
         </>
       ) : (
-        // Chat Window View
         <SellerMessageInbox
           setOpenChatWindow={setOpenChatWindow}
           setConversationID={setSelectedConversationId}

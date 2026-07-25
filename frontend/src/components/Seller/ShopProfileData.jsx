@@ -13,12 +13,8 @@ const ShopProfileData = ({ isOwner }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  const { allProducts, loading: productsLoading } = useSelector(
-    (state) => state.products,
-  );
-  const { allEvents, loading: eventsLoading } = useSelector(
-    (state) => state.events,
-  );
+  const { allProducts, loading: productsLoading } = useSelector((state) => state.products);
+  const { allEvents, loading: eventsLoading } = useSelector((state) => state.events);
 
   const [active, setActive] = useState(1);
 
@@ -32,10 +28,7 @@ const ShopProfileData = ({ isOwner }) => {
   const shopProducts = allProducts?.filter((p) => p.shopId === id) || [];
   const shopEvents = allEvents?.filter((e) => e.shopId === id) || [];
 
-  const totalReviews = shopProducts.reduce(
-    (acc, p) => acc + (p.reviews?.length || 0),
-    0,
-  );
+  const totalReviews = shopProducts.reduce((acc, p) => acc + (p.reviews?.length || 0), 0);
   const totalRatingSum = shopProducts.reduce(
     (acc, p) => acc + (p.ratings || 0) * (p.reviews?.length || 0),
     0,
@@ -54,46 +47,30 @@ const ShopProfileData = ({ isOwner }) => {
     );
   }
 
+  const tabClass = (id) =>
+    `cursor-pointer font-body font-semibold text-[16px] transition-colors pb-2 ${
+      active === id ? "text-voltage border-b-2 border-voltage" : "text-ink/50 hover:text-ink/70"
+    }`;
+
   return (
     <div className="w-full">
-      <div className="flex w-full items-center justify-between border-b pb-3">
+      <div className="flex w-full items-center justify-between border-b border-divider pb-3">
         <div className="flex items-center gap-6">
-          <button
-            className={`cursor-pointer font-semibold text-[18px] transition-colors ${
-              active === 1
-                ? "text-[#e94560] border-b-2 border-[#e94560] pb-2"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
-            onClick={() => setActive(1)}
-          >
+          <button className={tabClass(1)} onClick={() => setActive(1)}>
             Shop Products ({shopProducts.length})
           </button>
-          <button
-            className={`cursor-pointer font-semibold text-[18px] transition-colors ${
-              active === 2
-                ? "text-[#e94560] border-b-2 border-[#e94560] pb-2"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
-            onClick={() => setActive(2)}
-          >
+          <button className={tabClass(2)} onClick={() => setActive(2)}>
             Running Events ({shopEvents.length})
           </button>
-          <button
-            className={`cursor-pointer font-semibold text-[18px] transition-colors ${
-              active === 3
-                ? "text-[#e94560] border-b-2 border-[#e94560] pb-2"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
-            onClick={() => setActive(3)}
-          >
+          <button className={tabClass(3)} onClick={() => setActive(3)}>
             Shop Reviews ({totalReviews})
           </button>
         </div>
 
         {isOwner && (
           <Link to="/dashboard">
-            <div className={`${styles.button} !rounded-[4px] h-[42px]`}>
-              <span className="text-[#fff]">Go Dashboard</span>
+            <div className="h-[42px] px-4 rounded-md bg-voltage flex items-center hover:opacity-90 transition-opacity">
+              <span className="text-white font-body font-[500]">Go Dashboard</span>
             </div>
           </Link>
         )}
@@ -108,10 +85,8 @@ const ShopProfileData = ({ isOwner }) => {
               ))}
             </div>
           ) : (
-            <div className="text-center py-10 text-gray-500">
-              <p className="text-lg">
-                No products available for this shop yet.
-              </p>
+            <div className="text-center py-10 text-ink/50 font-body">
+              <p className="text-lg">No products available for this shop yet.</p>
             </div>
           )}
         </div>
@@ -122,16 +97,11 @@ const ShopProfileData = ({ isOwner }) => {
           {shopEvents.length > 0 ? (
             <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[20px]">
               {shopEvents.map((event) => (
-                <ProductCard
-                  data={event}
-                  key={event._id}
-                  isShop={true}
-                  isEvent={true}
-                />
+                <ProductCard data={event} key={event._id} isShop={true} isEvent={true} />
               ))}
             </div>
           ) : (
-            <div className="text-center py-10 text-gray-500">
+            <div className="text-center py-10 text-ink/50 font-body">
               <p className="text-lg">No running events for this shop.</p>
             </div>
           )}
@@ -142,12 +112,10 @@ const ShopProfileData = ({ isOwner }) => {
         <div className="mt-6">
           {allReviews.length > 0 ? (
             <>
-              <div className="flex items-center gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
-                <span className="text-2xl font-bold text-gray-800">
-                  {shopRating.toFixed(1)}
-                </span>
+              <div className="flex items-center gap-4 mb-6 p-4 bg-surface rounded-lg">
+                <span className="price-tag text-2xl text-ink">{shopRating.toFixed(1)}</span>
                 <Ratings rating={shopRating} />
-                <span className="text-sm text-gray-500">
+                <span className="text-sm font-body text-ink/50">
                   Based on {totalReviews} review{totalReviews > 1 ? "s" : ""}
                 </span>
               </div>
@@ -155,40 +123,37 @@ const ShopProfileData = ({ isOwner }) => {
               <div className="space-y-4">
                 {allReviews.map((item, index) => (
                   <div
-                    className="w-full flex items-start gap-3 p-4 bg-white rounded-lg shadow-sm border border-gray-100"
+                    className="w-full flex items-start gap-3 p-4 bg-white rounded-lg border border-divider"
                     key={index}
                   >
                     <img
                       src={`${backend_url}${item.user?.avatar?.url || ""}`}
                       alt={item.user?.name || "User"}
-                      className="w-[50px] h-[50px] rounded-full object-cover border-2 border-gray-200 flex-shrink-0"
+                      className="w-[50px] h-[50px] rounded-full object-cover border-2 border-divider flex-shrink-0"
                       onError={(e) => {
                         e.target.src =
                           "https://ui-avatars.com/api/?name=" +
                           (item.user?.name || "U") +
-                          "&background=random";
+                          "&background=2F5FF6&color=fff";
                       }}
                     />
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
-                        <h1 className="font-semibold text-gray-800">
+                        <h1 className="font-body font-semibold text-ink">
                           {item.user?.name || "Anonymous"}
                         </h1>
                         <Ratings rating={item.rating || 0} />
-                        <span className="text-xs text-gray-400">
+                        <span className="text-xs font-body text-ink/40">
                           {item.createdAt
-                            ? new Date(item.createdAt).toLocaleDateString(
-                                "en-US",
-                                {
-                                  year: "numeric",
-                                  month: "short",
-                                  day: "numeric",
-                                },
-                              )
+                            ? new Date(item.createdAt).toLocaleDateString("en-US", {
+                                year: "numeric",
+                                month: "short",
+                                day: "numeric",
+                              })
                             : "Recently"}
                         </span>
                       </div>
-                      <p className="text-gray-600 mt-1 text-sm leading-relaxed">
+                      <p className="text-ink/60 font-body mt-1 text-sm leading-relaxed">
                         {item.comment || "No comment provided."}
                       </p>
                     </div>
@@ -197,7 +162,7 @@ const ShopProfileData = ({ isOwner }) => {
               </div>
             </>
           ) : (
-            <div className="text-center py-10 text-gray-500">
+            <div className="text-center py-10 text-ink/50 font-body">
               <p className="text-lg">No reviews for this shop yet.</p>
             </div>
           )}

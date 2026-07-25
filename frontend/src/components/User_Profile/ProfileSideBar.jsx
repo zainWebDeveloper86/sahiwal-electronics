@@ -19,7 +19,6 @@ const ProfileSidebar = ({ setActive, active }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // handle logout
   const logoutHandler = () => {
     axiosServerInstance
       .get("/user/logout")
@@ -29,137 +28,53 @@ const ProfileSidebar = ({ setActive, active }) => {
         dispatch({ type: "LogoutUser" });
       })
       .catch((error) => {
-        console.log(error.response.data.message);
+        toast.error(error.response?.data?.message);
       });
   };
+
+  const menuItems = [
+    { id: 1, icon: RxPerson, label: "Profile" },
+    { id: 2, icon: HiOutlineShoppingBag, label: "Orders" },
+    { id: 3, icon: HiOutlineReceiptRefund, label: "Refunds" },
+    { id: 4, icon: AiOutlineMessage, label: "Inbox", action: () => navigate("/inbox") },
+    { id: 5, icon: MdOutlineTrackChanges, label: "Track Order" },
+    { id: 6, icon: RiLockPasswordLine, label: "Change Password" },
+    { id: 7, icon: TbAddressBook, label: "Address" },
+  ];
+
   return (
-    <div className="w-full bg-white shadow-sm rounded-[10px] p-4 pt-8">
-      <div
-        className="flex items-center cursor-pointer w-full mb-8"
-        onClick={() => setActive(1)}
-      >
-        <RxPerson size={20} color={active === 1 ? "red" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 1 ? "text-[red]" : ""
-          } 800px:block hidden`}
+    <div className="w-full bg-white border border-divider rounded-lg p-4 pt-6">
+      {menuItems.map((item) => (
+        <div
+          key={item.id}
+          className={`flex items-center cursor-pointer w-full mb-5 group ${
+            active === item.id ? "text-voltage" : "text-ink/60"
+          }`}
+          onClick={() => {
+            setActive(item.id);
+            if (item.action) item.action();
+          }}
         >
-          Profile
-        </span>
-      </div>
-      <div
-        className="flex items-center cursor-pointer w-full mb-8"
-        onClick={() => setActive(2)}
-      >
-        <HiOutlineShoppingBag size={20} color={active === 2 ? "red" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 2 ? "text-[red]" : ""
-          } 800px:block hidden`}
-        >
-          Orders
-        </span>
-      </div>
-      <div
-        className="flex items-center cursor-pointer w-full mb-8"
-        onClick={() => setActive(3)}
-      >
-        <HiOutlineReceiptRefund size={20} color={active === 3 ? "red" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 3 ? "text-[red]" : ""
-          } 800px:block hidden`}
-        >
-          Refunds
-        </span>
-      </div>
-
-      <div
-        className="flex items-center cursor-pointer w-full mb-8"
-        onClick={() => setActive(4) || navigate("/inbox")}
-      >
-        <AiOutlineMessage size={20} color={active === 4 ? "red" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 4 ? "text-[red]" : ""
-          } 800px:block hidden`}
-        >
-          Inbox
-        </span>
-      </div>
-
-      <div
-        className="flex items-center cursor-pointer w-full mb-8"
-        onClick={() => setActive(5)}
-      >
-        <MdOutlineTrackChanges size={20} color={active === 5 ? "red" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 5 ? "text-[red]" : ""
-          } 800px:block hidden`}
-        >
-          Track Order
-        </span>
-      </div>
-
-      <div
-        className="flex items-center cursor-pointer w-full mb-8"
-        onClick={() => setActive(6)}
-      >
-        <RiLockPasswordLine size={20} color={active === 6 ? "red" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 6 ? "text-[red]" : ""
-          } 800px:block hidden`}
-        >
-          Change Password
-        </span>
-      </div>
-
-      <div
-        className="flex items-center cursor-pointer w-full mb-8"
-        onClick={() => setActive(7)}
-      >
-        <TbAddressBook size={20} color={active === 7 ? "red" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 7 ? "text-[red]" : ""
-          } 800px:block hidden`}
-        >
-          Address
-        </span>
-      </div>
-
-      {/* {user && user?.role === "Admin" && (
-        <Link to="/admin/dashboard">
-          <div
-            className="flex items-center cursor-pointer w-full mb-8"
-            onClick={() => setActive(8)}
+          <item.icon
+            size={20}
+            className={active === item.id ? "text-voltage" : "text-ink/50 group-hover:text-ink"}
+          />
+          <span
+            className={`pl-3 font-body font-medium 800px:block hidden ${
+              active === item.id ? "text-voltage" : "text-ink/60 group-hover:text-ink"
+            } transition-colors`}
           >
-            <MdOutlineAdminPanelSettings
-              size={20}
-              color={active === 7 ? "red" : ""}
-            />
-            <span
-              className={`pl-3 ${
-                active === 8 ? "text-[red]" : ""
-              } 800px:block hidden`}
-            >
-              Admin Dashboard
-            </span>
-          </div>
-        </Link>
-      )} */}
+            {item.label}
+          </span>
+        </div>
+      ))}
+
       <div
-        className="single_item flex items-center cursor-pointer w-full mb-8"
+        className="flex items-center cursor-pointer w-full mt-5 pt-4 border-t border-divider group"
         onClick={logoutHandler}
       >
-        <AiOutlineLogin size={20} color={active === 8 ? "red" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 8 ? "text-[red]" : ""
-          } 800px:block hidden`}
-        >
+        <AiOutlineLogin size={20} className="text-copper" />
+        <span className="pl-3 font-body font-medium text-copper 800px:block hidden">
           Log out
         </span>
       </div>

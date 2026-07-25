@@ -1,7 +1,6 @@
 // create token and saving that in cookies
 const sendToken = (user, statusCode, res, options = {}) => {
   const { cookieName = "token", rememberMe = false } = options;
-  // console.log(cookieName,rememberMe);
   const expiresIn = rememberMe ? "7d" : "1d";
   const token = user.getJwtToken(expiresIn);
 

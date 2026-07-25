@@ -7,7 +7,6 @@ import { axiosServerInstance } from "../../../server.js";
 import UserMessageList from "./UserMessageList.jsx";
 import UserChatInbox from "./UserChatInbox.jsx";
 
-// Socket connection
 const ENDPOINT = "http://localhost:8000";
 const socket = socketIO(ENDPOINT, { transports: ["websocket"] });
 
@@ -85,7 +84,6 @@ const UserInbox = () => {
     if (user?._id) {
       socket.emit("addUser", user._id);
       socket.on("getUsers", (data) => {
-        // console.log("getUsers received on buyer side:", data);
         setOnlineUsers(data || []);
       });
     }
@@ -199,17 +197,16 @@ const UserInbox = () => {
     navigate(`/inbox?conversation=${chat._id}`, { replace: true });
   };
 
-  // Derived live state — onlineUsers change hone par automatically update hota hai
   const isCurrentChatActive = currentChat ? isUserOnline(currentChat) : false;
 
   return (
-    <div className="w-full py-8">
+    <div className="w-full">
       {!openChatWindow ? (
         <>
-          <h1 className="text-center text-[30px] pb-3 font-Poppins font-semibold text-gray-700">
+          <h1 className="text-center text-[26px] py-4 font-display font-[600] text-ink border-b border-divider">
             All Messages
           </h1>
-          <div className="w-[90%] mx-auto bg-white rounded-lg shadow-lg divide-y divide-gray-100">
+          <div className="w-full bg-white border border-divider rounded-lg divide-y divide-divider mt-4">
             {conversations && conversations.length > 0 ? (
               conversations.map((conversation) => (
                 <UserMessageList
@@ -223,9 +220,9 @@ const UserInbox = () => {
                 />
               ))
             ) : (
-              <div className="text-center py-10 text-gray-500">
-                <p className="text-lg">No conversations yet.</p>
-                <p className="text-sm">Start chatting with sellers!</p>
+              <div className="text-center py-12">
+                <p className="text-lg font-body text-ink/60">No conversations yet.</p>
+                <p className="text-sm font-body text-ink/40 mt-1">Start chatting with sellers!</p>
               </div>
             )}
           </div>

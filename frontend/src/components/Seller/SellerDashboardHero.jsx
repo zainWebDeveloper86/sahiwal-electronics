@@ -1,165 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import { AiOutlineArrowRight, AiOutlineMoneyCollect } from "react-icons/ai";
-// import styles from "../../styles/styles.js";
-// import { Link } from "react-router-dom";
-// import { MdBorderClear } from "react-icons/md";
-// import { useDispatch, useSelector } from "react-redux";
-// import { getAllOrdersOfShop } from "../../redux/actions/order.js";
-// import { getAllProductsShop } from "../../redux/actions/product.js";
-// import { DataGrid } from "@mui/x-data-grid";
-// import { Button } from "@mui/material";
-
-
-
-// const SellerDashboardHero = () => {
-//   const dispatch = useDispatch();
-//   const { orders } = useSelector((state) => state.orders);
-//   const { seller } = useSelector((state) => state.seller);
-//   const { products } = useSelector((state) => state.products);
-
-//   useEffect(() => {
-//      dispatch(getAllOrdersOfShop(seller._id));
-//      dispatch(getAllProductsShop(seller._id));
-//   }, [dispatch]);
-
-//   const availableBalance = seller?.availableBalance.toFixed(2);
-
-//   const columns = [
-//     { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
-
-//     {
-//       field: "status",
-//       headerName: "Status",
-//       minWidth: 130,
-//       flex: 0.7,
-//       cellClassName: (params) => {
-//         return params.getValue(params.id, "status") === "Delivered"
-//           ? "greenColor"
-//           : "redColor";
-//       },
-//     },
-//     {
-//       field: "itemsQty",
-//       headerName: "Items Qty",
-//       type: "number",
-//       minWidth: 130,
-//       flex: 0.7,
-//     },
-
-//     {
-//       field: "total",
-//       headerName: "Total",
-//       type: "number",
-//       minWidth: 130,
-//       flex: 0.8,
-//     },
-
-//     {
-//       field: " ",
-//       flex: 1,
-//       minWidth: 150,
-//       headerName: "",
-//       type: "number",
-//       sortable: false,
-//       renderCell: (params) => {
-//         return (
-//           <>
-//             <Link to={`/dashboard/order/${params.id}`}>
-//               <Button>
-//                 <AiOutlineArrowRight size={20} />
-//               </Button>
-//             </Link>
-//           </>
-//         );
-//       },
-//     },
-//   ];
-
-//   const row = [];
-
-//   orders && orders.forEach((item) => {
-//     row.push({
-//         id: item._id,
-//         itemsQty: item.cart.reduce((acc, item) => acc + item.qty, 0),
-//         total: "US$ " + item.totalPrice,
-//         status: item.status,
-//       });
-//   });
-//   return (
-//     <div className="w-full p-8">
-//       <h3 className="text-[22px] font-Poppins pb-2">Overview</h3>
-//       <div className="w-full block 800px:flex items-center justify-between">
-//         <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white shadow rounded px-2 py-5">
-//           <div className="flex items-center">
-//             <AiOutlineMoneyCollect
-//               size={30}
-//               className="mr-2"
-//               fill="#00000085"
-//             />
-//             <h3
-//               className={`${styles.productTitle} !text-[18px] leading-5 !font-[400] text-[#00000085]`}
-//             >
-//               Account Balance{" "}
-//               <span className="text-[16px]">(with 10% service charge)</span>
-//             </h3>
-//           </div>
-//           <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">${availableBalance}</h5>
-//           <Link to="/dashboard-withdraw-money">
-//             <h5 className="pt-4 pl-[2] text-[#077f9c]">Withdraw Money</h5>
-//           </Link>
-//         </div>
-
-//         <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white shadow rounded px-2 py-5">
-//           <div className="flex items-center">
-//             <MdBorderClear size={30} className="mr-2" fill="#00000085" />
-//             <h3
-//               className={`${styles.productTitle} !text-[18px] leading-5 !font-[400] text-[#00000085]`}
-//             >
-//               All Orders
-//             </h3>
-//           </div>
-//           <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">{orders && orders.length}</h5>
-//           <Link to="/dashboard-orders">
-//             <h5 className="pt-4 pl-2 text-[#077f9c]">View Orders</h5>
-//           </Link>
-//         </div>
-
-//         <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white shadow rounded px-2 py-5">
-//           <div className="flex items-center">
-//             <AiOutlineMoneyCollect
-//               size={30}
-//               className="mr-2"
-//               fill="#00000085"
-//             />
-//             <h3
-//               className={`${styles.productTitle} !text-[18px] leading-5 !font-[400] text-[#00000085]`}
-//             >
-//               All Products
-//             </h3>
-//           </div>
-//           <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">{products && products.length}</h5>
-//           <Link to="/dashboard-products">
-//             <h5 className="pt-4 pl-2 text-[#077f9c]">View Products</h5>
-//           </Link>
-//         </div>
-//       </div>
-//       <br />
-//       <h3 className="text-[22px] font-Poppins pb-2">Latest Orders</h3>
-//       <div className="w-full min-h-[45vh] bg-white rounded">
-//       <DataGrid
-//         rows={row}
-//         columns={columns}
-//         pageSize={10}
-//         disableSelectionOnClick
-//         autoHeight
-//       />
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default SellerDashboardHero;
-
 import React, { useEffect, useState } from "react";
 import { AiOutlineArrowRight, AiOutlineMoneyCollect } from "react-icons/ai";
 import styles from "../../styles/styles.js";
@@ -189,7 +27,6 @@ const SellerDashboardHero = () => {
     }
   }, [dispatch, seller?._id]);
 
-  // ✅ Handle loading state
   if (isLoading || ordersLoading || productsLoading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
@@ -198,10 +35,8 @@ const SellerDashboardHero = () => {
     );
   }
 
-  // ✅ Safe balance with fallback
   const availableBalance = seller?.availableBalance?.toFixed(2) || "0.00";
 
-  // ✅ Safely calculate total items quantity
   const getTotalItemsQty = (cart) => {
     return cart?.reduce((acc, item) => acc + (item.qty || 1), 0) || 0;
   };
@@ -216,44 +51,28 @@ const SellerDashboardHero = () => {
       cellClassName: (params) => {
         const status = params.row.status;
         if (status === "Delivered") return "greenColor";
-        if (status === "Processing refund" || status === "Refund Success")
-          return "orangeColor";
+        if (status === "Processing refund" || status === "Refund Success") return "orangeColor";
         return "redColor";
       },
     },
-    {
-      field: "itemsQty",
-      headerName: "Total Items",
-      type: "number",
-      minWidth: 130,
-      flex: 0.7,
-    },
-    {
-      field: "total",
-      headerName: "Total",
-      type: "number",
-      minWidth: 130,
-      flex: 0.8,
-    },
+    { field: "itemsQty", headerName: "Total Items", type: "number", minWidth: 130, flex: 0.7 },
+    { field: "total", headerName: "Total", type: "number", minWidth: 130, flex: 0.8 },
     {
       field: "action",
       flex: 1,
       minWidth: 150,
       headerName: "",
       sortable: false,
-      renderCell: (params) => {
-        return (
-          <Link to={`/shop/order/${params.row.id}`}>
-            <Button>
-              <AiOutlineArrowRight size={20} />
-            </Button>
-          </Link>
-        );
-      },
+      renderCell: (params) => (
+        <Link to={`/shop/order/${params.row.id}`}>
+          <Button>
+            <AiOutlineArrowRight size={20} className="text-voltage" />
+          </Button>
+        </Link>
+      ),
     },
   ];
 
-  // ✅ Map orders to rows with total quantity (sum of qty)
   const rows =
     orders?.map((item) => ({
       id: item._id,
@@ -262,93 +81,69 @@ const SellerDashboardHero = () => {
       status: item.status || "Processing",
     })) || [];
 
+  const statCard = (icon, label, sublabel, value, linkTo, linkLabel) => (
+    <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white border border-divider rounded-lg px-4 py-5">
+      <div className="flex items-center">
+        {icon}
+        <h3 className="font-body text-[15px] leading-5 font-[500] text-ink/60 pl-2">
+          {label} {sublabel && <span className="text-[13px]">{sublabel}</span>}
+        </h3>
+      </div>
+      <h5 className="pt-2 pl-[32px] price-tag text-[20px] text-ink inline-block mt-1">{value}</h5>
+      <Link to={linkTo}>
+        <h5 className="pt-4 pl-2 text-voltage hover:underline cursor-pointer font-body text-sm">
+          {linkLabel}
+        </h5>
+      </Link>
+    </div>
+  );
+
   return (
     <div className="w-full p-8">
-      {/* Header */}
-      <h3 className="text-[22px] font-Poppins pb-2">Overview</h3>
+      <h3 className="text-[22px] font-display font-[600] text-ink pb-4">Overview</h3>
 
-      {/* Stats Cards */}
       <div className="w-full block 800px:flex items-center justify-between gap-4">
-        {/* Balance Card */}
-        <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white shadow rounded px-2 py-5">
-          <div className="flex items-center">
-            <AiOutlineMoneyCollect size={30} className="mr-2" fill="#00000085" />
-            <h3
-              className={`${styles.productTitle} !text-[18px] leading-5 !font-[400] text-[#00000085]`}
-            >
-              Account Balance{" "}
-              <span className="text-[16px]">(with 10% service charge)</span>
-            </h3>
-          </div>
-          <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">
-            ${availableBalance}
-          </h5>
-          <Link to="/dashboard-withdraw-money">
-            <h5 className="pt-4 pl-[2] text-[#077f9c] hover:underline cursor-pointer">
-              Withdraw Money
-            </h5>
-          </Link>
-        </div>
-
-        {/* Orders Card */}
-        <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white shadow rounded px-2 py-5">
-          <div className="flex items-center">
-            <MdBorderClear size={30} className="mr-2" fill="#00000085" />
-            <h3
-              className={`${styles.productTitle} !text-[18px] leading-5 !font-[400] text-[#00000085]`}
-            >
-              All Orders
-            </h3>
-          </div>
-          <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">
-            {orders?.length || 0}
-          </h5>
-          <Link to="/dashboard-all-orders">
-            <h5 className="pt-4 pl-2 text-[#077f9c] hover:underline cursor-pointer">
-              View Orders
-            </h5>
-          </Link>
-        </div>
-
-        {/* Products Card */}
-        <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white shadow rounded px-2 py-5">
-          <div className="flex items-center">
-            <AiOutlineMoneyCollect size={30} className="mr-2" fill="#00000085" />
-            <h3
-              className={`${styles.productTitle} !text-[18px] leading-5 !font-[400] text-[#00000085]`}
-            >
-              All Products
-            </h3>
-          </div>
-          <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">
-            {products?.length || 0}
-          </h5>
-          <Link to="/dashboard-all-products">
-            <h5 className="pt-4 pl-2 text-[#077f9c] hover:underline cursor-pointer">
-              View Products
-            </h5>
-          </Link>
-        </div>
+        {statCard(
+          <AiOutlineMoneyCollect size={26} className="text-voltage" />,
+          "Account Balance",
+          "(10% service charge)",
+          `$${availableBalance}`,
+          "/dashboard-withdraw-money",
+          "Withdraw Money",
+        )}
+        {statCard(
+          <MdBorderClear size={26} className="text-copper" />,
+          "All Orders",
+          null,
+          orders?.length || 0,
+          "/dashboard-all-orders",
+          "View Orders",
+        )}
+        {statCard(
+          <AiOutlineMoneyCollect size={26} className="text-stock" />,
+          "All Products",
+          null,
+          products?.length || 0,
+          "/dashboard-all-products",
+          "View Products",
+        )}
       </div>
 
       <br />
 
-      {/* Latest Orders Table */}
-      <h3 className="text-[22px] font-Poppins pb-2">Latest Orders</h3>
-      <div className="w-full min-h-[45vh] bg-white rounded shadow">
+      <h3 className="text-[22px] font-display font-[600] text-ink pb-2">Latest Orders</h3>
+      <div className="w-full min-h-[45vh] bg-white border border-divider rounded-lg">
         <DataGrid
           rows={rows}
           columns={columns}
-          initialState={{
-            pagination: { paginationModel: { pageSize: 10 } },
-          }}
+          initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
           pageSizeOptions={[5, 10, 25]}
           disableRowSelectionOnClick
           autoHeight
           sx={{
-            "& .greenColor": { color: "#22c55e", fontWeight: "bold" },
-            "& .orangeColor": { color: "#f59e0b", fontWeight: "bold" },
-            "& .redColor": { color: "#ef4444", fontWeight: "bold" },
+            "& .greenColor": { color: "#1FAA59", fontWeight: "bold" },
+            "& .orangeColor": { color: "#F5A623", fontWeight: "bold" },
+            "& .redColor": { color: "#131A2B", fontWeight: "bold" },
           }}
         />
       </div>

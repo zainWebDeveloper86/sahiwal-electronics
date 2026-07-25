@@ -23,12 +23,11 @@ const UserChatInbox = ({
   isSending,
 }) => {
   return (
-    <div className="w-full h-full flex flex-col justify-between bg-gray-50 rounded-lg shadow-lg">
-      {/* Header */}
-      <div className="w-full flex p-4 items-center gap-4 bg-white border-b border-gray-200 shadow-sm">
+    <div className="w-full h-full flex flex-col justify-between bg-white border border-divider rounded-lg min-h-[60vh]">
+      <div className="w-full flex p-3 items-center gap-4 bg-white border-b border-divider flex-shrink-0">
         <AiOutlineArrowLeft
           size={22}
-          className="cursor-pointer text-gray-600 hover:text-gray-800 transition-colors"
+          className="cursor-pointer text-ink/50 hover:text-ink transition-colors"
           onClick={() => {
             setOpenChatWindow(false);
             setConversationID(null);
@@ -39,27 +38,26 @@ const UserChatInbox = ({
             src={
               shopData?.avatar?.url
                 ? `${backend_url}${shopData.avatar.url}`
-                : `https://ui-avatars.com/api/?name=${shopData?.name || "S"}&background=random`
+                : `https://ui-avatars.com/api/?name=${shopData?.name || "S"}&background=2F5FF6&color=fff`
             }
             alt={shopData?.name || "Shop"}
-            className="w-[50px] h-[50px] rounded-full object-cover border-2 border-white shadow"
+            className="w-[50px] h-[50px] rounded-full object-cover border-2 border-divider"
             onError={(e) => {
-              e.target.src = `https://ui-avatars.com/api/?name=${shopData?.name || "S"}&background=random`;
+              e.target.src = `https://ui-avatars.com/api/?name=${shopData?.name || "S"}&background=2F5FF6&color=fff`;
             }}
           />
           <div className="pl-3">
-            <h1 className="text-[18px] font-semibold text-gray-800">
+            <h1 className="text-[18px] font-body font-semibold text-ink">
               {shopData?.name || "Unknown"}
             </h1>
-            <h1 className="text-[14px] text-green-500">
-              {isActive ? "🟢 Active Now" : "Offline"}
+            <h1 className={`text-[14px] font-body font-medium ${isActive ? "text-stock" : "text-ink/40"}`}>
+              {isActive ? "Active Now" : "Offline"}
             </h1>
           </div>
         </div>
       </div>
 
-      {/* Messages List */}
-      <div className="flex-1 px-4 py-3 overflow-y-scroll">
+      <div className="flex-1 px-4 py-3 overflow-y-scroll bg-surface">
         {messages && messages.length > 0 ? (
           messages.map((message, index) => {
             const isMine = message.sender === userId;
@@ -74,12 +72,12 @@ const UserChatInbox = ({
                     src={
                       shopData?.avatar?.url
                         ? `${backend_url}${shopData.avatar.url}`
-                        : `https://ui-avatars.com/api/?name=${shopData?.name || "S"}&background=random`
+                        : `https://ui-avatars.com/api/?name=${shopData?.name || "S"}&background=2F5FF6&color=fff`
                     }
-                    className="w-[35px] h-[35px] rounded-full object-cover mr-2 flex-shrink-0"
+                    className="w-[35px] h-[35px] rounded-full object-cover mr-2 flex-shrink-0 border border-divider"
                     alt=""
                     onError={(e) => {
-                      e.target.src = `https://ui-avatars.com/api/?name=${shopData?.name || "S"}&background=random`;
+                      e.target.src = `https://ui-avatars.com/api/?name=${shopData?.name || "S"}&background=2F5FF6&color=fff`;
                     }}
                   />
                 )}
@@ -88,37 +86,35 @@ const UserChatInbox = ({
                     <img
                       src={`${backend_url}${message.images[0]?.url}`}
                       alt="Message attachment"
-                      className="max-w-[250px] max-h-[250px] object-cover rounded-[10px] mb-1"
+                      className="max-w-[250px] max-h-[250px] object-cover rounded-[10px] mb-1 border border-divider"
                     />
                   )}
                   {message.text && message.text !== "" && (
                     <div
                       className={`p-3 rounded-[12px] ${
                         isMine
-                          ? "bg-[#3957db] text-white rounded-br-none"
-                          : "bg-white text-gray-800 rounded-bl-none shadow-sm border border-gray-100"
+                          ? "bg-voltage text-white rounded-br-none"
+                          : "bg-white text-ink rounded-bl-none border border-divider"
                       }`}
                     >
-                      <p className="text-[15px] break-words">{message.text}</p>
+                      <p className="text-[15px] font-body break-words">{message.text}</p>
                     </div>
                   )}
-                  <p className="text-[11px] text-gray-400 mt-1">
+                  <p className="text-[11px] font-body text-ink/40 mt-1">
                     {format(message.createdAt)}
                   </p>
                 </div>
-
-                {/* Avatar for user's own messages — mirrors seller-side sellerData */}
                 {isMine && (
                   <img
                     src={
                       clientData?.avatar?.url
                         ? `${backend_url}${clientData.avatar.url}`
-                        : `https://ui-avatars.com/api/?name=${clientData?.name || "U"}&background=random`
+                        : `https://ui-avatars.com/api/?name=${clientData?.name || "U"}&background=2F5FF6&color=fff`
                     }
-                    className="w-[35px] h-[35px] rounded-full object-cover ml-2 flex-shrink-0"
+                    className="w-[35px] h-[35px] rounded-full object-cover ml-2 flex-shrink-0 border border-divider"
                     alt=""
                     onError={(e) => {
-                      e.target.src = `https://ui-avatars.com/api/?name=${clientData?.name || "U"}&background=random`;
+                      e.target.src = `https://ui-avatars.com/api/?name=${clientData?.name || "U"}&background=2F5FF6&color=fff`;
                     }}
                   />
                 )}
@@ -126,15 +122,14 @@ const UserChatInbox = ({
             );
           })
         ) : (
-          <div className="flex items-center justify-center h-full text-gray-400">
+          <div className="flex items-center justify-center h-full text-ink/40 font-body">
             <p>No messages yet. Start the conversation!</p>
           </div>
         )}
       </div>
 
-      {/* Input Area */}
       <form
-        className="p-3 bg-white border-t border-gray-200 flex items-center gap-2 shadow-md"
+        className="p-3 bg-white border-t border-divider flex items-center gap-2 flex-shrink-0"
         onSubmit={sendMessageHandler}
       >
         <div className="flex-shrink-0">
@@ -147,15 +142,15 @@ const UserChatInbox = ({
           />
           <label
             htmlFor="image"
-            className="cursor-pointer hover:text-[#3957db] transition-colors"
+            className="cursor-pointer hover:text-voltage transition-colors"
           >
-            <TfiGallery size={22} className="text-gray-500 hover:text-[#3957db]" />
+            <TfiGallery size={22} className="text-ink/50 hover:text-voltage transition-colors" />
           </label>
         </div>
 
         <div className="flex-1 flex items-center gap-2 relative">
           {images && (
-            <div className="absolute bottom-full left-0 mb-2 bg-gray-100 p-2 rounded-lg border border-gray-200">
+            <div className="absolute bottom-full left-0 mb-2 bg-white p-2 rounded-lg border border-divider shadow-sm">
               <img
                 src={URL.createObjectURL(images)}
                 alt="Preview"
@@ -163,7 +158,7 @@ const UserChatInbox = ({
               />
               <button
                 type="button"
-                className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-[18px] h-[18px] text-[10px] flex items-center justify-center cursor-pointer"
+                className="absolute -top-1 -right-1 bg-copper text-white rounded-full w-[18px] h-[18px] text-[10px] flex items-center justify-center cursor-pointer hover:opacity-80"
                 onClick={() => setImages(null)}
               >
                 x

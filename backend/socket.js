@@ -47,7 +47,6 @@ const getOnlineUsers = () => {
       users.push({ userId: socket.userId, socketId: id });
     }
   }
-  // console.log("Current online users computed:", users);
   return users;
 };
 

@@ -31,7 +31,6 @@ export const createEvent = catchAsyncErrors(async (req, res, next) => {
       });
     }
   } catch (error) {
-    // console.log("eventShop error:", error.message);
     return next(new ErrorHandler(error.message, 400));
   }
 });

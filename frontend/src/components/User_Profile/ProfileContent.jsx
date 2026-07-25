@@ -9,7 +9,7 @@ import UserInbox from "./conversation/UserInbox.jsx";
 
 const ProfileContent = ({ active }) => {
   return (
-    <div className="w-full">
+    <div className="w-full bg-white border border-divider rounded-lg p-6 min-h-[60vh]">
       {active === 1 && <ProfileInfo />}
       {active === 2 && <AllOrders />}
       {active === 3 && <AllRefundOrders />}

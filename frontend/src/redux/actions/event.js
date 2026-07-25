@@ -67,7 +67,6 @@ export const getAllEvents = () => async (dispatch) => {
 
 // delete a event
 export const deleteEventShop  = (id) => async (dispatch) => {
-  console.log(id);
   try {
     dispatch({
       type: "deleteEventRequest",

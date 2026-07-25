@@ -62,13 +62,13 @@ import {
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      {/* 🌍 Public Routes (without headers) */}
+      {/* Public Routes (without headers) */}
 
       <Route path="activation/:activation_token" element={<ActivationPage />} />
       <Route path="shop/preview/:id" element={<ShopPreviewPage />} />
 
       <Route path="/" element={<RootLayout />}>
-        {/* 🌍 Public Routes (for everyone, no login need) */}
+        {/* Public Routes (for everyone, no login need) */}
         <Route index element={<HomePage />} />
         <Route path="products" element={<ProductsPage />} />
         <Route path="product/:id" element={<ProductDetailsPage />} />
@@ -76,7 +76,7 @@ const router = createBrowserRouter(
         <Route path="events" element={<EventsPage />} />
         <Route path="faq" element={<FAQPage />} />
 
-        {/* 🔐 User Protected Routes */}
+        {/* User Protected Routes */}
         <Route element={<ProtectedRoute role="user" />}>
           <Route path="profile" element={<ProfilePage />} />
           <Route path="inbox" element={<UserInbox />} />
@@ -88,7 +88,7 @@ const router = createBrowserRouter(
         </Route>
       </Route>
 
-      {/* 🏪 Seller Protected Routes */}
+      {/* Seller Protected Routes */}
       <Route element={<SellerLayout />}>
         <Route element={<ProtectedRoute role="seller" />}>
           <Route path="shop/:id" element={<SellerHomepage />} />

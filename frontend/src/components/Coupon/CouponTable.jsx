@@ -27,7 +27,7 @@ const CouponTable = ({ coupons, onDelete }) => {
       renderCell: (params) => {
         return (
           <Button onClick={() => onDelete(params.id)}>
-            <AiOutlineDelete size={20} className="text-red-500 hover:text-red-700" />
+            <AiOutlineDelete size={20} className="text-copper hover:text-copper/70 transition-colors" />
           </Button>
         );
       },
@@ -44,9 +44,15 @@ const CouponTable = ({ coupons, onDelete }) => {
     <DataGrid
       rows={rows}
       columns={columns}
-      pageSize={10}
-      disableSelectionOnClick
+      initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
+      pageSizeOptions={[5, 10, 25]}
+      disableRowSelectionOnClick
       autoHeight
+      sx={{
+        "& .MuiDataGrid-cell": {
+          fontFamily: "Inter, sans-serif",
+        },
+      }}
     />
   );
 };

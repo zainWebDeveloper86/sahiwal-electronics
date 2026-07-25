@@ -13,7 +13,6 @@ const ShopAllCoupouns = () => {
   const [coupons, setCoupons] = useState([]);
   const { seller } = useSelector((state) => state.seller);
 
-  //  Fetch coupons
   const fetchCoupons = async () => {
     setIsLoading(true);
     try {
@@ -32,20 +31,18 @@ const ShopAllCoupouns = () => {
     }
   }, [seller]);
 
-  //  Delete coupon
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this coupon?")) return;
     
     try {
       await axiosServerInstance.delete(`/coupon/delete-coupon/${id}`);
       toast.success("Coupon code deleted successfully!");
-      fetchCoupons(); //  Refresh list 
+      fetchCoupons();
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to delete coupon");
     }
   };
 
-  //  Create coupon
   const handleCreateCoupon = async (formData) => {
     try {
       const payload = {
@@ -55,7 +52,7 @@ const ShopAllCoupouns = () => {
       await axiosServerInstance.post(`/coupon/create-coupon-code`, payload);
       toast.success("Coupon code created successfully!");
       setOpen(false);
-      fetchCoupons(); //  Refresh list
+      fetchCoupons();
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to create coupon");
     }
@@ -66,21 +63,18 @@ const ShopAllCoupouns = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="w-full mx-8 pt-1 mt-10 bg-white">
-          {/* Header with Create Button */}
-          <div className="w-full flex justify-end">
+        <div className="w-full mx-8 pt-1 mt-10 bg-white border border-divider rounded-lg">
+          <div className="w-full flex justify-end p-4 border-b border-divider">
             <div
-              className={`${styles.button} !w-max !h-[45px] px-3 !rounded-[5px] mr-3 mb-3 cursor-pointer`}
+              className={`${styles.button} !w-max !h-[42px] px-5 !rounded-md cursor-pointer`}
               onClick={() => setOpen(true)}
             >
-              <span className="text-white">Create Coupon Code</span>
+              <span className="text-white font-body font-[500]">Create Coupon Code</span>
             </div>
           </div>
 
-          {/* Table Component */}
           <CouponTable coupons={coupons} onDelete={handleDelete} />
 
-          {/* Modal Component */}
           <CreateCouponModal
             open={open}
             onClose={() => setOpen(false)}

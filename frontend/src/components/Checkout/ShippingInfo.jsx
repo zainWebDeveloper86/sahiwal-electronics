@@ -1,192 +1,3 @@
-// import React from "react";
-// import styles from "../../styles/styles.js";
-// import { Country, State } from "country-state-city";
-// import { Link } from "react-router-dom";
-
-// const ShippingInfo = ({
-//   user,
-//   country,
-//   setCountry,
-//   city,
-//   setCity,
-//   userInfo,
-//   setUserInfo,
-//   address1,
-//   setAddress1,
-//   address2,
-//   setAddress2,
-//   zipCode,
-//   setZipCode,
-// }) => {
-//   return (
-//     <div className="w-full 800px:w-[95%] bg-white rounded-md p-5 pb-8">
-//       <h5 className="text-[18px] font-[500]">Shipping Address</h5>
-//       <br />
-//       <form>
-//         {/* Name & Email */}
-//         <div className="w-full flex pb-3">
-//           <div className="w-[50%]">
-//             <label className="block pb-2">Full Name</label>
-//             <input
-//               type="text"
-//               value={user && user.name}
-//               readOnly
-//               className={`${styles.input} !w-[95%] cursor-not-allowed`}
-//             />
-//           </div>
-//           <div className="w-[50%]">
-//             <label className="block pb-2">Email Address</label>
-//             <input
-//               type="email"
-//               value={user && user.email}
-//               readOnly
-//               className={`${styles.input} cursor-not-allowed`}
-//             />
-//           </div>
-//         </div>
-
-//         {/* Phone & Zip */}
-//         <div className="w-full flex pb-3">
-//           <div className="w-[50%]">
-//             <label className="block pb-2">Phone Number</label>
-//             <input
-//               type="number"
-//               readOnly
-//               value={user && user.phoneNumber || 0}
-//               className={`${styles.input} !w-[95%] cursor-not-allowed`}
-//             />
-//           </div>
-//           <div className="w-[50%]">
-//             <label className="block pb-2">
-//               Zip Code <span className="text-red-500">*</span>
-//             </label>
-//             <input
-//               type="number"
-//               value={zipCode}
-//               onChange={(e) => setZipCode(e.target.value)}
-//               required
-//               className={`${styles.input}`}
-//             />
-//           </div>
-//         </div>
-
-//         {/* Country & City */}
-//         <div className="w-full flex pb-3">
-//           <div className="w-[50%]">
-//             <label className="block pb-2">
-//               Country <span className="text-red-500">*</span>
-//             </label>
-//             <select
-//               className="w-[95%] border h-[40px] rounded-[5px] px-2"
-//               value={country}
-//               onChange={(e) => setCountry(e.target.value)}
-//               required
-//             >
-//               <option value="">Choose your country</option>
-//               {Country &&
-//                 Country.getAllCountries().map((item) => (
-//                   <option key={item.isoCode} value={item.isoCode}>
-//                     {item.name}
-//                   </option>
-//                 ))}
-//             </select>
-//           </div>
-//           <div className="w-[50%]">
-//             <label className="block pb-2">
-//               City <span className="text-red-500">*</span>
-//             </label>
-//             <select
-//               className="w-[95%] border h-[40px] rounded-[5px] px-2"
-//               value={city}
-//               onChange={(e) => setCity(e.target.value)}
-//               required
-//             >
-//               <option value="">Choose your City</option>
-//               {State &&
-//                 State.getStatesOfCountry(country).map((item) => (
-//                   <option key={item.isoCode} value={item.isoCode}>
-//                     {item.name}
-//                   </option>
-//                 ))}
-//             </select>
-//           </div>
-//         </div>
-
-//         {/* Address 1 & Address 2 */}
-//         <div className="w-full flex pb-3">
-//           <div className="w-[50%]">
-//             <label className="block pb-2">
-//               Address 1 <span className="text-red-500">*</span>
-//             </label>
-//             <input
-//               type="text"
-//               required
-//               value={address1}
-//               onChange={(e) => setAddress1(e.target.value)}
-//               className={`${styles.input} !w-[95%]`}
-//             />
-//           </div>
-//           <div className="w-[50%]">
-//             <label className="block pb-2">Address 2</label>
-//             <input
-//               type="text"
-//               value={address2}
-//               onChange={(e) => setAddress2(e.target.value)}
-//               className={`${styles.input}`}
-//             />
-//           </div>
-//         </div>
-//       </form>
-
-//       {/* Saved Addresses */}
-//       <h5
-//         className="text-[18px] cursor-pointer inline-block text-blue-500 hover:text-blue-700 transition-colors"
-//         onClick={() => setUserInfo(!userInfo)}
-//       >
-//         {userInfo ? "Hide saved addresses" : "Choose from saved address"}
-//       </h5>
-
-//       {userInfo && (
-//         <div className="mt-3">
-//           {user?.addresses?.map((item, index) => (
-//             <div className="w-full flex items-center mt-2" key={index}>
-//               <input
-//                 type="radio"
-//                 name="savedAddress"
-//                 className="mr-3 cursor-pointer"
-//                 value={item.addressType}
-//                 onClick={() => {
-//                   setAddress1(item.address1 || "");
-//                   setAddress2(item.address2 || "");
-//                   setZipCode(item.zipCode || "");
-//                   setCountry(item.country || "");
-//                   setCity(item.city || "");
-//                 }}
-//               />
-//               <div className="flex flex-wrap">
-//                 <span className="font-semibold mr-2">{item.addressType}:</span>
-//                 <span>
-//                   {item.address1} {item.address2}, {item.city}, {item.country}
-//                 </span>
-//               </div>
-//             </div>
-//           ))}
-//           {user?.addresses?.length === 0 && (
-//             <p className="text-gray-500 text-sm mt-2">
-//               No saved addresses. Add one in your profile!{" "}
-//               <Link className="hover:text-[#3a24db]" to={`/profile`}>
-//                 Go to profile
-//               </Link>
-//             </p>
-//           )}
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default ShippingInfo;
-
 import React from "react";
 import styles from "../../styles/styles.js";
 import { Country, State } from "country-state-city";
@@ -207,7 +18,6 @@ const ShippingInfo = ({
   zipCode,
   setZipCode,
 }) => {
-  // ✅ Safe user data with fallbacks
   const safeUser = {
     name: user?.name || "Guest",
     email: user?.email || "No email provided",
@@ -215,69 +25,65 @@ const ShippingInfo = ({
     addresses: user?.addresses || [],
   };
 
-  // ✅ Check if user has any saved addresses
   const hasSavedAddresses = safeUser.addresses.length > 0;
 
+  const labelClass = "block pb-2 text-sm font-body font-medium text-ink";
+  const inputClass = `${styles.input} focus:ring-2 focus:ring-voltage focus:border-voltage`;
+  const selectClass =
+    "w-[95%] border border-divider h-[40px] rounded-md px-3 font-body focus:outline-none focus:ring-2 focus:ring-voltage focus:border-voltage bg-white text-ink";
+
   return (
-    <div className="w-full 800px:w-[95%] bg-white rounded-lg shadow-sm p-5 pb-8">
-      <h5 className="text-[18px] font-[600] text-gray-800 border-b pb-3">
+    <div className="w-full 800px:w-[95%] bg-white border border-divider rounded-lg p-5 pb-8">
+      <h5 className="text-[18px] font-display font-semibold text-ink border-b border-divider pb-3">
         Shipping Address
       </h5>
       <br />
 
       <form>
-        {/* Name & Email */}
         <div className="w-full flex flex-wrap pb-3">
           <div className="w-full 800px:w-[50%]">
-            <label className="block pb-2 text-sm font-medium text-gray-700">
-              Full Name
-            </label>
+            <label className={labelClass}>Full Name</label>
             <input
               type="text"
               value={safeUser.name}
               readOnly
-              className={`${styles.input} !w-[95%] bg-gray-50 cursor-not-allowed`}
+              className={`${styles.input} !w-[95%] bg-surface cursor-not-allowed text-ink/70`}
             />
           </div>
           <div className="w-full 800px:w-[50%]">
-            <label className="block pb-2 text-sm font-medium text-gray-700">
-              Email Address
-            </label>
+            <label className={labelClass}>Email Address</label>
             <input
               type="email"
               value={safeUser.email}
               readOnly
-              className={`${styles.input} bg-gray-50 cursor-not-allowed`}
+              className={`${styles.input} bg-surface cursor-not-allowed text-ink/70`}
             />
           </div>
         </div>
 
-        {/* Phone & Zip */}
         <div className="w-full flex flex-wrap pb-3">
           <div className="w-full 800px:w-[50%]">
-            <label className="block pb-2 text-sm font-medium text-gray-700">
-              Phone Number
-            </label>
+            <label className={labelClass}>Phone Number</label>
             <input
               type="text"
               readOnly
               value={safeUser.phoneNumber}
-              className={`${styles.input} !w-[95%] bg-gray-50 cursor-not-allowed ${
-                safeUser.phoneNumber === "N/A" ? "text-gray-400 italic" : ""
+              className={`${styles.input} !w-[95%] bg-surface cursor-not-allowed ${
+                safeUser.phoneNumber === "N/A" ? "text-ink/40 italic" : "text-ink/70"
               }`}
             />
             {safeUser.phoneNumber === "N/A" && (
-              <p className="text-xs text-yellow-600 mt-1">
-                ⚠️ Please update your phone number in{" "}
-                <Link to="/profile" className="text-blue-500 hover:underline">
+              <p className="text-xs text-copper mt-1 font-body">
+                Please update your phone number in{" "}
+                <Link to="/profile" className="text-voltage hover:underline font-medium">
                   profile
                 </Link>
               </p>
             )}
           </div>
           <div className="w-full 800px:w-[50%]">
-            <label className="block pb-2 text-sm font-medium text-gray-700">
-              Zip Code <span className="text-red-500">*</span>
+            <label className={labelClass}>
+              Zip Code <span className="text-copper">*</span>
             </label>
             <input
               type="text"
@@ -285,19 +91,18 @@ const ShippingInfo = ({
               onChange={(e) => setZipCode(e.target.value)}
               required
               placeholder="e.g. 54000"
-              className={`${styles.input} focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+              className={inputClass}
             />
           </div>
         </div>
 
-        {/* Country & City */}
         <div className="w-full flex flex-wrap pb-3">
           <div className="w-full 800px:w-[50%]">
-            <label className="block pb-2 text-sm font-medium text-gray-700">
-              Country <span className="text-red-500">*</span>
+            <label className={labelClass}>
+              Country <span className="text-copper">*</span>
             </label>
             <select
-              className="w-[95%] border border-gray-300 h-[40px] rounded-[5px] px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className={selectClass}
               value={country || ""}
               onChange={(e) => setCountry(e.target.value)}
               required
@@ -311,11 +116,11 @@ const ShippingInfo = ({
             </select>
           </div>
           <div className="w-full 800px:w-[50%]">
-            <label className="block pb-2 text-sm font-medium text-gray-700">
-              City <span className="text-red-500">*</span>
+            <label className={labelClass}>
+              City <span className="text-copper">*</span>
             </label>
             <select
-              className="w-[95%] border border-gray-300 h-[40px] rounded-[5px] px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className={selectClass}
               value={city || ""}
               onChange={(e) => setCity(e.target.value)}
               required
@@ -332,18 +137,17 @@ const ShippingInfo = ({
                 ))}
             </select>
             {!country && (
-              <p className="text-xs text-gray-400 mt-1">
+              <p className="text-xs font-body text-ink/40 mt-1">
                 Please select a country first
               </p>
             )}
           </div>
         </div>
 
-        {/* Address 1 & Address 2 */}
         <div className="w-full flex flex-wrap pb-3">
           <div className="w-full 800px:w-[50%]">
-            <label className="block pb-2 text-sm font-medium text-gray-700">
-              Address 1 <span className="text-red-500">*</span>
+            <label className={labelClass}>
+              Address 1 <span className="text-copper">*</span>
             </label>
             <input
               type="text"
@@ -351,31 +155,30 @@ const ShippingInfo = ({
               value={address1 || ""}
               onChange={(e) => setAddress1(e.target.value)}
               placeholder="Street address, P.O. Box, etc."
-              className={`${styles.input} !w-[95%] focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+              className={`${inputClass} !w-[95%]`}
             />
           </div>
           <div className="w-full 800px:w-[50%]">
-            <label className="block pb-2 text-sm font-medium text-gray-700">
-              Address 2 <span className="text-gray-400 text-xs">(Optional)</span>
+            <label className={labelClass}>
+              Address 2 <span className="text-ink/40 text-xs font-normal">(Optional)</span>
             </label>
             <input
               type="text"
               value={address2 || ""}
               onChange={(e) => setAddress2(e.target.value)}
               placeholder="Apartment, suite, unit, etc."
-              className={`${styles.input} focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+              className={inputClass}
             />
           </div>
         </div>
       </form>
 
-      {/* Saved Addresses Section */}
-      <div className="mt-4 pt-4 border-t border-gray-200">
+      <div className="mt-4 pt-4 border-t border-divider">
         <h5
-          className={`text-[16px] font-medium cursor-pointer inline-flex items-center gap-2 transition-colors ${
+          className={`text-[16px] font-body font-medium cursor-pointer inline-flex items-center gap-2 transition-colors ${
             hasSavedAddresses
-              ? "text-blue-500 hover:text-blue-700"
-              : "text-gray-400 cursor-not-allowed"
+              ? "text-voltage hover:text-voltage/70"
+              : "text-ink/30 cursor-not-allowed"
           }`}
           onClick={() => {
             if (hasSavedAddresses) {
@@ -385,7 +188,7 @@ const ShippingInfo = ({
         >
           {userInfo ? "▼ Hide saved addresses" : "▶ Choose from saved address"}
           {!hasSavedAddresses && (
-            <span className="text-xs text-gray-400 font-normal">
+            <span className="text-xs font-body text-ink/30 font-normal">
               (No saved addresses)
             </span>
           )}
@@ -395,7 +198,7 @@ const ShippingInfo = ({
           <div className="mt-3 space-y-2">
             {safeUser.addresses.map((item, index) => (
               <div
-                className="w-full flex items-start p-3 border border-gray-200 rounded-lg hover:border-blue-400 hover:bg-blue-50/30 transition-colors cursor-pointer"
+                className="w-full flex items-start p-3 border border-divider rounded-lg hover:border-voltage hover:bg-surface/50 transition-colors cursor-pointer"
                 key={index}
                 onClick={() => {
                   setAddress1(item.address1 || "");
@@ -403,13 +206,13 @@ const ShippingInfo = ({
                   setZipCode(item.zipCode || "");
                   setCountry(item.country || "");
                   setCity(item.city || "");
-                  setUserInfo(false); // Auto-close after selection
+                  setUserInfo(false);
                 }}
               >
                 <input
                   type="radio"
                   name="savedAddress"
-                  className="mt-1 mr-3 cursor-pointer flex-shrink-0"
+                  className="mt-1 mr-3 cursor-pointer flex-shrink-0 accent-voltage"
                   value={item.addressType}
                   checked={
                     address1 === item.address1 &&
@@ -419,10 +222,10 @@ const ShippingInfo = ({
                   onChange={() => {}}
                 />
                 <div className="flex-1">
-                  <span className="font-semibold text-gray-800">
+                  <span className="font-body font-semibold text-ink">
                     {item.addressType}:
                   </span>
-                  <span className="text-gray-600 ml-1">
+                  <span className="font-body text-ink/60 ml-1">
                     {item.address1} {item.address2 && `, ${item.address2}`}
                     {item.city && `, ${item.city}`}
                     {item.country && `, ${item.country}`}
@@ -434,12 +237,12 @@ const ShippingInfo = ({
         )}
 
         {!hasSavedAddresses && (
-          <div className="mt-2 text-sm text-gray-500">
+          <div className="mt-2 text-sm font-body text-ink/40">
             <p>
               No saved addresses.{" "}
               <Link
                 to="/profile"
-                className="text-blue-500 hover:text-blue-700 hover:underline font-medium"
+                className="text-voltage hover:text-voltage/70 hover:underline font-medium"
               >
                 Go to profile
               </Link>{" "}

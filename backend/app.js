@@ -1,14 +1,3 @@
-// import express from "express";
-// const app = express();
-
-// //config
-// if(process.env.NODE_ENV !== "PRODUCTION"){
-//     require("dotenv").config({
-//         path:"backend/config/.env"
-//     })
-// }
-
-// export default app;
 import dotenv from "dotenv";
 dotenv.config();
 import express from "express";

@@ -12,17 +12,14 @@ const TrackOrderResult = () => {
   const { user } = useSelector((state) => state.user);
   const { orders, loading, error } = useSelector((state) => state.orders);
 
-  // Fetch orders only if user exists
   useEffect(() => {
     if (user?._id) {
       dispatch(getAllOrdersOfUser(user._id));
     }
   }, [dispatch, user?._id]);
 
-  // Find current order
   const data = orders?.find((item) => item._id === id);
 
-  // Handle loading state
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
@@ -31,26 +28,23 @@ const TrackOrderResult = () => {
     );
   }
 
-  // Handle error state
   if (error) {
     toast.error(error);
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
-        <p className="text-red-500 text-lg">Failed to load order: {error}</p>
+        <p className="text-copper font-body text-lg">Failed to load order: {error}</p>
       </div>
     );
   }
 
-  // Order not found
   if (!data) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
-        <p className="text-gray-500 text-lg">Order not found!</p>
+        <p className="text-ink/50 font-body text-lg">Order not found!</p>
       </div>
     );
   }
 
-  // Status messages mapping
   const statusMessages = {
     Processing: "Your order is being processed by the shop.",
     "Transferred to delivery partner":
@@ -67,21 +61,19 @@ const TrackOrderResult = () => {
   const statusMessage =
     statusMessages[data.status] || "Your order status is being updated.";
 
-  // Status color mapping
   const statusColors = {
-    Processing: "text-yellow-600",
-    "Transferred to delivery partner": "text-blue-600",
-    Shipping: "text-blue-600",
-    Received: "text-purple-600",
-    "On the way": "text-orange-600",
-    Delivered: "text-green-600",
-    "Processing refund": "text-orange-600",
-    "Refund Success": "text-green-600",
+    Processing: "text-copper",
+    "Transferred to delivery partner": "text-voltage",
+    Shipping: "text-voltage",
+    Received: "text-ink/70",
+    "On the way": "text-copper",
+    Delivered: "text-stock",
+    "Processing refund": "text-copper",
+    "Refund Success": "text-stock",
   };
 
-  const statusColor = statusColors[data.status] || "text-gray-600";
+  const statusColor = statusColors[data.status] || "text-ink/60";
 
-  // Helper: get status icon
   const getStatusIcon = (status) => {
     const icons = {
       Processing: "⏳",
@@ -96,9 +88,6 @@ const TrackOrderResult = () => {
     return icons[status] || "📋";
   };
 
-  // Progress % mapping — same object-lookup pattern as statusMessages/statusColors,
-  // so "Processing refund" and "Refund Success" are handled explicitly instead
-  // of silently falling back to 10%.
   const statusProgress = {
     Processing: 20,
     "Transferred to delivery partner": 35,
@@ -112,8 +101,6 @@ const TrackOrderResult = () => {
 
   const progressPercent = statusProgress[data.status] || 10;
 
-  // Refund orders follow a different journey than normal delivery, so the
-  // bar gets its own color and its own set of labels.
   const isRefundFlow =
     data.status === "Processing refund" || data.status === "Refund Success";
 
@@ -121,21 +108,21 @@ const TrackOrderResult = () => {
     ? ["Delivered", "Refund Requested", "Refund Complete"]
     : ["Ordered", "Shipped", "Delivered"];
 
+  const progressBarColor = isRefundFlow ? "bg-copper" : "bg-voltage";
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-[60vh] px-4">
-      {/* Order Info */}
-      <div className="w-full max-w-2xl bg-white rounded-xl shadow-md p-6 md:p-8">
+    <div className="flex flex-col items-center justify-center min-h-[60vh] px-4 bg-surface">
+      <div className="w-full max-w-2xl bg-white border border-divider rounded-xl p-6 md:p-8 shadow-sm">
         <div className="flex items-center gap-3 mb-6">
           <span className="text-4xl">{getStatusIcon(data.status)}</span>
-          <h2 className="text-2xl font-bold text-gray-800">
+          <h2 className="text-2xl font-display font-bold text-ink">
             Order #{data._id?.slice(0, 8)}
           </h2>
         </div>
 
-        {/* Status Message */}
         <div className="mb-6">
-          <p className={`text-xl font-medium ${statusColor}`}>{statusMessage}</p>
-          <p className="text-sm text-gray-500 mt-2">
+          <p className={`text-xl font-medium font-body ${statusColor}`}>{statusMessage}</p>
+          <p className="text-sm font-body text-ink/40 mt-2">
             Last updated:{" "}
             {data.updatedAt
               ? new Date(data.updatedAt).toLocaleString()
@@ -143,45 +130,41 @@ const TrackOrderResult = () => {
           </p>
         </div>
 
-        {/* Order Summary */}
-        <div className="border-t pt-4 grid grid-cols-2 gap-2 text-sm">
+        <div className="border-t border-divider pt-4 grid grid-cols-2 gap-2 text-sm">
           <div>
-            <span className="text-gray-500">Order ID:</span>
-            <span className="ml-2 font-medium text-gray-700">
+            <span className="text-ink/50 font-body">Order ID:</span>
+            <span className="ml-2 font-medium text-ink font-mono">
               #{data._id?.slice(0, 10)}
             </span>
           </div>
           <div>
-            <span className="text-gray-500">Total Price:</span>
-            <span className="ml-2 font-medium text-gray-700">
+            <span className="text-ink/50 font-body">Total Price:</span>
+            <span className="ml-2 font-medium text-copper font-mono">
               US${data.totalPrice}
             </span>
           </div>
           <div>
-            <span className="text-gray-500">Items:</span>
-            <span className="ml-2 font-medium text-gray-700">
+            <span className="text-ink/50 font-body">Items:</span>
+            <span className="ml-2 font-medium text-ink">
               {data.cart?.reduce((sum, item) => sum + (item.qty || 1), 0) || 0}
             </span>
           </div>
           <div>
-            <span className="text-gray-500">Payment:</span>
-            <span className="ml-2 font-medium text-gray-700">
+            <span className="text-ink/50 font-body">Payment:</span>
+            <span className="ml-2 font-medium text-ink">
               {data.paymentInfo?.type || "N/A"}
             </span>
           </div>
         </div>
 
-        {/* Progress Bar */}
         <div className="mt-6">
-          <div className="w-full bg-gray-200 rounded-full h-2.5">
+          <div className="w-full bg-divider rounded-full h-2.5">
             <div
-              className={`h-2.5 rounded-full transition-all duration-500 ${
-                isRefundFlow ? "bg-orange-500" : "bg-blue-600"
-              }`}
+              className={`h-2.5 rounded-full transition-all duration-500 ${progressBarColor}`}
               style={{ width: `${progressPercent}%` }}
             />
           </div>
-          <div className="flex justify-between text-xs text-gray-500 mt-1">
+          <div className="flex justify-between text-xs font-body text-ink/40 mt-1">
             <span>{progressLabels[0]}</span>
             <span>{progressLabels[1]}</span>
             <span>{progressLabels[2]}</span>

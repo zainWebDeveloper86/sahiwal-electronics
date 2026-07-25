@@ -18,24 +18,20 @@ const ShopOrderDetails = () => {
   const [status, setStatus] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
 
-  //  Fetch orders only if seller exists
   useEffect(() => {
     if (seller?._id) {
       dispatch(getAllOrdersOfShop(seller._id));
     }
   }, [dispatch, seller?._id]);
 
-  //  Find current order
   const data = orders?.find((item) => item._id === id);
 
-  //  Set initial status when data loads
   useEffect(() => {
     if (data?.status) {
       setStatus(data.status);
     }
   }, [data?.status]);
 
-  //  Order Update Handler
   const orderUpdateHandler = async () => {
     if (!status || status === data?.status) {
       toast.info("No change in status");
@@ -57,7 +53,6 @@ const ShopOrderDetails = () => {
     }
   };
 
-  //  Refund Order Update Handler
   const refundOrderUpdateHandler = async () => {
     if (!status || status === data?.status) {
       toast.info("No change in status");
@@ -79,7 +74,6 @@ const ShopOrderDetails = () => {
     }
   };
 
-  //  Loading State
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
@@ -88,29 +82,25 @@ const ShopOrderDetails = () => {
     );
   }
 
-  //  Error State
   if (error) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
-        <p className="text-red-500 text-lg">Failed to load order: {error}</p>
+        <p className="text-copper font-body text-lg">Failed to load order: {error}</p>
       </div>
     );
   }
 
-  //  Order Not Found
   if (!data) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
-        <p className="text-gray-500 text-lg">Order not found!</p>
+        <p className="text-ink/50 font-body text-lg">Order not found!</p>
       </div>
     );
   }
 
-  //  Calculate total quantity
   const totalQty =
     data.cart?.reduce((sum, item) => sum + (item.qty || 1), 0) || 0;
 
-  //  Status options based on current status
   const getStatusOptions = (currentStatus) => {
     const allStatuses = [
       "Processing",
@@ -136,46 +126,47 @@ const ShopOrderDetails = () => {
 
   const statusOptions = getStatusOptions(data.status);
 
+  const statusColor = {
+    Delivered: "text-stock",
+    "Refund Success": "text-stock",
+    "Processing refund": "text-copper",
+    Processing: "text-copper",
+  };
+
   return (
     <div className={`py-4 min-h-screen ${styles.section}`}>
-      {/* Header */}
       <div className="w-full flex items-center justify-between">
         <div className="flex items-center">
-          <BsFillBagFill size={30} color="crimson" />
-          <h1 className="pl-2 text-[25px] font-semibold">Order Details</h1>
+          <BsFillBagFill size={30} className="text-copper" />
+          <h1 className="pl-2 text-[25px] font-display font-semibold text-ink">
+            Order Details
+          </h1>
         </div>
         <Link to="/dashboard-all-orders">
-          <div
-            className={`${styles.button} !bg-[#fce1e6] !rounded-[4px] text-[#e94560] font-[600] !h-[45px] text-[18px]`}
-          >
+          <div className="bg-surface border border-divider hover:bg-divider transition-colors px-4 py-2 rounded-md font-body font-medium text-ink">
             Order List
           </div>
         </Link>
       </div>
 
-      {/* Order Meta Info */}
       <div className="w-full flex flex-wrap items-center justify-between pt-6 gap-2">
-        <h5 className="text-[#00000084]">
+        <h5 className="text-ink/60 font-body">
           Order ID:{" "}
-          <span className="font-semibold text-gray-800">
+          <span className="font-semibold text-ink">
             #{data._id?.slice(0, 10)}
           </span>
         </h5>
-        <h5 className="text-[#00000084]">
+        <h5 className="text-ink/60 font-body">
           Placed on:{" "}
-          <span className="font-semibold text-gray-800">
+          <span className="font-semibold text-ink">
             {data.createdAt
               ? new Date(data.createdAt).toLocaleDateString()
               : "N/A"}
           </span>
         </h5>
-        <h5 className="text-[#00000084]">
+        <h5 className="text-ink/60 font-body">
           Status:{" "}
-          <span
-            className={`font-semibold ${
-              data.status === "Delivered" ? "text-green-600" : "text-yellow-600"
-            }`}
-          >
+          <span className={`font-semibold ${statusColor[data.status] || "text-ink"}`}>
             {data.status}
           </span>
         </h5>
@@ -183,26 +174,25 @@ const ShopOrderDetails = () => {
 
       <br />
 
-      {/* Order Items */}
       <div className="w-full">
-        <h4 className="text-[18px] font-[600] mb-4">
+        <h4 className="text-[18px] font-display font-semibold text-ink mb-4">
           Order Items ({totalQty} items)
         </h4>
         {data.cart?.map((item, index) => (
           <div
-            className="w-full flex items-center mb-4 border-b pb-4"
+            className="w-full flex items-center mb-4 border-b border-divider pb-4"
             key={index}
           >
             <img
               src={`${backend_url}${item.images?.[0]?.url}`}
               alt={item.name}
-              className="w-[80px] h-[80px] object-cover rounded-md"
+              className="w-[80px] h-[80px] object-cover rounded-md border border-divider bg-surface"
             />
             <div className="flex-1 ml-3">
-              <h5 className="text-[16px] font-medium line-clamp-2">
+              <h5 className="text-[16px] font-body font-medium text-ink line-clamp-2">
                 {item.name}
               </h5>
-              <h5 className="text-[16px] text-[#00000091]">
+              <h5 className="text-[16px] text-ink/60 font-body">
                 US${item.discountPrice || item.price} × {item.qty || 1}
               </h5>
             </div>
@@ -210,46 +200,48 @@ const ShopOrderDetails = () => {
         ))}
       </div>
 
-      {/* Total Price */}
-      <div className="border-t w-full text-right pt-3">
-        <h5 className="text-[18px] font-semibold">
+      <div className="border-t border-divider w-full text-right pt-3">
+        <h5 className="text-[18px] font-display font-semibold text-ink">
           Total Price:{" "}
-          <span className="text-[#e94560]">US${data.totalPrice}</span>
+          <span className="text-copper">US${data.totalPrice}</span>
         </h5>
       </div>
 
       <br />
 
-      {/* Shipping & Payment Info */}
       <div className="w-full 800px:flex items-start gap-8">
         <div className="w-full 800px:w-[60%]">
-          <h4 className="text-[20px] font-[600]">Shipping Address:</h4>
-          <h4 className="text-[18px] mt-1">
+          <h4 className="text-[20px] font-display font-semibold text-ink">Shipping Address:</h4>
+          <h4 className="text-[18px] font-body text-ink/80 mt-1">
             {data.shippingAddress?.address1 || ""}{" "}
             {data.shippingAddress?.address2 || ""}
           </h4>
-          <h4 className="text-[18px]">{data.shippingAddress?.city || ""}</h4>
-          <h4 className="text-[18px]">{data.shippingAddress?.country || ""}</h4>
-          <h4 className="text-[18px] font-medium text-gray-700">
+          <h4 className="text-[18px] font-body text-ink/80">
+            {data.shippingAddress?.city || ""}
+          </h4>
+          <h4 className="text-[18px] font-body text-ink/80">
+            {data.shippingAddress?.country || ""}
+          </h4>
+          <h4 className="text-[18px] font-body font-medium text-ink">
             📞 {data.user?.phoneNumber || "N/A"}
           </h4>
         </div>
         <div className="w-full 800px:w-[40%] mt-4 800px:mt-0">
-          <h4 className="text-[20px] font-[600]">Payment Info:</h4>
-          <h4 className="text-[18px]">
+          <h4 className="text-[20px] font-display font-semibold text-ink">Payment Info:</h4>
+          <h4 className="text-[18px] font-body text-ink/80">
             Type:{" "}
-            <span className="font-medium">
+            <span className="font-medium text-ink">
               {data.paymentInfo?.type || "N/A"}
             </span>
           </h4>
-          <h4 className="text-[18px]">
+          <h4 className="text-[18px] font-body text-ink/80">
             Status:{" "}
             <span
               className={`font-medium ${
                 data.paymentInfo?.status === "Succeeded" ||
                 data.paymentInfo?.status === "succeeded"
-                  ? "text-green-600"
-                  : "text-yellow-600"
+                  ? "text-stock"
+                  : "text-copper"
               }`}
             >
               {data.paymentInfo?.status || "Not Paid"}
@@ -260,14 +252,13 @@ const ShopOrderDetails = () => {
 
       <br />
 
-      {/* Order Status Update */}
       <div className="w-full">
-        <h4 className="text-[20px] font-[600]">Update Order Status:</h4>
+        <h4 className="text-[20px] font-display font-semibold text-ink">Update Order Status:</h4>
         <div className="flex flex-wrap items-center gap-4 mt-2">
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            className="w-[220px] border border-gray-300 h-[40px] rounded-[5px] px-3 focus:outline-none focus:ring-2 focus:ring-[#3957db]"
+            className="w-[220px] border border-divider h-[40px] rounded-md px-3 focus:outline-none focus:ring-2 focus:ring-voltage font-body text-ink bg-white"
           >
             {statusOptions.map((option, index) => (
               <option value={option} key={index}>
@@ -277,7 +268,7 @@ const ShopOrderDetails = () => {
           </select>
 
           <div
-            className={`${styles.button} !bg-[#FCE1E6] !rounded-[4px] text-[#E94560] font-[600] !h-[45px] text-[18px] cursor-pointer ${
+            className={`${styles.button} !h-[45px] !rounded-md cursor-pointer ${
               isUpdating ? "opacity-50 pointer-events-none" : ""
             }`}
             onClick={

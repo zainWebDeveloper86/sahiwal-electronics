@@ -8,6 +8,7 @@ const BestDeals = () => {
   const [data, setData] = useState([]);
   const dispatch = useDispatch();
   const { allProducts } = useSelector((state) => state.products);
+
   useEffect(() => {
     dispatch(getAllProducts());
   }, [dispatch]);
@@ -17,8 +18,7 @@ const BestDeals = () => {
       const sortedData = [...allProducts].sort(
         (a, b) => b.sold_out - a.sold_out,
       );
-      const firstFive = sortedData.slice(0, 5);
-      setData(firstFive);
+      setData(sortedData.slice(0, 5));
     }
   }, [allProducts]);
 
@@ -28,15 +28,12 @@ const BestDeals = () => {
         <div className={`${styles.heading}`}>
           <h1>Best Deals</h1>
         </div>
-        <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-5 xl:gap-[30px] mb-12 border-0">
+        <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-5 xl:gap-[30px] mb-12">
           {data && data.length > 0 ? (
-            <>
-              {data &&
-                data.map((i, index) => <ProductCard data={i} key={index} />)}
-            </>
+            data.map((i) => <ProductCard data={i} key={i._id} />)
           ) : (
-            <p className="text-center w-full pb-[100px] text-[20px]">
-              No products Found!
+            <p className="text-center w-full pb-[100px] text-[20px] font-body text-ink/60">
+              No products found!
             </p>
           )}
         </div>

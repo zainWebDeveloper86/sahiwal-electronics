@@ -1,7 +1,8 @@
 import { useState } from "react";
-import FaqItem from "./FaqItem";
-import styles from "../../styles/styles";
+import FaqItem from "./FaqItem.jsx";
+import styles from "../../styles/styles.js";
 import { faqData } from "../../static/faqData.js";
+
 const Faq = () => {
   const [activeTab, setActiveTab] = useState(0);
 
@@ -10,9 +11,11 @@ const Faq = () => {
   };
 
   return (
-    <div className={`${styles.section} my-8`}>
-      <h2 className="text-3xl font-bold text-gray-900 mb-8">FAQ</h2>
-      <div className="mx-auto space-y-4">
+    <div className={`${styles.section} my-8 max-w-3xl mx-auto`}>
+      <h2 className="text-3xl font-display font-bold text-ink mb-8">
+        Frequently Asked Questions
+      </h2>
+      <div className="space-y-4">
         {faqData.map((item) => (
           <FaqItem
             key={item.id}

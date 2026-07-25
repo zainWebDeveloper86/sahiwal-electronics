@@ -13,12 +13,10 @@ const AdminAllEvents = () => {
     (state) => state.events
   );
 
-  // Fetch events on mount
   useEffect(() => {
     dispatch(getAllAdminEvents());
   }, [dispatch]);
 
-  // DataGrid Columns (v7+ compatible)
   const columns = [
     { field: "id", headerName: "Event ID", minWidth: 180, flex: 0.7 },
     {
@@ -33,7 +31,7 @@ const AdminAllEvents = () => {
       minWidth: 120,
       flex: 0.6,
       renderCell: (params) => {
-        return <span className="font-medium">${params.row.price}</span>;
+        return <span className="price-tag text-voltage text-[15px]">${params.row.price}</span>;
       },
     },
     {
@@ -43,7 +41,7 @@ const AdminAllEvents = () => {
       minWidth: 100,
       flex: 0.5,
       cellClassName: (params) => {
-        return params.row.stock < 5 ? "text-red-500 font-bold" : "text-green-600";
+        return params.row.stock < 5 ? "text-copper font-bold" : "text-stock";
       },
     },
     {
@@ -70,7 +68,7 @@ const AdminAllEvents = () => {
         return (
           <Link to={`/product/${params.row.id}?isEvent=true`}>
             <Button>
-              <AiOutlineEye size={20} className="text-blue-500 hover:text-blue-700" />
+              <AiOutlineEye size={20} className="text-voltage hover:text-voltage/70 transition-colors" />
             </Button>
           </Link>
         );
@@ -78,7 +76,6 @@ const AdminAllEvents = () => {
     },
   ];
 
-  // Map rows
   const rows =
     adminEvents?.map((item) => ({
       id: item._id,
@@ -89,7 +86,6 @@ const AdminAllEvents = () => {
       category: item.category || "Uncategorized",
     })) || [];
 
-  // Loading state
   if (adminEventsLoading) {
     return (
       <div className="flex justify-center items-center h-[60vh]">
@@ -98,24 +94,25 @@ const AdminAllEvents = () => {
     );
   }
 
-  // Error state
   if (error) {
     return (
       <div className="flex justify-center items-center h-[60vh]">
-        <p className="text-red-500 text-lg">Failed to load events: {error}</p>
+        <p className="text-copper font-body text-lg">Failed to load events: {error}</p>
       </div>
     );
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-[22px] font-Poppins">All Events</h3>
-        <span className="text-sm text-gray-500">
+        <h3 className="text-[22px] font-display font-semibold text-ink">
+          All Events
+        </h3>
+        <span className="text-sm font-body text-ink/50">
           Total: {rows.length} events
         </span>
       </div>
-      <div className="w-full min-h-[45vh] bg-white rounded shadow-sm p-2">
+      <div className="w-full min-h-[45vh] bg-white border border-divider rounded-lg">
         <DataGrid
           rows={rows}
           columns={columns}
@@ -126,8 +123,11 @@ const AdminAllEvents = () => {
           disableRowSelectionOnClick
           autoHeight
           sx={{
-            "& .text-red-500": { color: "#ef4444", fontWeight: "bold" },
-            "& .text-green-600": { color: "#22c55e" },
+            "& .MuiDataGrid-cell": {
+              fontFamily: "Inter, sans-serif",
+            },
+            "& .text-copper": { color: "#F5A623", fontWeight: "bold" },
+            "& .text-stock": { color: "#1FAA59" },
           }}
         />
       </div>

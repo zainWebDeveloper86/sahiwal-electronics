@@ -1,156 +1,3 @@
-// import axios from "axios";
-// import React, { useEffect, useState } from "react";
-// import { server } from "../../server";
-// import { Link } from "react-router-dom";
-// import { DataGrid } from "@material-ui/data-grid";
-// import { BsPencil } from "react-icons/bs";
-// import { RxCross1 } from "react-icons/rx";
-// import styles from "../../styles/styles";
-// import { toast } from "react-toastify";
-
-// const AdminAllWithdraws = () => {
-//   const [data, setData] = useState([]);
-//   const [open, setOpen] = useState(false);
-//   const [withdrawData, setWithdrawData] = useState();
-//   const [withdrawStatus,setWithdrawStatus] = useState('Processing');
-
-//   useEffect(() => {
-//     axios
-//       .get(`${server}/withdraw/get-all-withdraw-request`, {
-//         withCredentials: true,
-//       })
-//       .then((res) => {
-//         setData(res.data.withdraws);
-//       })
-//       .catch((error) => {
-//         console.log(error.response.data.message);
-//       });
-//   }, []);
-
-//   const columns = [
-//     { field: "id", headerName: "Withdraw Id", minWidth: 150, flex: 0.7 },
-//     {
-//       field: "name",
-//       headerName: "Shop Name",
-//       minWidth: 180,
-//       flex: 1.4,
-//     },
-//     {
-//       field: "shopId",
-//       headerName: "Shop Id",
-//       minWidth: 180,
-//       flex: 1.4,
-//     },
-//     {
-//       field: "amount",
-//       headerName: "Amount",
-//       minWidth: 100,
-//       flex: 0.6,
-//     },
-//     {
-//       field: "status",
-//       headerName: "status",
-//       type: "text",
-//       minWidth: 80,
-//       flex: 0.5,
-//     },
-//     {
-//       field: "createdAt",
-//       headerName: "Request given at",
-//       type: "number",
-//       minWidth: 130,
-//       flex: 0.6,
-//     },
-//     {
-//       field: " ",
-//       headerName: "Update Status",
-//       type: "number",
-//       minWidth: 130,
-//       flex: 0.6,
-//       renderCell: (params) => {
-
-//         return (
-//           <BsPencil
-//             size={20}
-//             className={`${params.row.status !== "Processing" ? 'hidden' : '' } mr-5 cursor-pointer`}
-//             onClick={() => setOpen(true) || setWithdrawData(params.row)}
-//           />
-//         );
-//       },
-//     },
-//   ];
-
-//   const handleSubmit = async () => {
-//     await axios
-//       .put(`${server}/withdraw/update-withdraw-request/${withdrawData.id}`,{
-//         sellerId: withdrawData.shopId,
-//       },{withCredentials: true})
-//       .then((res) => {
-//         toast.success("Withdraw request updated successfully!");
-//         setData(res.data.withdraws);
-//         setOpen(false);
-//       });
-//   };
-
-//   const row = [];
-
-//   data &&
-//     data.forEach((item) => {
-//       row.push({
-//         id: item._id,
-//         shopId: item.seller._id,
-//         name: item.seller.name,
-//         amount: "US$ " + item.amount,
-//         status: item.status,
-//         createdAt: item.createdAt.slice(0, 10),
-//       });
-//     });
-//   return (
-//     <div className="w-full flex items-center pt-5 justify-center">
-//       <div className="w-[95%] bg-white">
-//         <DataGrid
-//           rows={row}
-//           columns={columns}
-//           pageSize={10}
-//           disableSelectionOnClick
-//           autoHeight
-//         />
-//       </div>
-//       {open && (
-//         <div className="w-full fixed h-screen top-0 left-0 bg-[#00000031] z-[9999] flex items-center justify-center">
-//           <div className="w-[50%] min-h-[40vh] bg-white rounded shadow p-4">
-//             <div className="flex justify-end w-full">
-//               <RxCross1 size={25} onClick={() => setOpen(false)} />
-//             </div>
-//             <h1 className="text-[25px] text-center font-Poppins">
-//               Update Withdraw status
-//             </h1>
-//             <br />
-//             <select
-//               name=""
-//               id=""
-//               onChange={(e) => setWithdrawStatus(e.target.value)}
-//               className="w-[200px] h-[35px] border rounded"
-//             >
-//               <option value={withdrawStatus}>{withdrawData.status}</option>
-//               <option value={withdrawStatus}>Succeed</option>
-//             </select>
-//             <button
-//               type="submit"
-//               className={`block ${styles.button} text-white !h-[42px] mt-4 text-[18px]`}
-//               onClick={handleSubmit}
-//             >
-//               Update
-//             </button>
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default AdminAllWithdraws;
-
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
@@ -169,7 +16,6 @@ const AdminAllWithdraws = () => {
   const [selectedWithdraw, setSelectedWithdraw] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  // Fetch withdraws on mount
   useEffect(() => {
     fetchWithdraws();
   }, []);
@@ -189,7 +35,6 @@ const AdminAllWithdraws = () => {
     }
   };
 
-  // Update withdraw status
   const handleUpdateStatus = async () => {
     if (!selectedWithdraw) return;
 
@@ -211,7 +56,6 @@ const AdminAllWithdraws = () => {
     }
   };
 
-  // Columns
   const columns = [
     { field: "id", headerName: "Withdraw ID", minWidth: 180, flex: 0.7 },
     {
@@ -232,7 +76,7 @@ const AdminAllWithdraws = () => {
       minWidth: 120,
       flex: 0.6,
       renderCell: (params) => (
-        <span className="font-semibold text-green-600">
+        <span className="price-tag text-stock text-[15px] font-semibold">
           ${params.row.amount}
         </span>
       ),
@@ -244,8 +88,8 @@ const AdminAllWithdraws = () => {
       flex: 0.6,
       cellClassName: (params) => {
         return params.row.status === "succeed"
-          ? "text-green-600 font-bold"
-          : "text-yellow-600 font-bold";
+          ? "text-stock font-bold"
+          : "text-copper font-bold";
       },
     },
     {
@@ -262,7 +106,7 @@ const AdminAllWithdraws = () => {
       sortable: false,
       renderCell: (params) => {
         if (params.row.status === "succeed") {
-          return <span className="text-gray-400 text-sm">Completed</span>;
+          return <span className="text-ink/40 font-body text-sm">Completed</span>;
         }
         return (
           <Button
@@ -270,16 +114,14 @@ const AdminAllWithdraws = () => {
               setSelectedWithdraw(params.row);
               setOpenModal(true);
             }}
-            className="text-blue-500 hover:text-blue-700"
           >
-            <BsPencil size={18} />
+            <BsPencil size={18} className="text-voltage hover:text-voltage/70 transition-colors" />
           </Button>
         );
       },
     },
   ];
 
-  // Rows mapping
   const rows =
     withdraws?.map((item) => ({
       id: item._id,
@@ -291,7 +133,6 @@ const AdminAllWithdraws = () => {
       sellerId: item.seller?._id,
     })) || [];
 
-  // Loading state
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-[60vh]">
@@ -301,36 +142,38 @@ const AdminAllWithdraws = () => {
   }
 
   return (
-    <div className="w-full flex justify-center pt-5">
-      <div className="w-[97%]">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-[22px] font-Poppins">Withdraw Requests</h3>
-          <span className="text-sm text-gray-500">
-            Total: {rows.length} requests
-          </span>
-        </div>
-        <div className="w-full min-h-[45vh] bg-white rounded shadow-sm p-2">
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            initialState={{
-              pagination: { paginationModel: { pageSize: 10 } },
-            }}
-            pageSizeOptions={[5, 10, 25]}
-            disableRowSelectionOnClick
-            autoHeight
-            sx={{
-              "& .text-green-600": { color: "#22c55e", fontWeight: "bold" },
-              "& .text-yellow-600": { color: "#eab308", fontWeight: "bold" },
-            }}
-          />
-        </div>
+    <div className="w-full p-6">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-[22px] font-display font-semibold text-ink">
+          Withdraw Requests
+        </h3>
+        <span className="text-sm font-body text-ink/50">
+          Total: {rows.length} requests
+        </span>
+      </div>
+      <div className="w-full min-h-[45vh] bg-white border border-divider rounded-lg">
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          initialState={{
+            pagination: { paginationModel: { pageSize: 10 } },
+          }}
+          pageSizeOptions={[5, 10, 25]}
+          disableRowSelectionOnClick
+          autoHeight
+          sx={{
+            "& .MuiDataGrid-cell": {
+              fontFamily: "Inter, sans-serif",
+            },
+            "& .text-stock": { color: "#1FAA59", fontWeight: "bold" },
+            "& .text-copper": { color: "#F5A623", fontWeight: "bold" },
+          }}
+        />
       </div>
 
-      {/* Update Status Modal */}
       {openModal && (
-        <div className="w-full fixed top-0 left-0 z-[999] bg-[#00000039] flex items-center justify-center h-screen">
-          <div className="w-[95%] 800px:w-[40%] min-h-[25vh] bg-white rounded shadow-lg p-6">
+        <div className="w-full fixed top-0 left-0 z-[999] bg-ink/40 flex items-center justify-center h-screen">
+          <div className="w-[95%] 800px:w-[40%] min-h-[25vh] bg-white border border-divider rounded-lg p-6">
             <div className="w-full flex justify-end cursor-pointer">
               <RxCross1
                 size={25}
@@ -338,37 +181,37 @@ const AdminAllWithdraws = () => {
                   setOpenModal(false);
                   setSelectedWithdraw(null);
                 }}
-                className="text-gray-500 hover:text-gray-700 transition-colors"
+                className="text-ink/50 hover:text-ink transition-colors"
               />
             </div>
 
-            <h1 className="text-[22px] text-center font-Poppins font-semibold text-gray-800">
+            <h1 className="text-[22px] text-center font-display font-semibold text-ink">
               Update Withdraw Status
             </h1>
-            <p className="text-center text-gray-500 text-sm mb-4">
-              Confirm to mark this withdraw request as <strong>Succeed</strong>
+            <p className="text-center font-body text-ink/50 text-sm mb-4">
+              Confirm to mark this withdraw request as <strong className="text-stock">Succeed</strong>
             </p>
 
             <div className="flex flex-col items-center gap-4 mt-4">
-              <div className="w-full bg-gray-50 p-4 rounded-lg">
-                <p className="text-sm text-gray-600">
-                  <span className="font-semibold">Shop:</span>{" "}
+              <div className="w-full bg-surface p-4 rounded-lg border border-divider">
+                <p className="text-sm font-body text-ink/70">
+                  <span className="font-semibold text-ink">Shop:</span>{" "}
                   {selectedWithdraw?.shopName}
                 </p>
-                <p className="text-sm text-gray-600">
-                  <span className="font-semibold">Amount:</span> $
-                  {selectedWithdraw?.amount}
+                <p className="text-sm font-body text-ink/70">
+                  <span className="font-semibold text-ink">Amount:</span>{" "}
+                  <span className="price-tag text-stock">${selectedWithdraw?.amount}</span>
                 </p>
-                <p className="text-sm text-gray-600">
-                  <span className="font-semibold">Current Status:</span>{" "}
-                  {selectedWithdraw?.status}
+                <p className="text-sm font-body text-ink/70">
+                  <span className="font-semibold text-ink">Current Status:</span>{" "}
+                  <span className="text-copper font-medium">{selectedWithdraw?.status}</span>
                 </p>
               </div>
 
               <button
                 onClick={handleUpdateStatus}
                 disabled={isUpdating}
-                className={`${styles.button} text-white !h-[42px] px-8 text-[16px] ${
+                className={`${styles.button} !h-[42px] px-8 text-[16px] ${
                   isUpdating ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               >

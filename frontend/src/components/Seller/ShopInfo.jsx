@@ -29,7 +29,7 @@ const ShopInfo = ({ isOwner }) => {
           setIsLoading(false);
         })
         .catch((error) => {
-          console.log(error);
+          toast.error(error);
           setIsLoading(false);
         });
     }
@@ -37,23 +37,17 @@ const ShopInfo = ({ isOwner }) => {
 
   const shopProducts = allProducts?.filter((p) => p.shopId === id) || [];
 
-  //  Calculate weighted average rating (real-world standard)
   const calculateShopRating = () => {
     if (shopProducts.length === 0) return 0;
-
     let totalRatingSum = 0;
     let totalReviewCount = 0;
-
     shopProducts.forEach((product) => {
       const rating = product.ratings || 0;
       const reviewCount = product.reviews?.length || 0;
       totalRatingSum += rating * reviewCount;
       totalReviewCount += reviewCount;
     });
-
-    // If no reviews at all, return 0
     if (totalReviewCount === 0) return 0;
-
     return totalRatingSum / totalReviewCount;
   };
 
@@ -72,7 +66,7 @@ const ShopInfo = ({ isOwner }) => {
         dispatch({ type: "LogoutSeller" });
       })
       .catch((error) => {
-        console.log(error.response?.data?.message || "Logout failed");
+        toast.error(error.response?.data?.message || "Logout failed");
       });
   };
 
@@ -82,62 +76,59 @@ const ShopInfo = ({ isOwner }) => {
         <Loader />
       ) : (
         <div>
-          {/* Avatar */}
           <div className="w-full py-5">
             <div className="w-full flex item-center justify-center">
               <img
                 src={`${backend_url}${data?.avatar?.url}`}
                 alt=""
-                className="w-[150px] h-[150px] object-cover rounded-full"
+                className="w-[150px] h-[150px] object-cover rounded-full border-4 border-divider"
               />
             </div>
-            <h3 className="text-center py-2 text-[20px] font-semibold">
+            <h3 className="text-center py-2 text-[20px] font-display font-semibold text-ink">
               {data?.name}
             </h3>
-            <p className="text-[16px] text-[#000000a6] p-[10px] flex items-center">
+            <p className="text-[15px] font-body text-ink/60 p-[10px] flex items-center">
               {data?.description}
             </p>
           </div>
 
-          {/* Shop Details */}
-          <div className="p-3 border-b border-gray-100">
-            <h5 className="font-[600]">Address</h5>
-            <h4 className="text-[#000000a6]">{data?.address}</h4>
+          <div className="p-3 border-b border-divider">
+            <h5 className="font-body font-[600] text-ink">Address</h5>
+            <h4 className="font-body text-ink/60">{data?.address}</h4>
           </div>
 
-          <div className="p-3 border-b border-gray-100">
-            <h5 className="font-[600]">Phone Number</h5>
-            <h4 className="text-[#000000a6]">{data?.phoneNumber}</h4>
+          <div className="p-3 border-b border-divider">
+            <h5 className="font-body font-[600] text-ink">Phone Number</h5>
+            <h4 className="font-mono text-ink/60">{data?.phoneNumber}</h4>
           </div>
 
-          <div className="p-3 border-b border-gray-100">
-            <h5 className="font-[600]">Total Products</h5>
-            <h4 className="text-[#000000a6]">{shopProducts?.length || 0}</h4>
+          <div className="p-3 border-b border-divider">
+            <h5 className="font-body font-[600] text-ink">Total Products</h5>
+            <h4 className="font-mono text-ink/60">{shopProducts?.length || 0}</h4>
           </div>
 
-          {/*  Updated: Shop Ratings with Stars */}
-          <div className="p-3 border-b border-gray-100">
-            <h5 className="font-[600]">Shop Ratings</h5>
+          <div className="p-3 border-b border-divider">
+            <h5 className="font-body font-[600] text-ink">Shop Ratings</h5>
             <div className="flex items-center gap-3 mt-1">
               {shopRating > 0 ? (
                 <>
                   <Ratings rating={shopRating} />
-                  <span className="text-sm font-medium text-gray-700">
+                  <span className="text-sm font-mono font-medium text-ink/70">
                     {shopRating.toFixed(1)} / 5
                   </span>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm font-body text-ink/40">
                     ({totalReviews} {totalReviews === 1 ? "review" : "reviews"})
                   </span>
                 </>
               ) : (
-                <span className="text-gray-400">No ratings yet</span>
+                <span className="text-ink/40 font-body">No ratings yet</span>
               )}
             </div>
           </div>
 
           <div className="p-3">
-            <h5 className="font-[600]">Joined On</h5>
-            <h4 className="text-[#000000b0]">
+            <h5 className="font-body font-[600] text-ink">Joined On</h5>
+            <h4 className="font-body text-ink/60">
               {data?.createdAt
                 ? new Date(data.createdAt).toLocaleDateString("en-US", {
                     year: "numeric",
@@ -148,21 +139,18 @@ const ShopInfo = ({ isOwner }) => {
             </h4>
           </div>
 
-          {/* Owner Actions */}
           {isOwner && (
-            <div className="py-3 px-4 space-y-3">
+            <div className="py-3 px-4 flex flex-col gap-2">
               <Link to="/settings">
-                <div
-                  className={`${styles.button} !w-full !h-[42px] !rounded-[5px]`}
-                >
-                  <span className="text-white">Edit Shop</span>
+                <div className="w-full h-[42px] rounded-md bg-voltage flex items-center justify-center hover:opacity-90 transition-opacity">
+                  <span className="text-white font-body font-[500]">Edit Shop</span>
                 </div>
               </Link>
               <div
-                className={`${styles.button} !w-full !h-[42px] !rounded-[5px] !bg-[#e94560] hover:!bg-[#c0392b]`}
+                className="w-full h-[42px] rounded-md bg-copper flex items-center justify-center hover:opacity-90 transition-opacity cursor-pointer"
                 onClick={logoutHandler}
               >
-                <span className="text-white">Log Out</span>
+                <span className="text-white font-body font-[500]">Log Out</span>
               </div>
             </div>
           )}

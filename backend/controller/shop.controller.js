@@ -66,7 +66,6 @@ export const createShop = catchAsyncErrors(async (req, res, next) => {
     };
 
     const activationToken = createActivationToken(seller);
-    // shop.js controller mein
     const activationUrl = `http://localhost:5173/activation/${activationToken}?type=seller`;
 
     await sendMail({
@@ -79,7 +78,6 @@ export const createShop = catchAsyncErrors(async (req, res, next) => {
       message: `please check your email:- ${seller.email} to activate your shop!`,
     });
   } catch (error) {
-    // console.error("createShop Error:", error.message);
     return next(new ErrorHandler(error.message, 500));
   }
 });
@@ -97,7 +95,6 @@ export const sellerActivation = catchAsyncErrors(async (req, res, next) => {
       activation_token,
       process.env.ACTIVATION_SECRET,
     );
-    // console.log("🔍 Decoded Seller:", newSeller); // 👈 Debugging
     if (!newSeller) {
       return next(new ErrorHandler("Invalid token", 400));
     }
@@ -105,7 +102,6 @@ export const sellerActivation = catchAsyncErrors(async (req, res, next) => {
     const { name, email, password, avatar, zipCode, address, phoneNumber } =
       newSeller;
 
-    // 🔥 Convert to Number (agar string aayi toh)
     const parsedPhoneNumber = Number(phoneNumber);
     const parsedZipCode = Number(zipCode);
 
@@ -136,7 +132,6 @@ export const sellerActivation = catchAsyncErrors(async (req, res, next) => {
 
     sendToken(seller, 201, res, { cookieName: "seller_token" });
   } catch (error) {
-    // console.error("🔥 sellerActivation Error:", error.message);
     return next(new ErrorHandler(error.message, 500));
   }
 });
@@ -174,7 +169,6 @@ export const loginShop = catchAsyncErrors(async (req, res, next) => {
 export const loadShop = catchAsyncErrors(async (req, res, next) => {
   try {
     const sellerShop = await Shop.findById(req.seller.id);
-    // console.log(sellerShop);
 
     if (!sellerShop) {
       return next(new ErrorHandler("Shop doesn't exists", 400));
@@ -195,11 +189,6 @@ export const logoutShop = catchAsyncErrors(async (req, res, next) => {
     res.cookie("seller_token", null, {
       expires: new Date(Date.now()),
       httpOnly: true,
-      // while at production
-      // sameSite: "none",
-      // secure: true,
-
-      // while at development
       sameSite: "lax",
       secure: process.env.NODE_ENV === "PRODUCTION",
     });
@@ -214,7 +203,6 @@ export const logoutShop = catchAsyncErrors(async (req, res, next) => {
 
 // get shop info
 export const getShopInfo = catchAsyncErrors(async (req, res, next) => {
-  // console.log("IDDD: ", req.params.id);
   try {
     const shop = await Shop.findById(req.params.id);
     res.status(200).json({

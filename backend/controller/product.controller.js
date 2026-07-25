@@ -32,7 +32,6 @@ export const createProduct = catchAsyncErrors(async (req, res, next) => {
       });
     }
   } catch (error) {
-    // console.log("productShop error:", error.message);
     return next(new ErrorHandler(error.message, 500));
   }
 });
@@ -54,16 +53,13 @@ export const getAllShopProducts = catchAsyncErrors(async (req, res, next) => {
 // delete product of a shop
 export const deleteProduct = catchAsyncErrors(async (req, res, next) => {
   try {
-    // const product = await Product.findById(req.params.id);
     const productData = await Product.findByIdAndDelete(req.params.id);
 
     if (!productData) {
       return next(new ErrorHandler("Product is not found with this id", 404));
     }
-    // console.log("productData: ", productData)
 
     productData.images.forEach((image) => {
-      // console.log(image);
       const filePath = `uploads/${image.public_id}`;
 
       fs.unlink(filePath, (err) => {
@@ -98,9 +94,9 @@ export const getAllProducts = catchAsyncErrors(async (req, res, next) => {
 export const productReview = catchAsyncErrors(async (req, res, next) => {
   try {
     const { rating, comment, productId, orderId } = req.body;
-    const userId = req.user._id; // Middleware se aaya hua user
+    const userId = req.user._id; // user from Middleware
 
-    // 1. Fetch product & order
+    // Fetch product & order
     const [product, order] = await Promise.all([
       Product.findById(productId),
       Order.findById(orderId),
@@ -109,7 +105,7 @@ export const productReview = catchAsyncErrors(async (req, res, next) => {
     if (!product) return next(new ErrorHandler("Product not found!", 404));
     if (!order) return next(new ErrorHandler("Order not found!", 404));
 
-    // 2. ✅ Authorization check — convert to string for safe comparison
+    // Authorization check — convert to string for safe comparison
     if (!order.user?._id || order.user._id.toString() !== userId.toString()) {
       return next(new ErrorHandler("Unauthorized!", 403));
     }
@@ -122,7 +118,7 @@ export const productReview = catchAsyncErrors(async (req, res, next) => {
       return next(new ErrorHandler("Already reviewed!", 400));
     }
 
-    // 3. User object for review
+    // User object for review
     const reviewObj = {
       _id: userId,
       name: req.user.name,
@@ -130,7 +126,7 @@ export const productReview = catchAsyncErrors(async (req, res, next) => {
       avatar: req.user.avatar,
     };
 
-    // 4. Add/Update review
+    // Add/Update review
     const existingReview = product.reviews.find(
       (rev) => rev.user._id.toString() === userId.toString(),
     );
@@ -148,14 +144,14 @@ export const productReview = catchAsyncErrors(async (req, res, next) => {
       });
     }
 
-    // 5. Recalculate average rating
+    // Recalculate average rating
     product.ratings =
       product.reviews.reduce((sum, rev) => sum + rev.rating, 0) /
       product.reviews.length;
 
     await product.save({ validateBeforeSave: false });
 
-    // 6. Mark as reviewed in order
+    // Mark as reviewed in order
     await Order.findOneAndUpdate(
       { _id: orderId, "cart._id": productId },
       { $set: { "cart.$.isReviewed": true } },

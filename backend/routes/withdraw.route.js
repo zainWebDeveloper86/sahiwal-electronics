@@ -12,14 +12,14 @@ import {
 
 const router = express.Router();
 
-// Seller: Create withdraw request
+// Create withdraw request
 router.post(
   "/create-withdraw-request",
   isSellerAuthenticated,
   createWithdrawRequest
 );
 
-// Admin: Get all withdraw requests
+// Get all withdraw requests
 router.get(
   "/get-all-withdraw-request",
   isAuthenticated,
@@ -27,7 +27,7 @@ router.get(
   getAllWithdraws
 );
 
-// Admin: Update withdraw status
+// Update withdraw status
 router.put(
   "/update-withdraw-request/:id",
   isAuthenticated,

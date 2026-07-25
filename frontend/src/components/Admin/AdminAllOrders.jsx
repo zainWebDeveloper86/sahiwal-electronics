@@ -14,7 +14,6 @@ const AdminAllOrders = () => {
     dispatch(getAllOrdersOfAdmin());
   }, [dispatch]);
 
-  // Columns
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
     {
@@ -49,7 +48,6 @@ const AdminAllOrders = () => {
     },
   ];
 
-  // Rows mapping
   const rows =
     adminOrders?.map((item) => ({
       id: item._id,
@@ -59,7 +57,6 @@ const AdminAllOrders = () => {
       createdAt: item?.createdAt?.slice(0, 10) || "N/A",
     })) || [];
 
-  // Loading state
   if (adminOrderLoading) {
     return (
       <div className="flex justify-center items-center h-[60vh]">
@@ -68,19 +65,20 @@ const AdminAllOrders = () => {
     );
   }
 
-  // Error state
   if (error) {
     return (
       <div className="flex justify-center items-center h-[60vh]">
-        <p className="text-red-500 text-lg">Failed to load orders: {error}</p>
+        <p className="text-copper font-body text-lg">Failed to load orders: {error}</p>
       </div>
     );
   }
 
   return (
-    <div className="w-full">
-      <h3 className="text-[22px] font-Poppins pb-2">All Orders</h3>
-      <div className="w-full min-h-[45vh] bg-white rounded shadow-sm p-2">
+    <div className="w-full p-6">
+      <h3 className="text-[22px] font-display font-semibold text-ink pb-4">
+        All Orders
+      </h3>
+      <div className="w-full min-h-[45vh] bg-white border border-divider rounded-lg">
         <DataGrid
           rows={rows}
           columns={columns}
@@ -91,8 +89,11 @@ const AdminAllOrders = () => {
           disableRowSelectionOnClick
           autoHeight
           sx={{
-            "& .greenColor": { color: "#22c55e", fontWeight: "bold" },
-            "& .redColor": { color: "#ef4444", fontWeight: "bold" },
+            "& .MuiDataGrid-cell": {
+              fontFamily: "Inter, sans-serif",
+            },
+            "& .greenColor": { color: "#1FAA59", fontWeight: "bold" },
+            "& .redColor": { color: "#131A2B", fontWeight: "bold" },
           }}
         />
       </div>
