@@ -183,14 +183,16 @@ export const loadShop = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
-// log out user
+// log out from shop
 export const logoutShop = catchAsyncErrors(async (req, res, next) => {
   try {
+    const isProduction = process.env.NODE_ENV === "production";
+
     res.cookie("seller_token", null, {
       expires: new Date(Date.now()),
       httpOnly: true,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "PRODUCTION",
+      sameSite: isProduction ? "none" : "lax",
+      secure: isProduction,
     });
     res.status(200).json({
       success: true,

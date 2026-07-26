@@ -6,20 +6,17 @@ const sendToken = (user, statusCode, res, options = {}) => {
 
   const cookieExpiryDays = rememberMe ? 7 : 1;
 
+  const isProduction = process.env.NODE_ENV === "production";
+
   // Options for cookies
-  const cookieOptions  = {
+  const cookieOptions = {
     expires: new Date(Date.now() + cookieExpiryDays * 24 * 60 * 60 * 1000),
     httpOnly: true,
-    // while at production
-    // sameSite: "none",
-    // secure: true,
-
-    // while at development
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "PRODUCTION",
+    sameSite: isProduction ? "none" : "lax",
+    secure: isProduction,
   };
 
-  res.status(statusCode).cookie(cookieName, token, cookieOptions ).json({
+  res.status(statusCode).cookie(cookieName, token, cookieOptions).json({
     success: true,
     user,
     token,
