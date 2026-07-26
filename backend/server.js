@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
+import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+
 
 // .env load
 dotenv.config();
@@ -24,6 +26,12 @@ process.on("uncaughtException", (err) => {
 try {
   await connectDatabase();
   console.log("Database connected successfully");
+  // Uploads folder create
+  const uploadDir = path.join(__dirname, "uploads");
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+    console.log("📁 Uploads folder created");
+  }
 } catch (error) {
   console.log("Database connection failed:", error.message);
   process.exit(1);

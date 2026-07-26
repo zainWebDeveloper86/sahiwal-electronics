@@ -1,5 +1,4 @@
 import express from "express";
-import upload from "../multer.js";
 import {
   createOrder,
   getAllSellerOrder,

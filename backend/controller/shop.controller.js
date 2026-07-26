@@ -66,7 +66,7 @@ export const createShop = catchAsyncErrors(async (req, res, next) => {
     };
 
     const activationToken = createActivationToken(seller);
-    const activationUrl = `http://localhost:5173/activation/${activationToken}?type=seller`;
+    const activationUrl = `${process.env.CLIENT_URL}/activation/${activationToken}?type=seller`;
 
     await sendMail({
       email: seller.email,

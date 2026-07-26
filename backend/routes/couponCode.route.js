@@ -1,5 +1,4 @@
 import express from "express";
-import upload from "../multer.js";
 import { createCouponCode, deleteCoupon, getAllCoupons,getCouponCode } from "../controller/couponCode.controller.js";
 import { isSellerAuthenticated } from "../middleware/auth.js";
 

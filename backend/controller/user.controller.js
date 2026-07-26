@@ -47,7 +47,7 @@ export const createUser = catchAsyncErrors(async (req, res, next) => {
     };
 
     const activationToken = createActivationToken(user);
-    const activationUrl = `http://localhost:5173/activation/${activationToken}?type=user`;
+    const activationUrl = `${process.env.CLIENT_URL}/activation/${activationToken}?type=user`;
 
     await sendMail({
       email: user.email,

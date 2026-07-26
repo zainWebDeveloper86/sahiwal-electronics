@@ -8,6 +8,7 @@ import { axiosServerInstance } from "../../server.js";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { loadUser } from "../../redux/actions/user.js";
+import { FaHome } from "react-icons/fa";
 
 const Singup = () => {
   const [email, setEmail] = useState("");
@@ -67,7 +68,17 @@ const Singup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-surface flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
+      <button
+        onClick={() => navigate("/")}
+        className="cursor-pointer absolute top-4 left-4 md:top-6 md:left-8 lg:top-8 lg:left-12 z-10 flex items-center gap-2 px-4 py-2 bg-white border border-divider rounded-lg text-ink hover:text-voltage hover:border-voltage transition-all duration-200 shadow-sm hover:shadow-md font-body text-sm font-medium group"
+      >
+        <FaHome
+          size={16}
+          className="text-ink/60 group-hover:text-voltage transition-colors"
+        />
+        Go to Home
+      </button>
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-display font-[700] text-ink">
           Create your account
@@ -77,7 +88,10 @@ const Singup = () => {
         <div className="bg-white py-8 px-4 border border-divider rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="name" className="block text-sm font-body font-medium text-ink">
+              <label
+                htmlFor="name"
+                className="block text-sm font-body font-medium text-ink"
+              >
                 Full Name
               </label>
               <div className="mt-1">
@@ -94,7 +108,10 @@ const Singup = () => {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-body font-medium text-ink">
+              <label
+                htmlFor="email"
+                className="block text-sm font-body font-medium text-ink"
+              >
                 Email address
               </label>
               <div className="mt-1">
@@ -111,7 +128,10 @@ const Singup = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-body font-medium text-ink">
+              <label
+                htmlFor="password"
+                className="block text-sm font-body font-medium text-ink"
+              >
                 Password
               </label>
               <div className="mt-1 relative">
