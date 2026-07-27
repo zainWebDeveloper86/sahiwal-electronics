@@ -2,6 +2,7 @@ import { React, useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import styles from "../../styles/styles.js";
+import { FaHome } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { axiosServerInstance } from "../../server.js";
 import { toast } from "react-toastify";
