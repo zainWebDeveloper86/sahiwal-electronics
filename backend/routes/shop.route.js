@@ -42,7 +42,7 @@ router.delete("/delete-seller/:id", isAuthenticated, isAdmin, deleteSeller);
 
 // Seller-only routes
 router.get("/getSeller", isSellerAuthenticated, loadShop);
-router.get("/logout-seller", isSellerAuthenticated, logoutShop);
+router.post("/logout-seller", isSellerAuthenticated, logoutShop);
 router.put(
   "/update-shop-avatar",
   isSellerAuthenticated,

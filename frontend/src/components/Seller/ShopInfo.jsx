@@ -59,11 +59,11 @@ const ShopInfo = ({ isOwner }) => {
 
   const logoutHandler = async () => {
     axiosServerInstance
-      .get("/shop/logout-seller")
+      .post("/shop/logout-seller")
       .then((res) => {
         toast.success(res.data.message);
-        navigate("/shop-login");
         dispatch({ type: "LogoutSeller" });
+        navigate("/shop-login");
       })
       .catch((error) => {
         toast.error(error.response?.data?.message || "Logout failed");

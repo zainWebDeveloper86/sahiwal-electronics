@@ -19,7 +19,7 @@ const AdminSideBar = ({ active }) => {
 
   const logoutHandler = async () => {
     try {
-      await axiosServerInstance.get("/user/logout", {
+      await axiosServerInstance.post("/user/logout", {
         withCredentials: true,
       });
       toast.success("Logout successful!");
