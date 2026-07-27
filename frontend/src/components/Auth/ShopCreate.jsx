@@ -59,7 +59,17 @@ const ShopCreate = () => {
   const labelClass = "block text-sm font-body font-medium text-ink";
 
   return (
-    <div className="min-h-screen bg-surface flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-surface flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
+      <button
+        onClick={() => navigate("/")}
+        className="cursor-pointer absolute top-4 left-4 md:top-6 md:left-8 lg:top-8 lg:left-12 z-10 flex items-center gap-2 px-4 py-2 bg-white border border-divider rounded-lg text-ink hover:text-voltage hover:border-voltage transition-all duration-200 shadow-sm hover:shadow-md font-body text-sm font-medium group"
+      >
+        <FaHome
+          size={16}
+          className="text-ink/60 group-hover:text-voltage transition-colors"
+        />
+        Go to Home
+      </button>
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-display font-[700] text-ink">
           Register as a seller
@@ -208,7 +218,10 @@ const ShopCreate = () => {
             </div>
             <div className={`${styles.noramlFlex} w-full font-body`}>
               <h4 className="text-ink/70">Already have an account?</h4>
-              <Link to="/shop-login" className="text-voltage pl-2 hover:underline">
+              <Link
+                to="/shop-login"
+                className="text-voltage pl-2 hover:underline"
+              >
                 Sign in
               </Link>
             </div>

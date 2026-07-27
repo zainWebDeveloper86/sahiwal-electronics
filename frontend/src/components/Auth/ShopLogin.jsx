@@ -47,7 +47,17 @@ const ShopLogin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-surface flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
+      <button
+        onClick={() => navigate("/")}
+        className="cursor-pointer absolute top-4 left-4 md:top-6 md:left-8 lg:top-8 lg:left-12 z-10 flex items-center gap-2 px-4 py-2 bg-white border border-divider rounded-lg text-ink hover:text-voltage hover:border-voltage transition-all duration-200 shadow-sm hover:shadow-md font-body text-sm font-medium group"
+      >
+        <FaHome
+          size={16}
+          className="text-ink/60 group-hover:text-voltage transition-colors"
+        />
+        Go to Home
+      </button>
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-display font-[700] text-ink">
           Login to your shop
@@ -57,7 +67,10 @@ const ShopLogin = () => {
         <div className="bg-white py-8 px-4 border border-divider rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="email" className="block text-sm font-body font-medium text-ink">
+              <label
+                htmlFor="email"
+                className="block text-sm font-body font-medium text-ink"
+              >
                 Email address
               </label>
               <div className="mt-1">
@@ -73,7 +86,10 @@ const ShopLogin = () => {
               </div>
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-body font-medium text-ink">
+              <label
+                htmlFor="password"
+                className="block text-sm font-body font-medium text-ink"
+              >
                 Password
               </label>
               <div className="mt-1 relative">
@@ -110,12 +126,18 @@ const ShopLogin = () => {
                   id="remember-me"
                   className="h-4 w-4 text-voltage focus:ring-voltage border-divider rounded"
                 />
-                <label htmlFor="remember-me" className="ml-2 block text-sm font-body text-ink">
+                <label
+                  htmlFor="remember-me"
+                  className="ml-2 block text-sm font-body text-ink"
+                >
                   Remember me
                 </label>
               </div>
               <div className="text-sm">
-                <Link to="/shop/forgot-password" className="font-body font-medium text-voltage hover:underline">
+                <Link
+                  to="/shop/forgot-password"
+                  className="font-body font-medium text-voltage hover:underline"
+                >
                   Forgot your password?
                 </Link>
               </div>
@@ -131,7 +153,10 @@ const ShopLogin = () => {
             </div>
             <div className={`${styles.noramlFlex} w-full font-body`}>
               <h4 className="text-ink/70">Not have any account?</h4>
-              <Link to="/shop-create" className="text-voltage pl-2 hover:underline">
+              <Link
+                to="/shop-create"
+                className="text-voltage pl-2 hover:underline"
+              >
                 Sign Up
               </Link>
             </div>
