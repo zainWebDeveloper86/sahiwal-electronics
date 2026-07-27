@@ -12,10 +12,11 @@ import orderRouter from "./routes/order.route.js";
 import conversationRouter from "./routes/conversation.route.js";
 import messageRouter from "./routes/message.route.js";
 import withdrawRouter from "./routes/withdraw.route.js";
-
+import connectDatabase from "./config/database.js";
 import cors from "cors";
 
 const app = express();
+await connectDatabase();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -41,5 +42,12 @@ app.use("/api/v2/withdraw", withdrawRouter);
 
 // error handling middleware
 app.use(errorMiddleware);
+
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Backend is running",
+  });
+});
 
 export default app;
