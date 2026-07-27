@@ -7,8 +7,12 @@ import { axiosServerInstance } from "../../../server.js";
 import UserMessageList from "./UserMessageList.jsx";
 import UserChatInbox from "./UserChatInbox.jsx";
 
-const ENDPOINT = "http://localhost:8000";
-const socket = socketIO(ENDPOINT, { transports: ["websocket"] });
+const ENDPOINT = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
+
+const socket = socketIO(ENDPOINT, {
+  path: "/socket.io",
+  transports: ["websocket"],
+});
 
 const UserInbox = () => {
   const { user, loading } = useSelector((state) => state.user);
@@ -221,8 +225,12 @@ const UserInbox = () => {
               ))
             ) : (
               <div className="text-center py-12">
-                <p className="text-lg font-body text-ink/60">No conversations yet.</p>
-                <p className="text-sm font-body text-ink/40 mt-1">Start chatting with sellers!</p>
+                <p className="text-lg font-body text-ink/60">
+                  No conversations yet.
+                </p>
+                <p className="text-sm font-body text-ink/40 mt-1">
+                  Start chatting with sellers!
+                </p>
               </div>
             )}
           </div>

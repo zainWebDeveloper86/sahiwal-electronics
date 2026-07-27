@@ -7,8 +7,12 @@ import { axiosServerInstance } from "../../../server.js";
 import SellerMessageList from "./SellerMessageList.jsx";
 import SellerMessageInbox from "./SellerMessageInbox.jsx";
 
-const ENDPOINT = "http://localhost:8000";
-const socket = socketIO(ENDPOINT, { transports: ["websocket"] });
+const ENDPOINT = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
+
+const socket = socketIO(ENDPOINT, {
+  path: "/socket.io",
+  transports: ["websocket"],
+});
 
 const ShopInbox = () => {
   const [conversations, setConversations] = useState([]);
@@ -222,8 +226,12 @@ const ShopInbox = () => {
               ))
             ) : (
               <div className="text-center py-12">
-                <p className="text-lg font-body text-ink/60">No conversations yet.</p>
-                <p className="text-sm font-body text-ink/40 mt-1">Start chatting with your customers!</p>
+                <p className="text-lg font-body text-ink/60">
+                  No conversations yet.
+                </p>
+                <p className="text-sm font-body text-ink/40 mt-1">
+                  Start chatting with your customers!
+                </p>
               </div>
             )}
           </div>
