@@ -41,7 +41,7 @@ app.use("/api/v2/message", messageRouter);
 app.use("/api/v2/withdraw", withdrawRouter);
 
 // error handling middleware
-// app.use(errorMiddleware);
+app.use(errorMiddleware);
 
 app.get("/", (req, res) => {
   res.status(200).json({
@@ -51,12 +51,3 @@ app.get("/", (req, res) => {
 });
 
 export default app;
-// import express from "express";
-
-// const app = express();
-
-// app.get("/", (req, res) => {
-//   res.send("Backend Running 🚀");
-// });
-
-// export default app;
