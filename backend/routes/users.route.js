@@ -34,7 +34,7 @@ router.post("/google-login", googleLogin);
 
 // Protected routes (User only)
 router.get("/getuser", isAuthenticated, loadUser);
-router.get("/logout", isAuthenticated, logoutUser);
+router.post("/logout", isAuthenticated, logoutUser);
 router.put("/update-user-info", isAuthenticated, updateUserInfo);
 router.put(
   "/update-user-avatar",

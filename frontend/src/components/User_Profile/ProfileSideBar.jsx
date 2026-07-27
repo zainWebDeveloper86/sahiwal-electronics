@@ -21,11 +21,11 @@ const ProfileSidebar = ({ setActive, active }) => {
 
   const logoutHandler = () => {
     axiosServerInstance
-      .get("/user/logout")
+      .post("/user/logout")
       .then((res) => {
         toast.success(res.data.message);
-        navigate("/login");
         dispatch({ type: "LogoutUser" });
+        navigate("/login");
       })
       .catch((error) => {
         toast.error(error.response?.data?.message);

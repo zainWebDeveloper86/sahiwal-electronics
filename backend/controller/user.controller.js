@@ -147,6 +147,8 @@ export const loadUser = catchAsyncErrors(async (req, res, next) => {
 export const logoutUser = catchAsyncErrors(async (req, res, next) => {
   try {
     const isProduction = process.env.NODE_ENV === "production";
+    // // Extra safety: explicitly tell any CDN/browser not to cache this response
+    // res.set("Cache-Control", "no-store");
 
     res.cookie("token", null, {
       expires: new Date(Date.now()),
