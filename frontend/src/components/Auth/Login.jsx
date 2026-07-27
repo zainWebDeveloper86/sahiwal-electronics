@@ -183,6 +183,13 @@ const Login = () => {
               <GoogleLogin
                 onSuccess={handleLoginWithGoogle}
                 onError={() => toast.error("Google login failed")}
+                text="signin_with"
+                theme="outline"
+                shape="pill"
+                width="100%"
+                type="popup"
+                useOneTap={false}
+                auto_select={false}
               />
             </div>
           </div>

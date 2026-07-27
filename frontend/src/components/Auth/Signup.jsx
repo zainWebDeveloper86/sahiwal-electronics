@@ -216,6 +216,13 @@ const Singup = () => {
               <GoogleLogin
                 onSuccess={handleLoginWithGoogle}
                 onError={() => toast.error("Google sign-up failed")}
+                text="signin_with"
+                theme="outline"
+                shape="pill"
+                width="100%"
+                type="popup"
+                useOneTap={false}
+                auto_select={false}
               />
             </div>
           </div>
