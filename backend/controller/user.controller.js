@@ -1,16 +1,15 @@
 import express from "express";
 import cloudinary from "../config/cloudinary.js";
+import uploadToCloudinary from "../utils/uploadToCloudinary.js";
 import crypto from "crypto";
 import { OAuth2Client } from "google-auth-library";
 import User from "../model/user.model.js";
 import upload from "../multer.js";
 import ErrorHandler from "../utils/ErrorHandler.js";
-import fs from "fs";
 import jwt from "jsonwebtoken";
 import sendMail from "../utils/sendMail.js";
 import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
 import sendToken from "../utils/jwtToken.js";
-import path from "path";
 
 // create activation token
 const createActivationToken = (user) => {
@@ -20,27 +19,28 @@ const createActivationToken = (user) => {
 };
 
 // user account creation
+
 export const createUser = catchAsyncErrors(async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
     const userEmail = await User.findOne({ email });
 
     if (userEmail) {
-      // delete all images from Cloudinary
-      await cloudinary.uploader.destroy(req.file.filename);
       return next(new ErrorHandler("User already exists", 400));
     }
 
-    const filename = req.file.filename;
-    const filePath = req.file.path;
+    const result = await uploadToCloudinary(
+      req.file.buffer,
+      "sahiwal-electronics/users",
+    );
 
     const user = {
       name,
       email,
       password,
       avatar: {
-        public_id: filename,
-        url: filePath,
+        public_id: result.public_id,
+        url: result.secure_url,
       },
     };
 
@@ -209,12 +209,14 @@ export const updateUserAvator = catchAsyncErrors(async (req, res, next) => {
       await cloudinary.uploader.destroy(user.avatar.public_id);
     }
 
-    const filename = req.file.filename;
-    const filePath = req.file.path;
+    const result = await uploadToCloudinary(
+      req.file.buffer,
+      "sahiwal-electronics/users",
+    );
 
     user.avatar = {
-      public_id: filename,
-      url: filePath,
+      public_id: result.public_id,
+      url: result.secure_url,
     };
 
     await user.save();

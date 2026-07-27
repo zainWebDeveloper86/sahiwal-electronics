@@ -31,8 +31,8 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.7.2",
     "multer": "^2.2.0",
-    "multer-storage-cloudinary": "^2.2.1",
     "nodemailer": "^9.0.1",
-    "socket.io": "^4.8.3"
+    "socket.io": "^4.8.3",
+    "streamifier": "^0.1.1"
   }
 }

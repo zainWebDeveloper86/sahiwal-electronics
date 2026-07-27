@@ -1,17 +1,16 @@
 import express from "express";
 import cloudinary from "../config/cloudinary.js";
+import uploadToCloudinary from "../utils/uploadToCloudinary.js";
 import crypto from "crypto";
 import { OAuth2Client } from "google-auth-library";
 import Shop from "../model/shop.model.js";
 import Product from "../model/product.model.js";
 import upload from "../multer.js";
 import ErrorHandler from "../utils/ErrorHandler.js";
-import fs from "fs";
 import jwt from "jsonwebtoken";
 import sendMail from "../utils/sendMail.js";
 import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
 import sendToken from "../utils/jwtToken.js";
-import path from "path";
 
 // create activation token
 const createActivationToken = (seller) => {
@@ -21,6 +20,7 @@ const createActivationToken = (seller) => {
 };
 
 //  create shop account
+
 export const createShop = catchAsyncErrors(async (req, res, next) => {
   try {
     const { email, name, password, address, phoneNumber, zipCode } = req.body;
@@ -41,22 +41,21 @@ export const createShop = catchAsyncErrors(async (req, res, next) => {
     const sellerEmail = await Shop.findOne({ email });
 
     if (sellerEmail) {
-
-      // delete all images from Cloudinary
-      await cloudinary.uploader.destroy(req.file.filename);
       return next(new ErrorHandler("Shop already exists", 400));
     }
 
-    const filename = req.file.filename;
-    const filePath = req.file.path;
+    const result = await uploadToCloudinary(
+      req.file.buffer,
+      "sahiwal-electronics/shops",
+    );
 
     const seller = {
       name,
       email,
       password,
       avatar: {
-        public_id: filename,
-        url: filePath,
+        public_id: result.public_id,
+        url: result.secure_url,
       },
       address: address,
       phoneNumber: parsedPhoneNumber,
@@ -71,9 +70,10 @@ export const createShop = catchAsyncErrors(async (req, res, next) => {
       subject: "Activate your Shop",
       message: `Hello ${seller.name}, please click on the link to activate your shop: ${activationUrl}`,
     });
+
     res.status(201).json({
       success: true,
-      message: `please check your email:- ${seller.email} to activate your shop!`,
+      message: `Please check your email:- ${seller.email} to activate your shop!`,
     });
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
@@ -225,23 +225,24 @@ export const updateShopAvatar = catchAsyncErrors(async (req, res, next) => {
       return next(new ErrorHandler("Shop not found", 404));
     }
 
-    // Delete old avatar if exists (local storage)
+    // Delete old avatar from Cloudinary
     if (seller.avatar?.public_id) {
       await cloudinary.uploader.destroy(seller.avatar.public_id);
     }
 
-    // Set new avatar
-    const filename = req.file.filename;
-    const filePath = req.file.path;
+    const result = await uploadToCloudinary(
+      req.file.buffer,
+      "sahiwal-electronics/shops",
+    );
 
     seller.avatar = {
-      public_id: filename,
-      url: filePath,
+      public_id: result.public_id,
+      url: result.secure_url,
     };
 
     await seller.save();
 
-    // for updating content
+    // Update all products of this shop with new shop info
     await Product.updateMany(
       { shopId: seller._id.toString() },
       { $set: { shop: seller } },

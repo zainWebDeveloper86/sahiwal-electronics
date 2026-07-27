@@ -1,11 +1,11 @@
 import express from "express";
 import cloudinary from "../config/cloudinary.js";
+import uploadToCloudinary from "../utils/uploadToCloudinary.js";
 import Shop from "../model/shop.model.js";
 import Order from "../model/order.model.js";
 import Product from "../model/product.model.js";
 import ErrorHandler from "../utils/ErrorHandler.js";
 import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
-import fs from "fs";
 
 // create product
 export const createProduct = catchAsyncErrors(async (req, res, next) => {
@@ -15,10 +15,14 @@ export const createProduct = catchAsyncErrors(async (req, res, next) => {
     if (!shop) {
       return next(new ErrorHandler("Shop Id is invalid!", 400));
     } else {
-      const files = req.files;
-      const imageUrls = files.map((file) => ({
-        public_id: file.filename,
-        url: file.path, // Cloudinary URL
+      const uploadPromises = req.files.map((file) =>
+        uploadToCloudinary(file.buffer, "sahiwal-electronics/products"),
+      );
+      const results = await Promise.all(uploadPromises);
+
+      const imageUrls = results.map((result) => ({
+        public_id: result.public_id,
+        url: result.secure_url,
       }));
 
       const productData = req.body;

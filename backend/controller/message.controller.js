@@ -1,15 +1,17 @@
 import Messages from "../model/message.model.js";
 import Conversation from "../model/conversation.model.js";
+import uploadToCloudinary from "../utils/uploadToCloudinary.js"; // ⬅️ Add this import at top
 import ErrorHandler from "../utils/ErrorHandler.js";
 import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
 
 // =============================================
 //  CREATE NEW MESSAGE (with optional image upload)
 // =============================================
+
 export const createMessage = catchAsyncErrors(async (req, res, next) => {
   try {
     const { conversationId, text, sender } = req.body;
-    
+
     if (req.authId !== sender) {
       return next(new ErrorHandler("Unauthorized", 403));
     }
@@ -21,9 +23,13 @@ export const createMessage = catchAsyncErrors(async (req, res, next) => {
 
     let images = [];
     if (req.files && req.files.length > 0) {
-      images = req.files.map((file) => ({
-        public_id: file.filename,
-        url: file.path,
+      const uploadPromises = req.files.map((file) =>
+        uploadToCloudinary(file.buffer, "sahiwal-electronics/chat"),
+      );
+      const results = await Promise.all(uploadPromises);
+      images = results.map((result) => ({
+        public_id: result.public_id,
+        url: result.secure_url,
       }));
     }
 
