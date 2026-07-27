@@ -39,7 +39,7 @@ const Footer = () => {
             Sahiwal <span className="text-copper">Electronics</span>
           </span>
           <br />
-          <p className="font-body text-white/70 text-sm">
+          <p className="font-body text-white/70 text-sm mt-2">
             Your trusted multi-vendor marketplace for electronics — genuine
             products, verified sellers.
           </p>
