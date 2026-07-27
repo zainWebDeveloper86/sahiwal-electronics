@@ -1,4 +1,5 @@
 import express from "express";
+import cloudinary from "../config/cloudinary.js";
 import crypto from "crypto";
 import { OAuth2Client } from "google-auth-library";
 import Shop from "../model/shop.model.js";
@@ -26,7 +27,6 @@ export const createShop = catchAsyncErrors(async (req, res, next) => {
     const parsedPhoneNumber = Number(phoneNumber);
     const parsedZipCode = Number(zipCode);
 
-    // Validate required fields
     if (
       !email ||
       !name ||
@@ -41,16 +41,14 @@ export const createShop = catchAsyncErrors(async (req, res, next) => {
     const sellerEmail = await Shop.findOne({ email });
 
     if (sellerEmail) {
-      const filename = req.file.filename;
-      const filePath = `uploads/${filename}`;
-      fs.unlink(filePath, (err) => {
-        if (err) console.log(err);
-      });
+
+      // delete all images from Cloudinary
+      await cloudinary.uploader.destroy(req.file.filename);
       return next(new ErrorHandler("Shop already exists", 400));
     }
 
     const filename = req.file.filename;
-    const filePath = `uploads/${filename}`;
+    const filePath = req.file.path;
 
     const seller = {
       name,
@@ -228,16 +226,13 @@ export const updateShopAvatar = catchAsyncErrors(async (req, res, next) => {
     }
 
     // Delete old avatar if exists (local storage)
-    if (seller.avatar?.url) {
-      const oldPath = path.join(process.cwd(), seller.avatar.url);
-      if (fs.existsSync(oldPath)) {
-        fs.unlinkSync(oldPath);
-      }
+    if (seller.avatar?.public_id) {
+      await cloudinary.uploader.destroy(seller.avatar.public_id);
     }
 
     // Set new avatar
     const filename = req.file.filename;
-    const filePath = `uploads/${filename}`;
+    const filePath = req.file.path;
 
     seller.avatar = {
       public_id: filename,
@@ -321,11 +316,8 @@ export const deleteSeller = catchAsyncErrors(async (req, res, next) => {
     }
 
     // Delete seller avatar from local storage
-    if (seller.avatar?.url) {
-      const oldPath = path.join(process.cwd(), seller.avatar.url);
-      if (fs.existsSync(oldPath)) {
-        fs.unlinkSync(oldPath);
-      }
+    if (seller.avatar?.public_id) {
+      await cloudinary.uploader.destroy(seller.avatar.public_id);
     }
 
     await Shop.findByIdAndDelete(req.params.id);

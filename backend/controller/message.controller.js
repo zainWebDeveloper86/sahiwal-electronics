@@ -23,7 +23,7 @@ export const createMessage = catchAsyncErrors(async (req, res, next) => {
     if (req.files && req.files.length > 0) {
       images = req.files.map((file) => ({
         public_id: file.filename,
-        url: `uploads/${file.filename}`,
+        url: file.path,
       }));
     }
 

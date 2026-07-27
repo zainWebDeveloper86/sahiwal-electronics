@@ -1,4 +1,5 @@
 import express from "express";
+import cloudinary from "../config/cloudinary.js";
 import Shop from "../model/shop.model.js";
 import Order from "../model/order.model.js";
 import Product from "../model/product.model.js";
@@ -17,7 +18,7 @@ export const createProduct = catchAsyncErrors(async (req, res, next) => {
       const files = req.files;
       const imageUrls = files.map((file) => ({
         public_id: file.filename,
-        url: `uploads/${file.filename}`,
+        url: file.path, // Cloudinary URL
       }));
 
       const productData = req.body;
@@ -59,13 +60,10 @@ export const deleteProduct = catchAsyncErrors(async (req, res, next) => {
       return next(new ErrorHandler("Product is not found with this id", 404));
     }
 
-    productData.images.forEach((image) => {
-      const filePath = `uploads/${image.public_id}`;
-
-      fs.unlink(filePath, (err) => {
-        if (err) console.log(err);
-      });
-    });
+    // delete all images from Cloudinary
+    for (const image of productData.images) {
+      await cloudinary.uploader.destroy(image.public_id);
+    }
 
     res.status(200).json({
       success: true,

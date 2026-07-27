@@ -6,4 +6,5 @@ export const axiosServerInstance = axios.create({
   withCredentials: true,
 });
 
-export const backend_url = import.meta.env.VITE_SERVER_URL;
+// export const backend_url = import.meta.env.VITE_SERVER_URL; // for local
+export const backend_url = ""; // for live(cloudinary handle the complete url)

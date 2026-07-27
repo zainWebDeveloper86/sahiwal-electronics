@@ -1,4 +1,5 @@
 import express from "express";
+import cloudinary from "../config/cloudinary.js";
 import crypto from "crypto";
 import { OAuth2Client } from "google-auth-library";
 import User from "../model/user.model.js";
@@ -25,16 +26,13 @@ export const createUser = catchAsyncErrors(async (req, res, next) => {
     const userEmail = await User.findOne({ email });
 
     if (userEmail) {
-      const filename = req.file.filename;
-      const filePath = `uploads/${filename}`;
-      fs.unlink(filePath, (err) => {
-        if (err) console.log(err);
-      });
+      // delete all images from Cloudinary
+      await cloudinary.uploader.destroy(req.file.filename);
       return next(new ErrorHandler("User already exists", 400));
     }
 
     const filename = req.file.filename;
-    const filePath = `uploads/${filename}`;
+    const filePath = req.file.path;
 
     const user = {
       name,
@@ -207,15 +205,12 @@ export const updateUserAvator = catchAsyncErrors(async (req, res, next) => {
     if (!user) {
       return next(new ErrorHandler("User not found", 400));
     }
-    if (user.avatar && user.avatar.url) {
-      const oldPath = path.join(process.cwd(), user.avatar.url);
-      if (fs.existsSync(oldPath)) {
-        fs.unlinkSync(oldPath);
-      }
+    if (user.avatar?.public_id) {
+      await cloudinary.uploader.destroy(user.avatar.public_id);
     }
 
     const filename = req.file.filename;
-    const filePath = `uploads/${filename}`;
+    const filePath = req.file.path;
 
     user.avatar = {
       public_id: filename,
@@ -362,12 +357,9 @@ export const deleteUser = catchAsyncErrors(async (req, res, next) => {
       return next(new ErrorHandler("User not found with this id", 404));
     }
 
-    // Delete user avatar from local storage
-    if (user.avatar?.url) {
-      const oldPath = path.join(process.cwd(), user.avatar.url);
-      if (fs.existsSync(oldPath)) {
-        fs.unlinkSync(oldPath);
-      }
+    // Delete user avatar from storage
+    if (user.avatar?.public_id) {
+      await cloudinary.uploader.destroy(user.avatar.public_id);
     }
 
     await User.findByIdAndDelete(req.params.id);

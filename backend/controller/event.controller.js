@@ -1,4 +1,5 @@
 import express from "express";
+import cloudinary from "../config/cloudinary.js";
 import Shop from "../model/shop.model.js";
 import Event from "../model/event.model.js";
 import ErrorHandler from "../utils/ErrorHandler.js";
@@ -16,7 +17,7 @@ export const createEvent = catchAsyncErrors(async (req, res, next) => {
       const files = req.files;
       const imageUrls = files.map((file) => ({
         public_id: file.filename,
-        url: `uploads/${file.filename}`,
+        url: file.path,
       }));
 
       const productData = req.body;
@@ -58,13 +59,10 @@ export const deleteEvent = catchAsyncErrors(async (req, res, next) => {
       return next(new ErrorHandler("Event is not found with this id", 404));
     }
 
-    eventData.images.forEach((image) => {
-      const filePath = `uploads/${image.public_id}`
-
-      fs.unlink(filePath, (err) => {
-        if (err) console.log(err);
-      });
-    });
+    // delete all images from Cloudinary
+    for (const image of eventData.images) {
+      await cloudinary.uploader.destroy(image.public_id);
+    }
 
     res.status(200).json({
       success: true,
