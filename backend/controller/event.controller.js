@@ -5,7 +5,6 @@ import Shop from "../model/shop.model.js";
 import Event from "../model/event.model.js";
 import ErrorHandler from "../utils/ErrorHandler.js";
 import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
-import fs from "fs";
 
 // create event
 export const createEvent = catchAsyncErrors(async (req, res, next) => {
