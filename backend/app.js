@@ -16,7 +16,6 @@ import connectDatabase from "./config/database.js";
 import cors from "cors";
 
 const app = express();
-await connectDatabase();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -27,9 +26,8 @@ app.use(
     credentials: true,
   }),
 );
-app.use("/uploads", express.static("uploads"));
 
-// here routes
+// Routes
 app.use("/api/v2/user", userRouter);
 app.use("/api/v2/shop", shopRouter);
 app.use("/api/v2/product", productRouter);
