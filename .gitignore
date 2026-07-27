@@ -15,6 +15,7 @@
 !package.json
 !package-lock.json
 !vercel.json 
+!frontend/src/assets/animations/*.json
 
 # =============================================
 # 📁 ARCHIVED FILES (Old code, not needed in repo)
