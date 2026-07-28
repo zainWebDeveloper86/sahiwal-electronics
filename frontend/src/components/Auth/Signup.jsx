@@ -28,7 +28,7 @@ const Singup = () => {
       localStorage.setItem("token", data.token);
 
       toast.success("Welcome!");
-      dispatch(loadUser());
+      await dispatch(loadUser());
       if (data.user?.role === "admin") {
         navigate("/admin/dashboard");
       } else {

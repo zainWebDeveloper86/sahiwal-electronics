@@ -20,14 +20,14 @@ const Login = () => {
 
   const handleLoginWithGoogle = async (credentialResponse) => {
     try {
-      await axiosServerInstance.post("/user/google-login", {
+      const {data} = await axiosServerInstance.post("/user/google-login", {
         credential: credentialResponse.credential,
       });
       // Save token to localStorage
       localStorage.setItem("token", data.token);
       
       toast.success("Logged in with Google!");
-      dispatch(loadUser());
+      await dispatch(loadUser());
       navigate("/");
     } catch (error) {
       toast.error(error.response?.data?.message || "Google login failed");
@@ -54,7 +54,7 @@ const Login = () => {
       } else {
         navigate("/");
       }
-      dispatch(loadUser());
+      await dispatch(loadUser());
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed");
     } finally {

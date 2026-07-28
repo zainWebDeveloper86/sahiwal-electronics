@@ -19,14 +19,14 @@ const ShopLogin = () => {
 
   const handleLoginWithGoogle = async (credentialResponse) => {
     try {
-      await axiosServerInstance.post("/shop/google-login", {
+      const { data } = await axiosServerInstance.post("/shop/google-login", {
         credential: credentialResponse.credential,
       });
       // Save seller token to localStorage
       localStorage.setItem("seller_token", data.token);
 
       toast.success("Logged in with Google!");
-      dispatch(loadSeller());
+      await dispatch(loadSeller());
       navigate("/dashboard");
     } catch (error) {
       toast.error(error.response?.data?.message || "Google login failed");
@@ -48,7 +48,7 @@ const ShopLogin = () => {
       localStorage.setItem("seller_token", res.data.token);
 
       toast.success("Login Success!");
-      dispatch(loadSeller());
+      await dispatch(loadSeller());
       navigate("/dashboard");
     } catch (err) {
       toast.error(err.response?.data?.message);
