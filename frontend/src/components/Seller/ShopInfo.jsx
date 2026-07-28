@@ -62,6 +62,9 @@ const ShopInfo = ({ isOwner }) => {
       .post("/shop/logout-seller")
       .then((res) => {
         toast.success(res.data.message);
+        // Remove seller token from localStorage
+        localStorage.removeItem("seller_token");
+        
         dispatch({ type: "LogoutSeller" });
         navigate("/shop-login");
       })
@@ -104,7 +107,9 @@ const ShopInfo = ({ isOwner }) => {
 
           <div className="p-3 border-b border-divider">
             <h5 className="font-body font-[600] text-ink">Total Products</h5>
-            <h4 className="font-mono text-ink/60">{shopProducts?.length || 0}</h4>
+            <h4 className="font-mono text-ink/60">
+              {shopProducts?.length || 0}
+            </h4>
           </div>
 
           <div className="p-3 border-b border-divider">
@@ -143,7 +148,9 @@ const ShopInfo = ({ isOwner }) => {
             <div className="py-3 px-4 flex flex-col gap-2">
               <Link to="/settings">
                 <div className="w-full h-[42px] rounded-md bg-voltage flex items-center justify-center hover:opacity-90 transition-opacity">
-                  <span className="text-white font-body font-[500]">Edit Shop</span>
+                  <span className="text-white font-body font-[500]">
+                    Edit Shop
+                  </span>
                 </div>
               </Link>
               <div

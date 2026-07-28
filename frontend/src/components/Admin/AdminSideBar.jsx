@@ -23,6 +23,9 @@ const AdminSideBar = ({ active }) => {
         withCredentials: true,
       });
       toast.success("Logout successful!");
+      // Remove token from localStorage
+      localStorage.removeItem("token");
+
       dispatch({ type: "LogoutUser" });
       navigate("/login");
     } catch (error) {
@@ -34,10 +37,25 @@ const AdminSideBar = ({ active }) => {
     { id: 1, icon: RxDashboard, label: "Dashboard", path: "/admin/dashboard" },
     { id: 2, icon: FiShoppingBag, label: "All Orders", path: "/admin/orders" },
     { id: 3, icon: GrWorkshop, label: "All Sellers", path: "/admin/sellers" },
-    { id: 4, icon: HiOutlineUserGroup, label: "All Users", path: "/admin/users" },
+    {
+      id: 4,
+      icon: HiOutlineUserGroup,
+      label: "All Users",
+      path: "/admin/users",
+    },
     { id: 5, icon: BsHandbag, label: "All Products", path: "/admin/products" },
-    { id: 6, icon: MdOutlineLocalOffer, label: "All Events", path: "/admin/events" },
-    { id: 7, icon: CiMoneyBill, label: "Withdraw Request", path: "/admin/withdraw-request" },
+    {
+      id: 6,
+      icon: MdOutlineLocalOffer,
+      label: "All Events",
+      path: "/admin/events",
+    },
+    {
+      id: 7,
+      icon: CiMoneyBill,
+      label: "Withdraw Request",
+      path: "/admin/withdraw-request",
+    },
     { id: 8, icon: CiSettings, label: "Settings", path: "/admin/settings" },
   ];
 

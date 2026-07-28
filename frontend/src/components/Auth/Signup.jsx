@@ -24,6 +24,9 @@ const Singup = () => {
       const { data } = await axiosServerInstance.post("/user/google-login", {
         credential: credentialResponse.credential,
       });
+      // Save token to localStorage
+      localStorage.setItem("token", data.token);
+
       toast.success("Welcome!");
       dispatch(loadUser());
       if (data.user?.role === "admin") {

@@ -6,14 +6,14 @@ import jwt from "jsonwebtoken";
 
 // for normal user
 export const isAuthenticated = catchAsyncErrors(async (req, res, next) => {
-  const { token } = req.cookies;
+  // Cookie mile toh usay priority do (local dev), warna header se fallback lo (cross-site production)
+  const token = req.cookies.token || req.headers["x-auth-token"];
 
   if (!token) {
     return next(new ErrorHandler("Please login to continue", 401));
   }
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-
   req.user = await User.findById(decoded.id);
 
   next();
@@ -22,7 +22,8 @@ export const isAuthenticated = catchAsyncErrors(async (req, res, next) => {
 // for seller/shop user
 export const isSellerAuthenticated = catchAsyncErrors(
   async (req, res, next) => {
-    const { seller_token } = req.cookies; // seller_token
+    const seller_token =
+      req.cookies.seller_token || req.headers["x-seller-token"];
 
     if (!seller_token) {
       return next(new ErrorHandler("Please login as seller to continue", 401));
@@ -38,7 +39,9 @@ export const isSellerAuthenticated = catchAsyncErrors(
 // for communiction/chat in both seller and client
 export const isAuthenticatedEither = catchAsyncErrors(
   async (req, res, next) => {
-    const { token, seller_token } = req.cookies;
+    const token = req.cookies.token || req.headers["x-auth-token"];
+    const seller_token =
+      req.cookies.seller_token || req.headers["x-seller-token"];
 
     if (token) {
       const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);

@@ -23,6 +23,9 @@ const Login = () => {
       await axiosServerInstance.post("/user/google-login", {
         credential: credentialResponse.credential,
       });
+      // Save token to localStorage
+      localStorage.setItem("token", data.token);
+      
       toast.success("Logged in with Google!");
       dispatch(loadUser());
       navigate("/");
@@ -41,6 +44,9 @@ const Login = () => {
         password,
         rememberMe,
       });
+      // Save token to localStorage (fallback for blocked cookies)
+      localStorage.setItem("token", res.data.token);
+
       toast.success("Login Success!");
       const loggedInUser = res.data.user;
       if (loggedInUser?.role === "admin") {

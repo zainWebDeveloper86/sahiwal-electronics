@@ -24,6 +24,9 @@ const ProfileSidebar = ({ setActive, active }) => {
       .post("/user/logout")
       .then((res) => {
         toast.success(res.data.message);
+        // Remove token from localStorage
+        localStorage.removeItem("token");
+        
         dispatch({ type: "LogoutUser" });
         navigate("/login");
       })
@@ -36,7 +39,12 @@ const ProfileSidebar = ({ setActive, active }) => {
     { id: 1, icon: RxPerson, label: "Profile" },
     { id: 2, icon: HiOutlineShoppingBag, label: "Orders" },
     { id: 3, icon: HiOutlineReceiptRefund, label: "Refunds" },
-    { id: 4, icon: AiOutlineMessage, label: "Inbox", action: () => navigate("/inbox") },
+    {
+      id: 4,
+      icon: AiOutlineMessage,
+      label: "Inbox",
+      action: () => navigate("/inbox"),
+    },
     { id: 5, icon: MdOutlineTrackChanges, label: "Track Order" },
     { id: 6, icon: RiLockPasswordLine, label: "Change Password" },
     { id: 7, icon: TbAddressBook, label: "Address" },
@@ -57,11 +65,17 @@ const ProfileSidebar = ({ setActive, active }) => {
         >
           <item.icon
             size={20}
-            className={active === item.id ? "text-voltage" : "text-ink/50 group-hover:text-ink"}
+            className={
+              active === item.id
+                ? "text-voltage"
+                : "text-ink/50 group-hover:text-ink"
+            }
           />
           <span
             className={`pl-3 font-body font-medium 800px:block hidden ${
-              active === item.id ? "text-voltage" : "text-ink/60 group-hover:text-ink"
+              active === item.id
+                ? "text-voltage"
+                : "text-ink/60 group-hover:text-ink"
             } transition-colors`}
           >
             {item.label}

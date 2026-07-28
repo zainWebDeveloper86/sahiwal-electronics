@@ -22,6 +22,9 @@ const ShopLogin = () => {
       await axiosServerInstance.post("/shop/google-login", {
         credential: credentialResponse.credential,
       });
+      // Save seller token to localStorage
+      localStorage.setItem("seller_token", data.token);
+
       toast.success("Logged in with Google!");
       dispatch(loadSeller());
       navigate("/dashboard");
@@ -34,17 +37,24 @@ const ShopLogin = () => {
     e.preventDefault();
     if (isSubmitting) return;
     setIsSubmitting(true);
-    await axiosServerInstance
-      .post("/shop/login-shop", { email, password })
-      .then(() => {
-        toast.success("Login Success!");
-        dispatch(loadSeller());
-        navigate("/dashboard");
-      })
-      .catch((err) => {
-        toast.error(err.response?.data?.message);
-      })
-      .finally(() => setIsSubmitting(false));
+
+    try {
+      const res = await axiosServerInstance.post("/shop/login-shop", {
+        email,
+        password,
+      });
+
+      // Save seller token to localStorage
+      localStorage.setItem("seller_token", res.data.token);
+
+      toast.success("Login Success!");
+      dispatch(loadSeller());
+      navigate("/dashboard");
+    } catch (err) {
+      toast.error(err.response?.data?.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
