@@ -194,70 +194,56 @@ export const categoriesData = [
     title: "Computers and Laptops",
     subTitle: "",
     image_Url:
-      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800&q=80",
+      "https://images.unsplash.com/photo-1651241680016-cc9e407e7dc3?w=800&q=80",
   },
   {
     id: 2,
-    title: "cosmetics and body care",
-    subTitle: "",
-    image_Url:
-      "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&q=80",
-  },
-  {
-    id: 3,
-    title: "Accesories",
+    title: "Watches",
     subTitle: "",
     image_Url:
       "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80",
   },
   {
-    id: 4,
-    title: "Cloths",
-    subTitle: "",
-    image_Url:
-      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
-  },
-  {
-    id: 5,
-    title: "Shoes",
-    subTitle: "",
-    image_Url:
-      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80",
-  },
-  {
-    id: 6,
-    title: "Gifts",
-    subTitle: "",
-    image_Url:
-      "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=800&q=80",
-  },
-  {
-    id: 7,
-    title: "Pet Care",
-    subTitle: "",
-    image_Url:
-      "https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=800&q=80",
-  },
-  {
-    id: 8,
+    id: 3,
     title: "Mobile and Tablets",
     subTitle: "",
     image_Url:
-      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=800&q=80",
+      "https://images.unsplash.com/photo-1737280423340-a3dcb0f4c1d0?w=800&q=80",
   },
   {
-    id: 9,
+    id: 4,
+    title: "Accesories",
+    subTitle: "",
+    image_Url:
+      "https://images.unsplash.com/photo-1731616103600-3fe7ccdc5a59?w=800&q=80",
+  },
+  {
+    id: 5,
     title: "Music and Gaming",
     subTitle: "",
     image_Url:
-      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80",
+      "https://images.unsplash.com/photo-1501177835688-e27a80e70f5a?w=800&q=80",
   },
   {
-    id: 10,
-    title: "Others",
+    id: 6,
+    title: "Earbuds",
     subTitle: "",
     image_Url:
-      "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&q=80",
+      "https://images.unsplash.com/photo-1698244244114-b0eb90869056?w=800&q=80",
+  },
+  {
+    id: 7,
+    title: "Powerbanks",
+    subTitle: "",
+    image_Url:
+      "https://images.unsplash.com/photo-1586253634019-c77872f966f0?w=800&q=80",
+  },
+  {
+    id: 8,
+    title: "Earphones",
+    subTitle: "",
+    image_Url:
+      "https://images.unsplash.com/photo-1608156639585-b3a032ef9689?w=800&q=80",
   },
 ];
 

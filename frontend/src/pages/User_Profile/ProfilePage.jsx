@@ -15,11 +15,11 @@ const ProfilePage = () => {
         <Loader />
       ) : (
         <div className={`${styles.section} bg-surface py-10 min-h-screen`}>
-          <div className="w-full 800px:flex gap-6">
+          <div className="w-full flex gap-6">
             <div className="w-[50px] 800px:w-[280px] 800px:sticky 800px:top-10 self-start">
               <ProfileSidebar active={active} setActive={setActive} />
             </div>
-            <div className="w-full 800px:flex-1 mt-4 800px:mt-0">
+            <div className="w-full 800px:flex-1">
               <ProfileContent active={active} />
             </div>
           </div>

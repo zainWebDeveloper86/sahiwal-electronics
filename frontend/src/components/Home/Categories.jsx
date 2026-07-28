@@ -35,11 +35,11 @@ const Categories = () => {
         className={`${styles.section} bg-white border border-divider p-6 rounded-lg mb-12`}
         id="categories"
       >
-        <div className="grid grid-cols-1 gap-[5px] md:grid-cols-2 md:gap-[10px] lg:grid-cols-4 lg:gap-[20px] xl:grid-cols-5 xl:gap-[30px]">
+        <div className="grid grid-cols-1 gap-[5px] md:grid-cols-2 md:gap-[10px] lg:grid-cols-4 lg:gap-[20px] xl:gap-[30px]">
           {categoriesData &&
             categoriesData.map((i) => (
               <div
-                className="w-full h-[100px] flex items-center justify-between cursor-pointer overflow-hidden rounded-md hover:bg-surface transition-colors px-2"
+                className="w-full h-[100px] flex items-center gap-2 justify-between cursor-pointer overflow-hidden rounded-md hover:bg-surface transition-colors px-2"
                 key={i.id}
                 onClick={() => handleSubmit(i)}
               >
