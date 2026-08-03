@@ -43,15 +43,15 @@ const ProductCard = ({ data, isEvent }) => {
       </Link>
 
       <Link to={detailsLink}>
-        <h4 className="pb-3 font-body font-[500] text-ink truncate">
+        <h4 className="font-body font-[500] text-ink truncate">
           {data?.name?.length > 40 ? data?.name.slice(0, 40) + "..." : data?.name}
         </h4>
 
-        <div className="flex">
+        <div className="flex py-3">
           <Rating rating={data?.ratings || 0} />
         </div>
 
-        <div className="py-2 flex items-center justify-between">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             {data.originalPrice && (
               <span className="price-tag text-xs text-ink/40 line-through">

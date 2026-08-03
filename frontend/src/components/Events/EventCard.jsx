@@ -66,11 +66,11 @@ const EventCard = ({ active, data, onExpire }) => {
           {data?.name}
         </h2>
 
-        <p className="text-xs text-ink/60 font-body line-clamp-1 mt-1">
+        <p className="text-xs text-ink/60 font-body line-clamp-3 mt-1">
           {data?.description}
         </p>
 
-        <div className="flex items-center justify-between mt-2">
+        <div className="flex items-center justify-between mt-3">
           <div className="flex items-center gap-2">
             {data?.originalPrice && (
               <span className="price-tag text-xs text-ink/40 line-through">
@@ -86,19 +86,19 @@ const EventCard = ({ active, data, onExpire }) => {
           </span>
         </div>
 
-        <div className="mt-2 flex items-center justify-center">
+        <div className="mt-4 flex items-center justify-center">
           <CountDown data={data} onExpire={onExpire} />
         </div>
 
         <div className="flex items-center gap-2 mt-auto">
           <Link to={`/product/${data._id}?isEvent=true`} className="flex-1">
-            <button className="w-full h-[36px] bg-white border border-voltage text-voltage rounded-lg text-xs font-body font-[600] flex items-center justify-center gap-1 hover:bg-voltage hover:text-white transition-colors">
+            <button className="cursor-pointer w-full h-[36px] bg-white border border-voltage text-voltage rounded-lg text-xs font-body font-[600] flex items-center justify-center gap-1 hover:bg-voltage hover:text-white transition-colors">
               <BiDetail size={16} />
               Details
             </button>
           </Link>
           <button
-            className="flex-1 h-[36px] bg-voltage text-white rounded-lg text-xs font-body font-[600] flex items-center justify-center gap-1 hover:opacity-90 transition-opacity disabled:opacity-40"
+            className="cursor-pointer flex-1 h-[36px] bg-voltage text-white rounded-lg text-xs font-body font-[600] flex items-center justify-center gap-1 hover:opacity-90 transition-opacity disabled:opacity-40"
             onClick={() => addToCartHandler(data)}
             disabled={data?.stock === 0}
           >
