@@ -6,7 +6,9 @@ import Event from "../model/event.model.js";
 import ErrorHandler from "../utils/ErrorHandler.js";
 import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
 
+// =============================================
 // create event
+// =============================================
 export const createEvent = catchAsyncErrors(async (req, res, next) => {
   try {
     const shopId = req.body.shopId;
@@ -40,7 +42,10 @@ export const createEvent = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+// =============================================
 // get all events of a shop
+// =============================================
+
 export const getAllShopEvents = catchAsyncErrors(async (req, res, next) => {
   try {
     const events = await Event.find({ shopId: req.params.id });
@@ -54,7 +59,10 @@ export const getAllShopEvents = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+// =============================================
 // delete event of a shop
+// =============================================
+
 export const deleteEvent = catchAsyncErrors(async (req, res, next) => {
   try {
     const eventData = await Event.findByIdAndDelete(req.params.id);
@@ -77,7 +85,10 @@ export const deleteEvent = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+// =============================================
 // get all events
+// =============================================
+
 export const getAllEvents = catchAsyncErrors(async (req, res, next) => {
   try {
     const events = await Event.find();

@@ -4,9 +4,12 @@ import ErrorHandler from "../utils/ErrorHandler.js";
 import catchAsyncErrors from "./catchAsyncErrors.js";
 import jwt from "jsonwebtoken";
 
+
+// =============================================
 // for normal user
+// =============================================
 export const isAuthenticated = catchAsyncErrors(async (req, res, next) => {
-  // Cookie mile toh usay priority do (local dev), warna header se fallback lo (cross-site production)
+  // if Cookie exist take it priority (local dev), instead use header as fallback (cross-site production)
   const token = req.cookies.token || req.headers["x-auth-token"];
 
   if (!token) {
@@ -19,7 +22,9 @@ export const isAuthenticated = catchAsyncErrors(async (req, res, next) => {
   next();
 });
 
+// =============================================
 // for seller/shop user
+// =============================================
 export const isSellerAuthenticated = catchAsyncErrors(
   async (req, res, next) => {
     const seller_token =
@@ -36,7 +41,9 @@ export const isSellerAuthenticated = catchAsyncErrors(
   },
 );
 
+// =============================================
 // for communiction/chat in both seller and client
+// =============================================
 export const isAuthenticatedEither = catchAsyncErrors(
   async (req, res, next) => {
     const token = req.cookies.token || req.headers["x-auth-token"];
@@ -67,7 +74,9 @@ export const isAuthenticatedEither = catchAsyncErrors(
   },
 );
 
+// =============================================
 // for Admin
+// =============================================
 export const isAdmin = catchAsyncErrors(async (req, res, next) => {
   if (!req.user) {
     return next(new ErrorHandler("Please login first", 401));

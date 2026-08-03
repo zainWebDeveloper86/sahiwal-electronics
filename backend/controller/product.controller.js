@@ -7,7 +7,9 @@ import Product from "../model/product.model.js";
 import ErrorHandler from "../utils/ErrorHandler.js";
 import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
 
+// =============================================
 // create product
+// =============================================
 export const createProduct = catchAsyncErrors(async (req, res, next) => {
   try {
     const shopId = req.body.shopId;
@@ -41,7 +43,10 @@ export const createProduct = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+// =============================================
 // get all products of a shop
+// =============================================
+
 export const getAllShopProducts = catchAsyncErrors(async (req, res, next) => {
   try {
     const products = await Product.find({ shopId: req.params.id });
@@ -55,7 +60,10 @@ export const getAllShopProducts = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+// =============================================
 // delete product of a shop
+// =============================================
+
 export const deleteProduct = catchAsyncErrors(async (req, res, next) => {
   try {
     const productData = await Product.findByIdAndDelete(req.params.id);
@@ -78,7 +86,9 @@ export const deleteProduct = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+// =============================================
 // get all products
+// =============================================
 export const getAllProducts = catchAsyncErrors(async (req, res, next) => {
   try {
     const products = await Product.find().sort({ createdAt: -1 });
@@ -92,7 +102,9 @@ export const getAllProducts = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+// =============================================
 // review for a product
+// =============================================
 export const productReview = catchAsyncErrors(async (req, res, next) => {
   try {
     const { rating, comment, productId, orderId } = req.body;

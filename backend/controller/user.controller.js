@@ -11,14 +11,18 @@ import sendMail from "../utils/sendMail.js";
 import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
 import sendToken from "../utils/jwtToken.js";
 
+// =============================================
 // create activation token
+// =============================================
 const createActivationToken = (user) => {
   return jwt.sign(user, process.env.ACTIVATION_SECRET, {
     expiresIn: "5m",
   });
 };
 
+// =============================================
 // user account creation
+// =============================================
 
 export const createUser = catchAsyncErrors(async (req, res, next) => {
   try {
@@ -62,7 +66,9 @@ export const createUser = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+// =============================================
 // user activation
+// =============================================
 export const userActivation = catchAsyncErrors(async (req, res, next) => {
   try {
     const { activation_token } = req.body;
@@ -96,7 +102,10 @@ export const userActivation = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+// =============================================
 // user account Login
+// =============================================
+
 export const loginUser = catchAsyncErrors(async (req, res, next) => {
   try {
     const { email, password, rememberMe } = req.body;
@@ -125,7 +134,10 @@ export const loginUser = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+// =============================================
 //load user
+// =============================================
+
 export const loadUser = catchAsyncErrors(async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id);
@@ -143,12 +155,12 @@ export const loadUser = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+// =============================================
 // log out user
+// =============================================
 export const logoutUser = catchAsyncErrors(async (req, res, next) => {
   try {
     const isProduction = process.env.NODE_ENV === "production";
-    // // Extra safety: explicitly tell any CDN/browser not to cache this response
-    // res.set("Cache-Control", "no-store");
 
     res.cookie("token", null, {
       expires: new Date(Date.now()),
@@ -199,7 +211,10 @@ export const updateUserInfo = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+// =============================================
 // update user avatar/image
+// =============================================
+
 export const updateUserAvator = catchAsyncErrors(async (req, res, next) => {
   try {
     let user = await User.findById(req.user.id);
@@ -232,7 +247,9 @@ export const updateUserAvator = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+// =============================================
 // update user addresses
+// =============================================
 export const updateUserAddress = catchAsyncErrors(async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id);
@@ -270,7 +287,9 @@ export const updateUserAddress = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+// =============================================
 // delete user address
+// =============================================
 export const deleteUserAddress = catchAsyncErrors(async (req, res, next) => {
   try {
     const userId = req.user._id;
@@ -291,7 +310,10 @@ export const deleteUserAddress = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+// =============================================
 // update user password
+// =============================================
+
 export const updateUserPassword = catchAsyncErrors(async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id).select("+password");
@@ -319,8 +341,10 @@ export const updateUserPassword = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler(error.message, 500));
   }
 });
-
+// =============================================
 // find user information with the userId
+// =============================================
+
 export const getUserInfo = catchAsyncErrors(async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
@@ -391,7 +415,6 @@ export const forgotPassword = catchAsyncErrors(async (req, res, next) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      // Security: Don't reveal if email exists or not
       return res.status(200).json({
         success: true,
         message: "If that email is registered, a reset link has been sent!",
@@ -480,7 +503,7 @@ export const resetPassword = catchAsyncErrors(async (req, res, next) => {
 
     // Update password
     user.password = password; // pre-save hook will hash it
-    user.resetPasswordToken = null; // ingle-use: token invalidated!
+    user.resetPasswordToken = null; // single-use: token invalidated!
     user.resetPasswordTime = null;
 
     await user.save();
@@ -536,9 +559,6 @@ export const googleLogin = catchAsyncErrors(async (req, res, next) => {
       });
     }
 
-    /* Reuse the exact same token-issuing + cookie logic as normal login,
-    instead of duplicating cookie options here. Google only verifies
-    identity — everything after this point follows the app's usual auth flow.*/
     sendToken(user, 200, res, { rememberMe: true });
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));

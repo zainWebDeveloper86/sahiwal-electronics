@@ -136,7 +136,7 @@ const MobileHeader = ({
                 }}
               >
                 <AiOutlineHeart size={30} className="mt-5 ml-3 text-ink" />
-                <span className="absolute right-0 top-0 rounded-full bg-copper w-4 h-4 text-white font-mono text-[10px] leading-tight text-center">
+                <span className="absolute right-0 top-5 rounded-full bg-copper w-4 h-4 text-white font-mono text-[10px] leading-tight text-center">
                   {wishlist?.length || 0}
                 </span>
               </div>
@@ -183,7 +183,7 @@ const MobileHeader = ({
               )}
             </div>
 
-            <Navbar />
+            <Navbar closeSidebar={closeSidebar}/>
 
             {renderMobileButton()}
 

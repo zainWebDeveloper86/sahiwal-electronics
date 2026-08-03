@@ -11,7 +11,9 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useSelector((state) => state.user);
-  const { isSellerAuthenticated, seller } = useSelector((state) => state.seller);
+  const { isSellerAuthenticated, seller } = useSelector(
+    (state) => state.seller,
+  );
   const { allProducts } = useSelector((state) => state.products);
   const { cart } = useSelector((state) => state.cart);
   const { wishlist } = useSelector((state) => state.wishlist);
@@ -41,8 +43,12 @@ const Header = () => {
   const handleSearchChange = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
+
+    //  If search term is empty, clear suggestions
+    if (!term.trim()) return setSearchData(null);
+
     const filtered = allProducts?.filter((p) =>
-      p.name.toLowerCase().includes(term.toLowerCase())
+      p.name.toLowerCase().includes(term.toLowerCase()),
     );
     setSearchData(filtered);
   };

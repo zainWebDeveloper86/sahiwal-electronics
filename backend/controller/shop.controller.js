@@ -12,14 +12,19 @@ import sendMail from "../utils/sendMail.js";
 import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
 import sendToken from "../utils/jwtToken.js";
 
+// =============================================
 // create activation token
+// =============================================
+
 const createActivationToken = (seller) => {
   return jwt.sign(seller, process.env.ACTIVATION_SECRET, {
     expiresIn: "5m",
   });
 };
 
+// =============================================
 //  create shop account
+// =============================================
 
 export const createShop = catchAsyncErrors(async (req, res, next) => {
   try {
@@ -80,7 +85,10 @@ export const createShop = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+// =============================================
 // shop activation
+// =============================================
+
 export const sellerActivation = catchAsyncErrors(async (req, res, next) => {
   try {
     const { activation_token } = req.body;
@@ -103,7 +111,6 @@ export const sellerActivation = catchAsyncErrors(async (req, res, next) => {
     const parsedPhoneNumber = Number(phoneNumber);
     const parsedZipCode = Number(zipCode);
 
-    // Validate
     if (!address || !parsedPhoneNumber || !parsedZipCode) {
       return next(
         new ErrorHandler(
@@ -134,7 +141,10 @@ export const sellerActivation = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+// =============================================
 // seller/shop account Login
+// =============================================
+
 export const loginShop = catchAsyncErrors(async (req, res, next) => {
   try {
     const { email, password, rememberMe } = req.body;
@@ -163,7 +173,10 @@ export const loginShop = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+// =============================================
 //load shop
+// =============================================
+
 export const loadShop = catchAsyncErrors(async (req, res, next) => {
   try {
     const sellerShop = await Shop.findById(req.seller.id);
@@ -181,7 +194,10 @@ export const loadShop = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+// =============================================
 // log out from shop
+// =============================================
+
 export const logoutShop = catchAsyncErrors(async (req, res, next) => {
   try {
     const isProduction = process.env.NODE_ENV === "production";
@@ -201,7 +217,10 @@ export const logoutShop = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+// =============================================
 // get shop info
+// =============================================
+
 export const getShopInfo = catchAsyncErrors(async (req, res, next) => {
   try {
     const shop = await Shop.findById(req.params.id);
