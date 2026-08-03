@@ -43,7 +43,7 @@ const ProductCard = ({ data, isEvent }) => {
       </Link>
 
       <Link to={detailsLink}>
-        <h4 className="font-body font-[500] text-ink truncate">
+        <h4 className="font-body font-[500] text-ink">
           {data?.name?.length > 40 ? data?.name.slice(0, 40) + "..." : data?.name}
         </h4>
 
