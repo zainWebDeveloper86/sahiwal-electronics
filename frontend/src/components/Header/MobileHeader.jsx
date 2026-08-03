@@ -95,8 +95,8 @@ const MobileHeader = ({
       {/* Top Mobile Bar */}
       <div
         className={`${
-          active ? "shadow-sm fixed top-0 left-0 z-10" : ""
-        } w-full h-[60px] bg-white z-50 top-0 left-0 shadow-sm border-b border-divider 800px:hidden`}
+          active ? "shadow-sm fixed top-0 left-0 z-5" : ""
+        } w-full h-[60px] bg-white z-5 top-0 left-0 shadow-sm border-b border-divider 800px:hidden`}
       >
         <div className="w-full h-full flex items-center justify-between px-3">
           <BiMenuAltLeft
