@@ -125,8 +125,14 @@ const MobileHeader = ({
 
       {/* Mobile Sidebar (Drawer) */}
       {openSidebar && (
-        <div className="fixed w-full bg-ink/40 z-20 h-full top-0 left-0">
-          <div className="fixed w-[70%] bg-white h-screen top-0 left-0 z-10 overflow-y-scroll">
+        <div
+          className="fixed w-full bg-ink/40 z-20 h-full top-0 left-0"
+          onClick={closeSidebar}
+        >
+          <div
+            className="fixed w-[70%] bg-white h-screen top-0 left-0 z-10 overflow-y-scroll"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="w-full justify-between flex pr-3">
               <div
                 className="relative mr-[15px] cursor-pointer"
@@ -183,7 +189,7 @@ const MobileHeader = ({
               )}
             </div>
 
-            <Navbar closeSidebar={closeSidebar}/>
+            <Navbar closeSidebar={closeSidebar} />
 
             {renderMobileButton()}
 
